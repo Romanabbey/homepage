@@ -35,6 +35,7 @@ NAV = [
     ("진료 프로그램", "#", [
         ("저칼로리 다이어트", "diet.html"),
         ("맞춤 한약 · 엔오 시리즈", "herbal.html"),
+        ("활력 · 해울 공진단", "gongjindan.html"),
         ("엔오 리커버리 패치", "patch.html"),
         ("N약침 · 초음파 가이드 약침", "yakchim.html"),
     ]),
@@ -79,6 +80,10 @@ FAQS = [
      "1팩에 16장(2장씩 8포)이 들어 있고 소비자가격은 15,900원입니다. 의약품이 아닌 일반 제품(공산품)이며, 임신 중에는 멘톨이 함유되어 있어 사용을 권하지 않습니다."),
     ("보폐고 엔오는 하루에 몇 번 복용하나요?",
      "하루 3회 복용을 기준으로 1박스(45포)가 15일분입니다. 증상이 있을 때는 하루 3회, 증상이 심할 때는 하루 3~5회, 증상이 없는 관리 목적이라면 하루 1회로 조절하며, 정확한 복용법은 진찰 후 안내합니다."),
+    ("활력공진단과 해울공진단 중 무엇을 선택하나요?",
+     "가장 쉬운 기준은 커피입니다. 커피를 마셔도 잠을 잘 주무시는 편이면 활력공진단, 커피를 마시면 가슴이 뛰거나 잠들기 어려운 편이면 해울공진단을 고려합니다. 활력공진단에는 녹차가 들어 카페인이 함유되어 있고, 해울공진단에는 카페인 성분이 없습니다. 최종 선택은 진찰 후 정합니다."),
+    ("활력공진단·해울공진단 가격은 얼마인가요?",
+     "소비자가격 기준으로 1환 15,000원, 30환 450,000원입니다. 가격은 변동될 수 있어 방문 전 확인을 권해 드립니다."),
 ]
 
 
@@ -103,7 +108,7 @@ def clinic_schema():
     add(["Monday", "Tuesday", "Wednesday", "Friday"], "14:00", "20:00")
     add(["Thursday"], "14:00", "20:00")
     add(["Saturday"], "09:30", "13:00")
-    services = ["저칼로리 다이어트 맞춤 한약", "맞춤 한약", "N약침(엔오약침)",
+    services = ["저칼로리 다이어트 맞춤 한약", "맞춤 한약", "활력공진단", "해울공진단", "N약침(엔오약침)",
                 "초음파 가이드 약침", "초음파 성장 검사", "성장 클리닉", "침", "부항", "추나요법", "교통사고 후유증 진료"]
     return {
         "@type": ["MedicalClinic", "LocalBusiness"],
@@ -188,7 +193,7 @@ def header_html(current):
 
 def footer_html():
     links = "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in [
-        ("저칼로리 다이어트", "diet.html"), ("맞춤 한약", "herbal.html"), ("엔오 리커버리 패치", "patch.html"),
+        ("저칼로리 다이어트", "diet.html"), ("맞춤 한약", "herbal.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html"),
         ("N약침 · 초음파 가이드 약침", "yakchim.html"), ("성장클리닉", "growth.html"),
         ("교통사고 후유증", "accident.html"), ("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"),
         ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")])
@@ -326,6 +331,7 @@ def build_home():
     programs = [
         ("n-diet.jpg", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약으로 진행합니다.", "diet.html"),
         ("n-decoction.jpg", "맞춤 한약 · 엔오 시리즈", "보폐고 엔오, 안심환 엔오, 부종환 엔오를 진찰 후 안내합니다.", "herbal.html"),
+        ("n-gong-hero.jpg", "활력공진단 · 해울공진단", "공진단 기본 처방을 바탕으로 한 환제입니다. 카페인 여부에 따라 선택합니다.", "gongjindan.html"),
         ("n-patch.jpg", "엔오 리커버리 패치", "하이드로콜로이드 소재의 패치로, 내원하지 않는 날에도 간편하게 사용할 수 있습니다.", "patch.html"),
         ("n-nyakchim.jpg", "N약침 (엔오약침)", "산화질소(NO) 관련 성분을 함유한 약침 치료입니다.", "yakchim.html#n"),
         ("n-ultrasound.jpg", "초음파 가이드 약침", "초음파 영상으로 위치를 확인하며 진행하는 약침 시술입니다.", "yakchim.html#us"),
@@ -529,6 +535,66 @@ def build_herbal():
          "구파발경희한의원의 맞춤 한약과 엔오(NO) 시리즈 – 보폐고 엔오, 안심환 엔오, 부종환 엔오의 약재 구성, 복용 안내, 소비자가격. 진찰 후 개인별로 안내합니다.",
          body, current="herbal.html", crumbs=[("홈", ""), ("맞춤 한약 · 엔오 시리즈", "herbal.html")],
          schema=[faq_schema([FAQS[12], FAQS[14], FAQS[10], FAQS[4]])] + [product_schema(k) for k in PRODUCTS], og="n-decoction.jpg")
+
+
+GONG = [
+    dict(id="hwal", name="활력공진단", img="n-gong-hwal.jpg", tag="카페인 함유 · 오후 활력",
+         lead="공진단 기본 처방에 녹차, 지각, 산화질소(소량)를 더한 환제입니다. 녹차가 들어 있어 카페인이 함유되어 있습니다.",
+         core="공진단 기본 처방 + 녹차, 지각, 산화질소(소량)",
+         feats=["경옥고처럼 5일간 고아서 만든 고(膏) 형태로, 식감이 촉촉하고 쫄깃합니다.", "1환은 5.5g입니다.", "녹차 성분이 들어 있어 카페인에 민감하시면 해울공진단을 권합니다."],
+         targets=["커피를 마셔도 잠을 잘 주무시는 편인 분", "오후에 나른하고 처지는 느낌이 있는 직장인·수험생", "운동이나 골프 전후로 기력 관리가 필요한 분"]),
+    dict(id="haeul", name="해울공진단", img="n-gong-haeul.jpg", tag="카페인 없음 · 편안한 구성",
+         lead="활력공진단에서 녹차를 빼고, 기운을 순조롭게 하고 답답함을 풀어 주는 이기해울(理氣解鬱) 약재를 보강한 환제입니다.",
+         core="공진단 기본 처방 + 향부자, 진피, 지각(용량 증대)",
+         feats=["카페인 성분이 없어 카페인에 민감한 분도 선택할 수 있습니다.", "활력공진단과 같은 고(膏) 형태로, 식감이 촉촉하고 쫄깃합니다.", "1환은 5.5g입니다."],
+         targets=["커피를 마시면 가슴이 뛰거나 잠들기 어려운 분", "스트레스가 많고 가슴이 답답한 느낌이 있는 분", "긴장을 많이 하는 수험생"]),
+]
+GONG_PRICE = [("1환", 15000), ("30환", 450000)]
+
+
+def build_gongjindan():
+    def item(g):
+        return f"""<article class="prod" id="{g['id']}">
+  <figure><img src="assets/img/{g['img']}" alt="" loading="lazy" width="1600" height="1244"></figure>
+  <div>
+    <span class="tag">{g['tag']}</span>
+    <h2>{g['name']}</h2>
+    <p>{g['lead']}</p>
+    <h3>구성</h3><p class="herbs">{g['core']}</p>
+    <h3>특징</h3>{checks(g['feats'])}
+    <h3>이런 분께 상담을 권합니다</h3>{checks(g['targets'])}
+  </div>
+</article>"""
+    rows = "".join(f"<tr><th scope='row'>{l}</th><td>{won(v)}</td></tr>" for l, v in GONG_PRICE)
+    body = hero_sub("활력 · 해울 공진단", "활력공진단과<br>해울공진단",
+                    "공진단 기본 처방을 바탕으로 한 환제입니다. 카페인 여부에 따라 두 가지 중에서 진찰 후 선택해 드립니다.", "n-gong-hero.jpg") + f"""
+<section class="sec"><div class="container narrow prose">
+  <h2>어떤 것을 선택하면 좋을까요?</h2>
+  <p>가장 쉬운 기준은 <b>커피</b>입니다.</p>
+  {checks(["커피를 마셔도 잠을 잘 주무신다 → 활력공진단", "커피를 마시면 가슴이 뛰거나 잠들기 어렵다 → 해울공진단"])}
+  <p class="muted">최종 선택은 진찰 후 체질과 상태를 보고 정합니다.</p>
+</div></section>
+<section class="sec sec-sand"><div class="container prods">
+{item(GONG[0])}
+{item(GONG[1])}
+</div></section>
+<section class="sec"><div class="container narrow prose">
+  <h2>소비자가격</h2>
+  <p class="muted">활력공진단 · 해울공진단 공통</p>
+  <table class="price"><tbody>{rows}</tbody></table>
+  <p class="price-note">※ 소비자가격이며 변동될 수 있습니다. 복용 방법과 기간은 진찰 후 안내해 드립니다.</p>
+  {notice("임신·수유 중이거나, 복용 중인 약이 있거나, 약재 알레르기가 있으시면 진찰 시 꼭 알려 주세요. 카페인에 민감하시면 활력공진단(녹차 함유)은 피하세요.")}
+  {disclaimer()}
+</div></section>
+{faq_block([FAQS[15], FAQS[16], FAQS[10]], "공진단 관련 질문")}
+{cta_band()}"""
+    prod_schema = [{"@type": "Product", "name": g["name"], "description": g["lead"],
+                    "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW",
+                                "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in GONG_PRICE]} for g in GONG]
+    page("gongjindan.html", "활력공진단 · 해울공진단 가격 | 구파발경희한의원",
+         "구파발경희한의원의 활력공진단과 해울공진단. 카페인 함유 여부에 따른 선택 기준, 구성, 소비자가격(1환 15,000원, 30환 450,000원)을 안내합니다.",
+         body, current="gongjindan.html", crumbs=[("홈", ""), ("활력 · 해울 공진단", "gongjindan.html")],
+         schema=[faq_schema([FAQS[15], FAQS[16], FAQS[10]])] + prod_schema, og="n-gong-hero.jpg")
 
 
 def build_patch():
@@ -753,7 +819,7 @@ def build_404():
     page("404.html", "페이지를 찾을 수 없습니다 | 구파발경희한의원", "요청하신 페이지를 찾을 수 없습니다.", body)
 
 
-PAGES = ["index.html", "diet.html", "herbal.html", "patch.html", "yakchim.html", "growth.html", "accident.html",
+PAGES = ["index.html", "diet.html", "herbal.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "accident.html",
          "about.html", "hours-location.html", "faq.html", "reservation.html", "privacy.html"]
 
 
@@ -778,6 +844,7 @@ def build_meta():
 ## 진료 프로그램
 - [저칼로리 다이어트]({DOMAIN}/diet.html): 저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약
 - [맞춤 한약 · 엔오 시리즈]({DOMAIN}/herbal.html): 보폐고 엔오(1박스 45포 170,000원), 안심환 엔오(1박스 30포 99,000원), 부종환 엔오(1개월분 90포 150,000원) 소비자가격
+- [활력공진단 · 해울공진단]({DOMAIN}/gongjindan.html): 1환 15,000원, 30환 450,000원 (소비자가격)
 - [엔오 리커버리 패치]({DOMAIN}/patch.html): 1팩 16장 15,900원, 공산품
 - [N약침 · 초음파 가이드 약침]({DOMAIN}/yakchim.html)
 - [성장클리닉 · 초음파 성장 검사]({DOMAIN}/growth.html): RUF 연골 측정 방식, 성조숙증 지연·맞춤한약·성장침·성장추나
@@ -794,7 +861,7 @@ def build_meta():
 
 
 if __name__ == "__main__":
-    for fn in (build_home, build_diet, build_herbal, build_patch, build_yakchim, build_growth, build_accident,
+    for fn in (build_home, build_diet, build_herbal, build_gongjindan, build_patch, build_yakchim, build_growth, build_accident,
                build_about, build_visit, build_faq, build_reservation, build_privacy, build_404, build_meta):
         fn()
     print("built", len(PAGES) + 1, "pages")

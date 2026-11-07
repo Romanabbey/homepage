@@ -273,3 +273,9 @@ button{font-family:inherit}
 .price-note{font-size:13px;color:var(--ink2)}
 .herbs-note{display:block;margin-top:8px;font-size:13.5px;color:var(--ink2)}
 @media (max-width:600px){.price td{white-space:normal;text-align:right}}
+
+/* 진료 프로그램 8개일 때 마지막 줄 정리 */
+.pgrid .pcard:last-child:nth-child(3n+2){grid-column:span 2;flex-direction:row;align-items:stretch}
+.pgrid .pcard:last-child:nth-child(3n+2) img{width:46%;aspect-ratio:auto;height:auto;min-height:190px}
+.pgrid .pcard:last-child:nth-child(3n+2) div{align-self:center;padding:26px 30px}
+@media (max-width:980px){.pgrid .pcard:last-child:nth-child(3n+2){grid-column:auto;flex-direction:column}.pgrid .pcard:last-child:nth-child(3n+2) img{width:100%;aspect-ratio:16/10;min-height:0}.pgrid .pcard:last-child:nth-child(3n+2) div{padding:20px 22px 24px}}

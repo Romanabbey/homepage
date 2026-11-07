@@ -12,6 +12,7 @@
 ## 진료 프로그램
 - [저칼로리 다이어트](https://gupabalhani.org/diet.html): 저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약
 - [맞춤 한약 · 엔오 시리즈](https://gupabalhani.org/herbal.html): 보폐고 엔오(1박스 45포 170,000원), 안심환 엔오(1박스 30포 99,000원), 부종환 엔오(1개월분 90포 150,000원) 소비자가격
+- [활력공진단 · 해울공진단](https://gupabalhani.org/gongjindan.html): 1환 15,000원, 30환 450,000원 (소비자가격)
 - [엔오 리커버리 패치](https://gupabalhani.org/patch.html): 1팩 16장 15,900원, 공산품
 - [N약침 · 초음파 가이드 약침](https://gupabalhani.org/yakchim.html)
 - [성장클리닉 · 초음파 성장 검사](https://gupabalhani.org/growth.html): RUF 연골 측정 방식, 성조숙증 지연·맞춤한약·성장침·성장추나
