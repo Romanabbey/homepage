@@ -369,3 +369,9 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .way{font-size:14px;font-weight:800;margin:20px 0 4px;color:var(--ink)}
 .parking{display:inline-block;background:var(--soft);color:var(--deep);padding:10px 16px;border-radius:12px;font-weight:600}
 .parking b{color:var(--c)}
+
+/* 지도 버튼: 네이버 그린 / 카카오 옐로 (각 사 공식 브랜드 색) */
+.btn-naver{background:#03C75A;border-color:#03C75A;color:#fff}
+.btn-naver:hover{background:#02B350;border-color:#02B350}
+.btn-kakao{background:#FEE500;border-color:#FEE500;color:rgba(0,0,0,.85)}
+.btn-kakao:hover{background:#F5DC00;border-color:#F5DC00}
