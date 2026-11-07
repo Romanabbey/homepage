@@ -131,8 +131,6 @@ F = {
                     "기본은 활력공진단입니다. 스트레스가 심하고 신경이 예민한 편이라면 활력공진단 대신 해울공진단을 대안으로 고려합니다. 최종 선택은 진찰 후 체질과 상태를 보고 정합니다."),
     "gong_make": ("활력공진단은 어떻게 만드나요?",
                   "녹용, 산수유, 당귀, 구기자, 황기, 향부자, 육계, 백출, 건강, 녹차, 감국, 박하 12가지 약재와 엔오(NO)를 초미세분말로 갈아 꿀로 반죽한 뒤, 5일간 숙성하고 금박을 입혀 완성합니다."),
-    "price": ("처방과 제품의 소비자가격은 얼마인가요?",
-              "소비자가격 기준으로 보폐고 엔오는 1박스(45포) 170,000원·2박스(90포) 300,000원, 안심환 엔오는 1박스(30포) 99,000원·3박스(90포) 270,000원, 부종환 엔오는 10일 체험분(30포) 60,000원·1개월분(90포) 150,000원, 활력공진단·해울공진단은 30환 450,000원·100환+10환 1,500,000원, 사향 프리미엄 공진단은 10환 700,000원, 엔오 리커버리 패치는 1팩(16장) 15,900원입니다. 가격은 변동될 수 있어 방문 전 확인을 권해 드립니다."),
 }
 FAQS = list(F.values())  # faq.html 전체 목록 (페이지마다 필요한 것만 골라 씁니다)
 
@@ -392,7 +390,6 @@ def build_home():
   <span class="lu-tag">{pr['tag']}</span>
   <h3>{pr['name']}</h3>
   <p>{pr['tagline']}</p>
-  <span class="lu-price">소비자가격 {pr['from_txt']}~</span>
   <img src="assets/img/{pr['img']}" alt="" loading="lazy" width="1400" height="1090">
   <span class="lu-go">{ico('arrow')}</span>
 </a>""" for k, pr in PRODUCTS.items())
@@ -401,7 +398,6 @@ def build_home():
   <span class="lu-tag">공진단</span>
   <h3>활력 · 해울 공진단</h3>
   <p>기운을 뿌리부터 채우는 활력공진단. 예민한 분께는 해울공진단.</p>
-  <span class="lu-price">소비자가격 30환 450,000원~</span>
   <img src="assets/img/p-gong.jpg" alt="" loading="lazy" width="1400" height="1090">
   <span class="lu-go">{ico('arrow')}</span>
 </a>"""
@@ -444,7 +440,7 @@ def build_home():
 
 <section class="sec" id="products">
   <div class="container">
-    <div class="sec-head left"><span class="tag">PRESCRIPTIONS</span><h2>처방</h2><p>각각의 처방은 구성과 복용 방법, 가격이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
+    <div class="sec-head left"><span class="tag">PRESCRIPTIONS</span><h2>처방</h2><p>각각의 처방은 구성과 복용 방법이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
     <div class="lineups">{prods}{gong}</div>
     {disclaimer()}
   </div>
@@ -546,9 +542,7 @@ PRODUCTS = {
         how=["1포씩, 하루 3회를 기본으로 합니다(1박스 45포 = 15일분).", "증상이 있을 때는 하루 3회, 증상이 심할 때는 하루 3~5회, 증상이 없는 관리 목적이라면 하루 1회로 조절합니다.", "코 증상처럼 오래된 불편은 한 달 이상 꾸준히 복용하며 경과를 살피는 경우가 많습니다."],
         cautions="위염·식도염이 있어 공복에 속쓰림이 나타나면 식후 복용을 상담하세요. 박하(멘톨)에 알레르기가 있으면 복용을 중단하고 알려 주세요. 당뇨 등으로 당 섭취를 조절 중이시면 진찰 시 꼭 알려 주세요. 소아는 연령과 상태에 따라 용량이 달라 진찰 후 안내합니다.",
         variant=("보폐고 엔오 제로", "꿀이 들어가지 않은 제로 버전도 있습니다. 당뇨 등으로 당 섭취가 걱정되시면 진찰 시 알려 주세요."),
-        desc="호흡기와 목의 불편감을 관리하기 위한 한약 처방",
-        packs=[("1박스 (45포 · 하루 3회 기준 15일분)", 170000), ("2박스 (90포 · 한 달분)", 300000)],
-        from_txt="1박스 170,000원"),
+        desc="호흡기와 목의 불편감을 관리하기 위한 한약 처방",),
     "anshim": dict(
         slug="anshim.html", name="안심환 엔오", theme="anshim", img="p-anshim.jpg", tag="긴장 · 스트레스 · 수면",
         tagline="예민한 하루를 위한 처방",
@@ -560,9 +554,7 @@ PRODUCTS = {
         targets=["작은 자극에도 예민해지고 긴장이 잘 풀리지 않는 경우", "생각이 많고 스트레스 상황을 계속 떠올리는 경우", "두근거림, 얕아지는 호흡 느낌, 몸의 과도한 긴장이 함께 있는 경우", "스트레스에 따라 통증이 심해지고 근육이 굳거나, 신경성 소화 불편·이 악물기·눈 떨림이 있는 경우", "불안과 긴장 때문에 잠들기 어렵거나 숙면이 어려운 경우"],
         how=["1포는 7g이며, 1회 1포 하루 3회를 기본으로 합니다(1박스 30포 = 10일분).", "처음에는 1박스(10일분)로 복용감과 변화를 살펴봅니다.", "복용 직후의 강한 느낌보다, 예전보다 덜 신경 쓰이고 덜 예민해지는지를 살피며 3개월 정도의 관점으로 경과를 봅니다.", "예민함이 줄어든 뒤에는 하루 1회 유지 관리로 이어가기도 합니다."],
         cautions="복용 초기에 대소변 횟수가 달라지거나 나른할 수 있습니다. 졸림이나 소화 불편이 있으면 1포를 반씩 나누어 드시거나 횟수를 조절할 수 있으니 상담해 주세요. 고카페인 식품(커피, 녹차, 홍차, 콜라, 초콜릿, 에너지 음료)은 신경을 예민하게 할 수 있어 줄이시길 권합니다. 복용 중인 약이 있으면 알려 주세요.",
-        desc="신경과민·불안·긴장·스트레스와 관련된 불편감을 관리하기 위한 한약 환제",
-        packs=[("1박스 (30포 · 하루 3회 기준 10일분)", 99000), ("3박스 (90포 · 한 달분)", 270000)],
-        from_txt="1박스 99,000원"),
+        desc="신경과민·불안·긴장·스트레스와 관련된 불편감을 관리하기 위한 한약 환제",),
     "bujong": dict(
         slug="bujong.html", name="부종환 엔오", theme="bujong", img="p-bujong.jpg", tag="붓기 · 순환",
         tagline="붓기와 순환을 위한 처방",
@@ -574,27 +566,8 @@ PRODUCTS = {
         targets=["오래 서 있거나 앉아서 일하다 보면 다리가 붓는 경우", "종아리가 당기고 뭉치거나 다리가 저린 느낌이 있는 경우", "얼굴이나 몸이 자주 붓는 경우, 산후 붓기 관리가 필요한 경우", "식이 조절과 함께 붓기와 컨디션 관리를 하고 싶은 경우(식욕을 억제하는 처방은 아닙니다)"],
         how=["하루 3회 복용을 기준으로 1개월분은 90포입니다.", "처음에는 10일 체험분(30포)으로 복용감과 변화를 살펴볼 수 있습니다."],
         cautions="이뇨 작용이 있어 저녁 늦게 복용하면 잠자는 동안 소변으로 깰 수 있습니다. 복용 시간은 진찰 시 안내해 드립니다. 신장·심장 질환이 있거나 복용 중인 약이 있으면 알려 주세요. 복용 중 소화 불편이나 알레르기 반응이 있으면 상담해 주세요.",
-        desc="붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방",
-        packs=[("10일 체험분 (30포)", 60000), ("1개월분 (90포)", 150000)],
-        from_txt="10일 체험분 60,000원"),
+        desc="붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방",),
 }
-
-
-def won(n):
-    return f"{n:,}원"
-
-
-def product_schema(key):
-    pr = PRODUCTS[key]
-    return {"@type": "Product", "name": pr["name"], "description": pr["desc"],
-            "offers": [{"@type": "Offer", "name": l, "price": str(pv), "priceCurrency": "KRW",
-                        "seller": {"@id": DOMAIN + "/#clinic"}} for l, pv in pr["packs"]]}
-
-
-def price_cards(packs):
-    return "<div class='pcards'>" + "".join(
-        f"<div class='pcardp'><span>{esc(l.split(' (')[0])}</span><b>{won(v)}</b>" + (f"<small>{esc(l.split(' (')[1].rstrip(')'))}</small>" if ' (' in l else "") + "</div>"
-        for l, v in packs) + "</div>"
 
 
 def build_product(key):
@@ -658,17 +631,15 @@ def build_product(key):
 {variant_html}
 <section class="sec sec-tint">
   <div class="container narrow">
-    <div class="sec-head left"><span class="tag">PRICE</span><h2>소비자가격</h2></div>
-    {price_cards(pr['packs'])}
-    <p class="price-note">※ 소비자가격이며 변동될 수 있습니다. 복용량과 기간은 진찰 후 정해 드립니다.</p>
+    <div class="sec-head left"><span class="tag">GUIDE</span><h2>비용 안내</h2><p>처방의 구성과 복용 기간에 따라 달라져 진찰 후 안내해 드립니다. 전화({CLINIC['phone']}) 또는 네이버 예약으로 문의해 주세요.</p></div>
     {disclaimer()}
   </div>
 </section>
 {cta_band()}"""
-    page(pr["slug"], f"{pr['name']} 가격 · 복용법 | 구파발경희한의원",
-         f"구파발경희한의원의 {pr['name']}. {pr['desc']}. 약재 구성, 복용 안내, 소비자가격({pr['from_txt']}부터)을 안내합니다.",
+    page(pr["slug"], f"{pr['name']} 복용법 | 구파발경희한의원",
+         f"구파발경희한의원의 {pr['name']}. {pr['desc']}. 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다.",
          body, current=pr["slug"], crumbs=[("홈", ""), (pr["name"], pr["slug"])],
-         schema=[product_schema(key)], og=pr["img"], theme=pr["theme"])
+         og=pr["img"], theme=pr["theme"])
 
 
 def build_herbal_redirect():
@@ -683,14 +654,10 @@ GONG = [
     dict(id="hwal", name="활력공진단",
          herbs=["녹용", "산수유", "당귀", "구기자", "황기", "향부자", "육계", "백출", "건강", "녹차", "감국", "박하"]),
 ]
-GONG_PRICE = [("30환", 450000), ("100환 + 10환 (총 110환)", 1500000)]
-MUSK_PRICE = [("10환 (1환 6g)", 700000)]
 
 
 def build_gongjindan():
     chips = "".join(f"<li>{esc(h)}</li>" for h in GONG[0]["herbs"])
-    price_rows = "".join(f"<div class='pcardp'><span>{l.split(' (')[0]}</span><b>{won(v)}</b>" + (f"<small>{l.split(' (')[1].rstrip(')')}</small>" if ' (' in l else "") + "</div>" for l, v in GONG_PRICE)
-    musk = "".join(f"<div class='pcardp'><span>사향 프리미엄 {l.split(' (')[0]}</span><b>{won(v)}</b>" + (f"<small>{l.split(' (')[1].rstrip(')')}</small>" if ' (' in l else "") + "</div>" for l, v in MUSK_PRICE)
     body = f"""
 <section class="pphero">
   <div class="container pphero-grid">
@@ -770,29 +737,16 @@ def build_gongjindan():
 
 <section class="sec">
   <div class="container narrow">
-    <div class="sec-head left"><span class="tag">PRICE</span><h2>소비자가격</h2></div>
-    <p class="muted">활력공진단 · 해울공진단 (일반)</p>
-    <div class="pcards">{price_rows}</div>
-    <p class="muted" style="margin-top:22px">사향활력공진단 · 사향해울공진단 (프리미엄)</p>
-    <div class="pcards">{musk}</div>
-    <p class="price-note">※ 소비자가격이며 변동될 수 있습니다. 복용 방법과 기간은 진찰 후 안내해 드립니다.</p>
+    <div class="sec-head left"><span class="tag">GUIDE</span><h2>비용 안내</h2><p>처방의 구성과 복용 기간에 따라 달라져 진찰 후 안내해 드립니다. 전화({CLINIC['phone']}) 또는 네이버 예약으로 문의해 주세요.</p></div>
     {notice("사향이 들어간 제품은 임신 중이시면 복용 전 반드시 상담해 주세요. 복용 중인 약이나 약재 알레르기가 있으면 진찰 시 알려 주세요.")}
     {disclaimer()}
   </div>
 </section>
 {cta_band()}"""
-    prod_schema = [
-        {"@type": "Product", "name": "활력공진단", "description": "녹용, 산수유, 당귀, 구기자, 황기, 향부자, 육계, 백출, 건강, 녹차, 감국, 박하 12가지 약재와 엔오를 더해 5일간 숙성하고 금박을 입힌 환제.",
-         "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in GONG_PRICE]},
-        {"@type": "Product", "name": "해울공진단", "description": "활력공진단과 같은 방식으로 만들며 향부자, 진피, 지각을 보강한 환제. 스트레스가 많고 신경이 예민한 분을 위한 대안.",
-         "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in GONG_PRICE]},
-        {"@type": "Product", "name": "사향 활력공진단 · 사향 해울공진단 (프리미엄)", "description": "활력·해울공진단에 사향과 엔오(소량)를 더한 프리미엄 제품. 1환 6g.",
-         "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in MUSK_PRICE]},
-    ]
-    page("gongjindan.html", "활력공진단 · 해울공진단 가격 | 구파발경희한의원",
-         "구파발경희한의원의 활력공진단. 녹용 등 12가지 약재와 엔오를 더해 5일 숙성하는 공진단과, 스트레스가 많고 예민한 분을 위한 해울공진단, 사향 프리미엄 라인의 구성과 소비자가격(30환 450,000원, 사향 프리미엄 10환 700,000원)을 안내합니다.",
+    page("gongjindan.html", "활력공진단 · 해울공진단 | 구파발경희한의원",
+         "구파발경희한의원의 활력공진단. 녹용 등 12가지 약재와 엔오를 더해 5일 숙성하는 공진단과, 스트레스가 많고 예민한 분을 위한 해울공진단, 사향 프리미엄 라인의 구성을 안내합니다. 비용은 진찰 후 안내해 드립니다.",
          body, current="gongjindan.html", crumbs=[("홈", ""), ("활력 · 해울 공진단", "gongjindan.html")],
-         schema=prod_schema, og="p-gong.jpg", theme="gong")
+         og="p-gong.jpg", theme="gong")
 
 
 def build_patch():
@@ -801,17 +755,16 @@ def build_patch():
 <section class="sec"><div class="container narrow prose">
   <h2>제품 소개</h2>
   <p>엔오 리커버리 패치(엔오패치)는 <b>하이드로콜로이드 소재</b>의 패치로, <b>멘톨이 함유</b>되어 있습니다. 진료를 보조하고, 내원하지 않는 날에도 집에서 간편하게 사용할 수 있도록 개발되었습니다.</p>
-  <ul class="plain"><li>구성: 2장씩 8포, 1팩 총 16장</li><li>소비자가격: 1팩(16장) 15,900원</li><li>분류: 공산품 (의약품·의료기기가 아니며 진료를 대신하지 않습니다)</li></ul>
+  <ul class="plain"><li>구성: 2장씩 8포, 1팩 총 16장</li><li>분류: 공산품 (의약품·의료기기가 아니며 진료를 대신하지 않습니다)</li></ul>
   <h2>사용 전 확인해 주세요</h2>
   {checks(["사용 부위와 연령 제한은 제품 사용설명서를 확인해 주세요.", "가려움, 화끈거림 등 자극이 느껴지면 바로 떼어 주세요. 하이드로콜로이드 소재에도 알레르기나 자극이 생길 수 있고, 밀폐와 땀 때문에 피부가 불편해질 수 있습니다.", "멘톨이 함유되어 있어 임신 중에는 사용을 권하지 않습니다.", "상처가 있거나 예민한 피부에는 사용을 피해 주세요.", "사용감과 반응에는 개인차가 있습니다."])}
   {notice("이 제품은 질병의 진단·치료·예방을 목적으로 하는 의약품이 아닙니다. 몸에 불편한 증상이 있으시면 먼저 진찰을 받아 보세요. 패치 사용 여부와 부위는 상담 시 안내해 드립니다.")}
 </div></section>
 {cta_band()}"""
     page("patch.html", "엔오 리커버리 패치 | 구파발경희한의원",
-         "구파발경희한의원의 엔오 리커버리 패치(엔오패치). 하이드로콜로이드 소재, 멘톨 함유 패치 1팩 16장, 소비자가격 15,900원. 사용 전 주의사항을 확인해 주세요.",
+         "구파발경희한의원의 엔오 리커버리 패치(엔오패치). 하이드로콜로이드 소재, 멘톨 함유 패치 1팩 16장. 사용 전 주의사항을 확인해 주세요.",
          body, current="patch.html", crumbs=[("홈", ""), ("엔오 리커버리 패치", "patch.html")],
-         schema=[{"@type": "Product", "name": "엔오 리커버리 패치(엔오패치)", "description": "하이드로콜로이드 소재, 멘톨 함유 패치. 1팩 16장(2장씩 8포). 공산품.",
-                 "offers": {"@type": "Offer", "name": "1팩(16장)", "price": "15900", "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}}}], og="n-patch.jpg")
+         og="n-patch.jpg")
 
 
 def build_yakchim():
@@ -1141,14 +1094,17 @@ def build_meta():
 
 ## 진료 프로그램
 - [저칼로리 다이어트]({DOMAIN}/diet.html): 저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약
-- [보폐고 엔오]({DOMAIN}/bopae.html): 호흡기·목 관리 한약 처방. 1박스(45포) 170,000원. 꿀이 들어가지 않은 제로 버전도 있음
-- [안심환 엔오]({DOMAIN}/anshim.html): 긴장·스트레스 관련 한약 환제. 1박스(30포) 99,000원
-- [부종환 엔오]({DOMAIN}/bujong.html): 붓기·순환 관리 한약 처방. 1개월분(90포) 150,000원
-- [활력공진단 · 해울공진단]({DOMAIN}/gongjindan.html): 녹용 포함, 30환 450,000원·100환+10환 1,500,000원, 사향 프리미엄 10환 700,000원 (소비자가격)
-- [엔오 리커버리 패치]({DOMAIN}/patch.html): 1팩 16장 15,900원, 공산품
+- [보폐고 엔오]({DOMAIN}/bopae.html): 호흡기·목 관리 한약 처방. 꿀이 들어가지 않은 제로 버전도 있음
+- [안심환 엔오]({DOMAIN}/anshim.html): 긴장·스트레스 관련 한약 환제
+- [부종환 엔오]({DOMAIN}/bujong.html): 붓기·순환 관리 한약 처방
+- [활력공진단 · 해울공진단]({DOMAIN}/gongjindan.html): 녹용 포함, 활력공진단 중심, 예민한 분께는 해울공진단, 사향 프리미엄 라인
+- [엔오 리커버리 패치]({DOMAIN}/patch.html): 1팩 16장, 공산품
 - [N약침 · 초음파 가이드 약침]({DOMAIN}/yakchim.html)
 - [성장클리닉 · 초음파 성장 검사]({DOMAIN}/growth.html): RUF 방식(요골·척골·대퇴골 연골과 골화 비율 분석)으로 현재 성장 상태와 예상키 확인, 성조숙증 지연·맞춤한약·성장침·성장추나
 - [교통사고 후유증]({DOMAIN}/accident.html): 침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약
+
+## 비용
+- 한약·약침 등 비급여 항목의 비용은 진찰 후 안내합니다.
 
 ## 예약
 - 네이버 예약: {BOOKING}
