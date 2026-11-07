@@ -331,7 +331,7 @@ def crumb_html(name):
     return f"<nav class='crumb' aria-label='현재 위치'><a href='index.html'>홈</a> <span>›</span> {esc(name)}</nav>"
 
 
-def hero_sub(name, h1, lead, img, extra=""):
+def hero_sub(name, h1, lead, img, extra="", poster=None):
     return f"""<section class="phero">
   <div class="container phero-grid">
     <div>
@@ -344,7 +344,7 @@ def hero_sub(name, h1, lead, img, extra=""):
       </div>
       {extra}
     </div>
-    <figure class="phero-img"><img src="assets/img/{img}" alt="" width="1600" height="1244"></figure>
+    {('<figure class="phero-img poster-fig"><a href="assets/img/' + poster + '" target="_blank" rel="noopener" aria-label="안내 이미지 크게 보기"><img class="poster" src="assets/img/' + poster + '" alt="초음파 성장 검사 안내 이미지" width="1080" height="1080"></a><figcaption class="pp-cap">이미지를 누르면 크게 볼 수 있습니다.</figcaption></figure>') if poster else ('<figure class="phero-img"><img src="assets/img/' + img + '" alt="" width="1600" height="1244"></figure>')}
   </div>
 </section>"""
 
@@ -385,12 +385,12 @@ def disclaimer():
 
 # ------------------------------------------------------------------ pages
 def build_home():
-    prods = "".join(f"""<a class="lineup t-{k} reveal" href="{pr['slug']}">
+    prods = "".join(f"""<a class="lineup t-{k} reveal{' has-poster' if pr.get('poster') else ''}" href="{pr['slug']}">
   <span class="lu-emb">{emblem(k)}</span>
   <span class="lu-tag">{pr['tag']}</span>
   <h3>{pr['name']}</h3>
   <p>{pr['tagline']}</p>
-  <img src="assets/img/{pr['img']}" alt="" loading="lazy" width="1400" height="1090">
+  {('<img class="poster" src="assets/img/' + pr['poster'] + '" alt="' + pr['name'] + ' 안내 이미지" loading="lazy" width="1080" height="1080">') if pr.get('poster') else ('<img src="assets/img/' + pr['img'] + '" alt="" loading="lazy" width="1400" height="1090">')}
   <span class="lu-go">{ico('arrow')}</span>
 </a>""" for k, pr in PRODUCTS.items())
     gong = f"""<a class="lineup t-gong reveal" href="gongjindan.html">
@@ -531,7 +531,8 @@ def build_diet():
 
 PRODUCTS = {
     "bopae": dict(
-        slug="bopae.html", name="보폐고 엔오", theme="bopae", img="p-bopae.jpg", tag="호흡기 · 목",
+        poster="poster-bopae.jpg",
+        slug="bopae.html", name="보폐고 엔오", theme="bopae", img="poster-bopae.jpg", tag="호흡기 · 목",
         tagline="숨 쉬는 일상을 위한 처방",
         lead="호흡기와 목의 불편감을 관리하기 위한 한약 처방입니다. 영양제처럼 꾸준히 복용하는 방식으로 상담합니다.",
         extra="엔오(NO)는 처방의 작용을 보조하는 역할로 구성했습니다.",
@@ -544,7 +545,8 @@ PRODUCTS = {
         variant=("보폐고 엔오 제로", "꿀이 들어가지 않은 제로 버전도 있습니다. 당뇨 등으로 당 섭취가 걱정되시면 진찰 시 알려 주세요."),
         desc="호흡기와 목의 불편감을 관리하기 위한 한약 처방",),
     "anshim": dict(
-        slug="anshim.html", name="안심환 엔오", theme="anshim", img="p-anshim.jpg", tag="긴장 · 스트레스 · 수면",
+        poster="poster-anshim.jpg",
+        slug="anshim.html", name="안심환 엔오", theme="anshim", img="poster-anshim.jpg", tag="긴장 · 스트레스 · 수면",
         tagline="예민한 하루를 위한 처방",
         lead="신경과민, 불안, 긴장, 스트레스와 관련된 불편감을 관리하기 위한 한약 환제입니다. 오래 사용해 온 탕약 처방을 스틱 포장 환제로 만들어, 쓴 탕약을 꾸준히 먹기 어려운 분도 휴대하며 복용하기 편합니다.",
         extra="특정 진단명에만 한정하지 않고, 예민함과 긴장이 증상에 함께 작용하는지를 폭넓게 살핍니다. 한약 처방이 중심이고 엔오(NO)는 보조 역할입니다.",
@@ -556,7 +558,8 @@ PRODUCTS = {
         cautions="복용 초기에 대소변 횟수가 달라지거나 나른할 수 있습니다. 졸림이나 소화 불편이 있으면 1포를 반씩 나누어 드시거나 횟수를 조절할 수 있으니 상담해 주세요. 고카페인 식품(커피, 녹차, 홍차, 콜라, 초콜릿, 에너지 음료)은 신경을 예민하게 할 수 있어 줄이시길 권합니다. 복용 중인 약이 있으면 알려 주세요.",
         desc="신경과민·불안·긴장·스트레스와 관련된 불편감을 관리하기 위한 한약 환제",),
     "bujong": dict(
-        slug="bujong.html", name="부종환 엔오", theme="bujong", img="p-bujong.jpg", tag="붓기 · 순환",
+        poster="poster-bujong.jpg",
+        slug="bujong.html", name="부종환 엔오", theme="bujong", img="poster-bujong.jpg", tag="붓기 · 순환",
         tagline="붓기와 순환을 위한 처방",
         lead="붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방입니다. 전통 처방인 당귀작약산을 기본으로 하되 약재 비율을 달리하고 산화질소(NO)를 함께 구성했습니다.",
         extra="'서근이수(舒筋利水)', 즉 근육과 인대를 풀고 수분 배출을 돕는다는 한의학적 치료 원칙에 기반한 처방입니다.",
@@ -572,6 +575,10 @@ PRODUCTS = {
 
 def build_product(key):
     pr = PRODUCTS[key]
+    if pr.get("poster"):
+        hero_visual = f'''<figure class="pp-visual poster-fig"><a href="assets/img/{pr['poster']}" target="_blank" rel="noopener" aria-label="{pr['name']} 안내 이미지 크게 보기"><img class="poster" src="assets/img/{pr['poster']}" alt="{pr['name']} 안내 이미지" width="1080" height="1080" fetchpriority="high"></a><figcaption class="pp-cap">이미지를 누르면 크게 볼 수 있습니다.</figcaption></figure>'''
+    else:
+        hero_visual = f'''<figure class="pp-visual"><img src="assets/img/{pr['img']}" alt="" width="1400" height="1090" fetchpriority="high"><span class="pp-emb">{emblem(key)}</span></figure>'''
     chips = "".join(f"<li>{esc(h)}</li>" for h in pr["herbs"])
     facts = "".join(f"<li>{esc(f)}</li>" for f in pr["facts"])
     variant_html = ""
@@ -598,10 +605,7 @@ def build_product(key):
         <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
       </div>
     </div>
-    <figure class="pp-visual">
-      <img src="assets/img/{pr['img']}" alt="" width="1400" height="1090" fetchpriority="high">
-      <span class="pp-emb">{emblem(key)}</span>
-    </figure>
+    {hero_visual}
   </div>
 </section>
 
@@ -639,7 +643,7 @@ def build_product(key):
     page(pr["slug"], f"{pr['name']} 복용법 | 구파발경희한의원",
          f"구파발경희한의원의 {pr['name']}. {pr['desc']}. 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다.",
          body, current=pr["slug"], crumbs=[("홈", ""), (pr["name"], pr["slug"])],
-         og=pr["img"], theme=pr["theme"])
+         og=pr.get("poster") or pr["img"], theme=pr["theme"])
 
 
 def build_herbal_redirect():
@@ -812,7 +816,7 @@ def build_growth():
             ("성장 추나", "자세와 척추·골반 균형을 살피는 수기 치료로, 바른 자세 관리를 돕습니다.")]
     fc = "".join(f"<div class='fcard reveal'><h3>{esc(t)}</h3><p>{esc(d)}</p></div>" for t, d in four)
     body = hero_sub("성장클리닉", "초음파 성장 검사와<br>맞춤 성장 상담",
-                    "방사선을 사용하지 않는 초음파 성장 검사로 아이의 현재 성장 상태와 예상키를 확인하고, 나이와 성별에 맞춰 성장 치료를 상담합니다.", "n-growth2.jpg") + f"""
+                    "방사선을 사용하지 않는 초음파 성장 검사로 아이의 현재 성장 상태와 예상키를 확인하고, 나이와 성별에 맞춰 성장 치료를 상담합니다.", "n-growth2.jpg", poster="poster-growth.jpg") + f"""
 <section class="sec"><div class="container narrow prose">
   <h2>초음파 성장 검사 (RUF 방식)</h2>
   <p>방사선을 사용하지 않는 초음파 검사로 <b>예상키</b>를 확인합니다. 성장의 주요 뼈인 <b>요골, 척골, 대퇴골</b>의 연골과 골화 비율을 분석해 아이의 현재 성장 상태와 예상키를 안내해 드립니다.</p>
@@ -845,7 +849,7 @@ def build_growth():
     page("growth.html", "성장클리닉 · 초음파 성장 검사 | 구파발경희한의원",
          "구파발경희한의원 성장클리닉. 방사선 없는 RUF 방식 초음파 성장 검사로 요골·척골·대퇴골의 연골과 골화 비율을 분석해 현재 성장 상태와 예상키를 확인합니다. 성조숙증 지연, 맞춤한약, 성장침, 성장추나 상담.",
          body, current="growth.html", crumbs=[("홈", ""), ("성장클리닉", "growth.html")],
-         schema=[faq_schema([F["growth_us"], F["puberty"]])], og="n-growth2.jpg")
+         schema=[faq_schema([F["growth_us"], F["puberty"]])], og="poster-growth.jpg")
 
 
 def build_accident():

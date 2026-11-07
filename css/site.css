@@ -396,3 +396,13 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 @media (max-width:920px){.bones{grid-template-columns:1fr 1fr 1fr}}
 @media (max-width:600px){.bones{grid-template-columns:1fr}}
 .pcardp{align-content:start}
+
+/* 안내 이미지(포스터): 글씨가 잘리지 않도록 전체를 보여 줍니다 */
+.poster-fig a{display:block}
+.poster-fig img.poster{width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:20px;background:#fff;box-shadow:0 18px 44px rgba(16,20,24,.18)}
+.pp-visual.poster-fig img.poster{border:6px solid #fff}
+.pp-cap{margin-top:10px;font-size:12.5px;opacity:.7}
+.phero-img.poster-fig .pp-cap{color:var(--ink2);opacity:1}
+.lineup img.poster{height:auto;aspect-ratio:1/1;object-fit:contain;align-self:center;background:#fff;border-radius:14px}
+@media (max-width:600px){.lineup img.poster{aspect-ratio:1/1}}
+.lineup.has-poster .lu-go{top:30px;right:30px;bottom:auto}
