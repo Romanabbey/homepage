@@ -2,11 +2,13 @@
 """구파발경희한의원 사이트 생성기.
 사용법: python3 build.py   (이 폴더에 HTML, sitemap.xml, robots.txt, llms.txt 생성)
 정보(전화/시간/주소)는 아래 CLINIC 한 곳에서만 수정하세요."""
-import json, html, datetime, os, re
+import json, html, datetime, os, re, sys, glob
+from email.utils import format_datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DOMAIN = "https://gupabalhani.org"
 TODAY = datetime.date.today().isoformat()
+OUT = ROOT   # 출력 폴더 (칼럼 미리보기는 preview/ 로 바뀜)
 
 CLINIC = dict(
     name="구파발경희한의원",
@@ -38,6 +40,7 @@ NAV = [
         ("원장소개", "about.html"),
         ("진료시간 · 오시는 길", "hours-location.html"),
         ("예약 · 문의", "reservation.html"),
+        ("건강칼럼", "column/"),
         ("자주 묻는 질문", "faq.html"),
     ]),
     ("교통사고", "accident.html", []),
@@ -234,6 +237,8 @@ def faq_schema(faqs):
 def header_html(current):
     items = []
     for label, href, subs in NAV:
+        if not ARTICLES:
+            subs = [s for s in subs if s[1] != "column/"]
         is_active = current and (href == current or any(u == current for _, u in subs))
         active = " class='active'" if is_active else ""
         if subs:
@@ -270,9 +275,9 @@ def footer_html():
     groups = [
         ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
         ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
-        ("병원소개", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
+        ("병원소개", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("건강칼럼", "column/"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
-    cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls) + "</div>" for g, ls in groups)
+    cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls if ARTICLES or u != "column/") + "</div>" for g, ls in groups)
     return f"""<footer class="site-footer">
   <div class="container">
     <div class="foot-grid">
@@ -306,7 +311,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
     if schema:
         graph += schema
     ld = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False)
-    url = DOMAIN + "/" + ("" if slug == "index.html" else slug)
+    url = DOMAIN + "/" + (slug[:-len("index.html")] if slug.endswith("index.html") else slug)
     out = f"""<!doctype html>
 <html lang="ko">
 <head>
@@ -327,6 +332,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{DOMAIN}/assets/img/{og}">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="구파발경희한의원 건강칼럼" href="{DOMAIN}/feed.xml">
 <link rel="stylesheet" href="css/site.css">
 <script type="application/ld+json">{ld}</script>
 {extra_head}</head>
@@ -339,9 +345,11 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 </body>
 </html>
 """
-    if slug == "404.html":  # 어떤 경로에서 열려도 깨지지 않도록 절대경로 사용
+    if slug == "404.html" or slug.startswith("column/"):  # 어떤 경로에서 열려도 깨지지 않도록 절대경로 사용
         out = re.sub(r'(href|src)=(["\'])(?!https?:|tel:|mailto:|#|/)', lambda mm: f"{mm.group(1)}={mm.group(2)}/", out)
-    with open(os.path.join(ROOT, slug), "w", encoding="utf-8") as f:
+    path = os.path.join(OUT, slug)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
         f.write(out)
 
 
@@ -495,6 +503,7 @@ def build_home():
   </div>
 </section>
 
+{col_home_html()}
 {faq_block([F["hours"], F["where"], F["booking"]])}
 <div class="container narrow more-faq"><a class="btn btn-line" href="faq.html">질문 더 보기 {ico('arrow')}</a></div>
 
@@ -1157,17 +1166,291 @@ def build_404():
     page("404.html", "페이지를 찾을 수 없습니다 | 구파발경희한의원", "요청하신 페이지를 찾을 수 없습니다.", body)
 
 
+
+# ------------------------------------------------------------------ 건강칼럼
+# 글은 columns/*.md 파일로 씁니다(공개). 초안은 columns/drafts/ (저장소에 올라가지 않음).
+# 사용법은 README.md 의 '칼럼 쓰는 법'을 보세요.
+COL_CATS = {
+    "accident": ("교통사고", "accident.html"),
+    "no": ("엔오처방", "index.html#products"),
+    "diet": ("다이어트", "diet.html"),
+    "growth": ("바른성장", "growth.html"),
+    "postpartum": ("산후보약", "postpartum.html"),
+    "yakchim": ("N약침", "yakchim.html"),
+    "clinic": ("한의원 이야기", "about.html"),
+}
+
+
+def md_inline(s):
+    s = esc(s)
+    s = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", s)
+
+    def link(m):
+        txt, url = m.group(1), m.group(2)
+        ext = url.startswith("http") and DOMAIN not in url
+        return f'<a href="{url}"' + (' target="_blank" rel="noopener"' if ext else "") + f">{txt}</a>"
+    return re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", link, s)
+
+
+def md_to_html(body):
+    """아주 단순한 마크다운: ## ### 제목, - 목록, 1. 번호목록, > 안내상자, **굵게**, [링크](주소)
+    '## 자주 묻는 질문'(### 질문 / 답변)과 '## 참고 문헌'(- 항목)은 따로 모아 반환합니다."""
+    html_out, faq, sources, plain = [], [], [], []
+    mode, buf_list, list_tag, para = None, [], None, []
+    cur_q = None
+
+    def flush_para():
+        nonlocal para
+        if para:
+            txt = " ".join(para)
+            html_out.append(f"<p>{md_inline(txt)}</p>")
+            plain.append(re.sub(r"\*\*|\[([^\]]+)\]\([^)]*\)", lambda m: m.group(1) or "", txt))
+            para = []
+
+    def flush_list():
+        nonlocal buf_list, list_tag
+        if buf_list:
+            html_out.append(f"<{list_tag}>" + "".join(f"<li>{md_inline(i)}</li>" for i in buf_list) + f"</{list_tag}>")
+            plain.extend("· " + re.sub(r"\*\*", "", i) for i in buf_list)
+            buf_list, list_tag = [], None
+
+    for raw in body.split("\n"):
+        line = raw.rstrip()
+        if line.startswith("## "):
+            flush_para(); flush_list()
+            title = line[3:].strip()
+            if title == "자주 묻는 질문":
+                mode = "faq"; continue
+            if title == "참고 문헌":
+                mode = "src"; continue
+            mode = None
+            hid = f"s{len([h for h in html_out if h.startswith('<h2')]) + 1}"
+            html_out.append(f'<h2 id="{hid}">{md_inline(title)}</h2>'); plain.append("\n[ " + title + " ]")
+            continue
+        if mode == "faq":
+            if line.startswith("### "):
+                if cur_q: faq.append(cur_q)
+                cur_q = [line[4:].strip(), ""]
+            elif line.strip() and cur_q:
+                cur_q[1] += (" " if cur_q[1] else "") + line.strip()
+            continue
+        if mode == "src":
+            m = re.match(r"^(?:-|\d+\.)\s+(.*)$", line)
+            if m: sources.append(m.group(1))
+            continue
+        if line.startswith("### "):
+            flush_para(); flush_list()
+            html_out.append(f"<h3>{md_inline(line[4:].strip())}</h3>"); plain.append(line[4:].strip())
+        elif re.match(r"^- ", line):
+            flush_para()
+            if list_tag not in (None, "ul"): flush_list()
+            list_tag = "ul"; buf_list.append(line[2:].strip())
+        elif re.match(r"^\d+\. ", line):
+            flush_para()
+            if list_tag not in (None, "ol"): flush_list()
+            list_tag = "ol"; buf_list.append(re.sub(r"^\d+\.\s+", "", line))
+        elif line.startswith("> "):
+            flush_para(); flush_list()
+            html_out.append(f"<aside class='notice'><p>{md_inline(line[2:].strip())}</p></aside>")
+        elif not line.strip():
+            flush_para(); flush_list()
+        else:
+            flush_list(); para.append(line.strip())
+    flush_para(); flush_list()
+    if cur_q: faq.append(cur_q)
+    return "\n".join(html_out), [tuple(q) for q in faq], sources, "\n".join(plain)
+
+
+def load_columns(include_drafts=False):
+    files = sorted(glob.glob(os.path.join(ROOT, "columns", "*.md")))
+    if include_drafts:
+        files += sorted(glob.glob(os.path.join(ROOT, "columns", "drafts", "*.md")))
+    arts = []
+    for f in files:
+        name = os.path.basename(f)
+        if name.startswith("_"):
+            continue
+        raw = open(f, encoding="utf-8").read()
+        m = re.match(r"^---\n(.*?)\n---\n(.*)$", raw, re.S)
+        if not m:
+            print("  [건너뜀] 머리말(---) 형식이 없습니다:", name); continue
+        meta = {}
+        for ln in m.group(1).split("\n"):
+            if ":" in ln:
+                k, v = ln.split(":", 1); meta[k.strip()] = v.strip()
+        meta.setdefault("status", "published")
+        if meta["status"] != "published" and not include_drafts:
+            continue
+        for k in ("title", "date", "category", "description", "summary"):
+            if not meta.get(k):
+                print(f"  [건너뜀] '{k}' 항목이 비어 있습니다:", name); meta = None; break
+        if meta is None:
+            continue
+        if meta["category"] not in COL_CATS:
+            print(f"  [건너뜀] 분류(category)는 {', '.join(COL_CATS)} 중 하나여야 합니다:", name); continue
+        meta["slug"] = re.sub(r"\.md$", "", name)
+        meta["updated"] = meta.get("updated") or meta["date"]
+        meta["body"] = m.group(2).strip()
+        meta["html"], meta["faq"], meta["sources"], meta["plain"] = md_to_html(meta["body"])
+        meta["draft"] = "drafts" in f
+        arts.append(meta)
+    arts.sort(key=lambda a: (a["date"], a["slug"]), reverse=True)
+    return arts
+
+
+ARTICLES = load_columns(False)
+
+
+def col_url(a):
+    return f"column/{a['slug']}.html"
+
+
+def col_item(a):
+    cat = COL_CATS[a["category"]][0]
+    return (f"<a class='col-item reveal' href='{col_url(a)}'><span class='ci-date'>{a['date'].replace('-', '.')}<small>{esc(cat)}</small></span>"
+            f"<span class='ci-t'><b>{esc(a['title'])}</b><small>{esc(a['summary'].replace('**', ''))}</small></span><span class='ci-go'>{ico('arrow')}</span></a>")
+
+
+def col_home_html():
+    if not ARTICLES:
+        return ""
+    items = "".join(col_item(a) for a in ARTICLES[:3])
+    return f"""<section class="sec">
+  <div class="container">
+    <div class="sec-head left"><span class="tag">COLUMN</span><h2>건강 칼럼</h2><p>진료실에서 자주 받는 질문을 정리했습니다.</p></div>
+    <div class="col-list">{items}</div>
+    <p style="margin-top:22px"><a class="btn btn-line" href="column/">칼럼 전체 보기 {ico('arrow')}</a></p>
+  </div>
+</section>"""
+
+
+def build_column_index(arts, preview=False):
+    items = "".join(col_item(a) for a in arts) or "<p class='muted'>아직 등록된 칼럼이 없습니다.</p>"
+    body = f"""
+<section class="phero phero-plain"><div class="container">{crumb_html("건강칼럼")}<h1>건강 칼럼</h1><p class="lead">진료실에서 자주 받는 질문을 근거와 함께 정리합니다.</p></div></section>
+<section class="sec" style="padding-top:20px"><div class="container"><div class="col-list">{items}</div>
+  <p class="disc">※ 칼럼은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다.</p></div></section>
+{cta_band()}"""
+    page("column/index.html", "건강 칼럼 | 구파발경희한의원",
+         "구파발경희한의원 건강 칼럼. 교통사고 후유증, 엔오처방, 다이어트, 바른성장, 산후보약, N약침에 대해 자주 받는 질문을 근거와 함께 정리합니다.",
+         body, current="about.html", crumbs=[("홈", ""), ("건강칼럼", "column/")],
+         extra_head='<meta name="robots" content="noindex">\n' if preview else "")
+
+
+def build_column_article(a, preview=False):
+    cat_name, cat_link = COL_CATS[a["category"]]
+    reviewed = a.get("reviewer")
+    meta_line = f"{a['date'].replace('-', '.')} 작성"
+    if a["updated"] != a["date"]:
+        meta_line += f" · {a['updated'].replace('-', '.')} 수정"
+    meta_line += f" · 작성 {CLINIC['name']}" + (f" · 감수 원장 {reviewed}" if reviewed else "")
+    src_html = ""
+    if a["sources"]:
+        src_html = "<div class='col-src'><h2>참고 문헌</h2><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></div>"
+    related = []
+    for r in (a.get("related") or cat_link).split(","):
+        r = r.strip()
+        if r:
+            related.append(r)
+    rel_html = "".join(f"<a class='btn btn-line' href='{r}'>{esc(cat_name)} 진료 안내 {ico('arrow')}</a> " for r in related[:1])
+    faq_html = faq_block(a["faq"], "자주 묻는 질문") if a["faq"] else ""
+    body = f"""
+<section class="phero phero-plain"><div class="container narrow">{crumb_html_multi([("건강칼럼", "column/"), (a['title'], None)])}
+  <span class="tag">{esc(cat_name)}</span><h1>{esc(a['title'])}</h1><p class="col-meta">{esc(meta_line)}</p></div></section>
+<section class="sec" style="padding-top:20px"><div class="container narrow">
+  <aside class="notice"><b>핵심 요약</b><p>{md_inline(a['summary'])}</p></aside>
+  <div class="prose col-body">{a['html']}</div>
+  {src_html}
+  <p class="disc">※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. 증상이 있으시면 진찰을 받아 보세요. 치료 효과와 경과는 개인에 따라 다를 수 있습니다.</p>
+  <p style="margin-top:18px">{rel_html}</p>
+</div></section>
+{faq_html}
+{cta_band()}"""
+    url = f"{DOMAIN}/{col_url(a)}"
+    doc = {"@id": DOMAIN + "/#doctor"}
+    art_schema = {"@type": ["Article", "MedicalWebPage"], "@id": url + "#article", "headline": a["title"],
+                  "description": a["description"], "datePublished": a["date"], "dateModified": a["updated"],
+                  "inLanguage": "ko-KR", "mainEntityOfPage": url, "image": DOMAIN + "/assets/img/" + a.get("image", "n-og.jpg"),
+                  "author": {"@id": DOMAIN + "/#clinic"}, "publisher": {"@id": DOMAIN + "/#clinic"}}
+    if reviewed:
+        art_schema["reviewedBy"] = doc
+    if a["sources"]:
+        art_schema["citation"] = [re.sub(r"\*\*|\[([^\]]+)\]\([^)]*\)", lambda m: m.group(1) or "", s) for s in a["sources"]]
+    schema = [art_schema] + ([faq_schema(a["faq"])] if a["faq"] else [])
+    page(col_url(a), f"{a['title']} | 구파발경희한의원 건강칼럼", a["description"], body, current="about.html",
+         crumbs=[("홈", ""), ("건강칼럼", "column/"), (a["title"], col_url(a))], schema=schema,
+         og=a.get("image", "n-og.jpg"), extra_head='<meta name="robots" content="noindex">\n' if preview else "")
+
+
+def crumb_html_multi(parts):
+    out = "<a href='index.html'>홈</a>"
+    for name, href in parts:
+        out += " <span>›</span> " + (f"<a href='{href}'>{esc(name)}</a>" if href else esc(name))
+    return f"<nav class='crumb' aria-label='현재 위치'>{out}</nav>"
+
+
+def build_columns():
+    global OUT
+    idx = os.path.join(ROOT, "column", "index.html")
+    if not ARTICLES:
+        if os.path.exists(idx):
+            os.remove(idx)
+        build_feed_only()
+        return
+    build_column_index(ARTICLES)
+    for a in ARTICLES:
+        build_column_article(a)
+    build_feed_only()
+    # 네이버 블로그에 옮길 때 쓰는 본문 텍스트 (저장소에는 올리지 않음)
+    os.makedirs(os.path.join(ROOT, "blog_out"), exist_ok=True)
+    for a in ARTICLES:
+        txt = (f"{a['title']}\n\n[핵심 요약]\n{re.sub(r'[*]{2}', '', a['summary'])}\n\n{a['plain']}\n\n"
+               f"※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다.\n\n"
+               f"원문 보기: {DOMAIN}/{col_url(a)}\n구파발경희한의원 | 서울 은평구 진관4로 47 | {CLINIC['phone']}\n")
+        open(os.path.join(ROOT, "blog_out", a["slug"] + ".txt"), "w", encoding="utf-8").write(txt)
+
+
+def build_feed_only():
+    items = ""
+    for a in ARTICLES[:30]:
+        d = datetime.datetime.strptime(a["date"], "%Y-%m-%d").replace(hour=9, tzinfo=datetime.timezone(datetime.timedelta(hours=9)))
+        items += (f"<item><title>{esc(a['title'])}</title><link>{DOMAIN}/{col_url(a)}</link><guid>{DOMAIN}/{col_url(a)}</guid>"
+                  f"<pubDate>{format_datetime(d)}</pubDate><description>{esc(a['description'])}</description></item>\n")
+    now = format_datetime(datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))))
+    open(os.path.join(ROOT, "feed.xml"), "w", encoding="utf-8").write(
+        f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>구파발경희한의원 건강칼럼</title><link>{DOMAIN}/column/</link>'
+        f'<description>진료실에서 자주 받는 질문을 근거와 함께 정리합니다.</description><language>ko-KR</language><lastBuildDate>{now}</lastBuildDate>\n{items}</channel></rss>\n')
+
+
+def build_column_preview():
+    """초안까지 포함해 preview/ 폴더에 미리보기 페이지를 만듭니다. (공개·색인되지 않음)"""
+    global OUT
+    arts = load_columns(True)
+    OUT = os.path.join(ROOT, "preview")
+    build_column_index(arts, preview=True)
+    for a in arts:
+        build_column_article(a, preview=True)
+    OUT = ROOT
+    print("미리보기:", len(arts), "편 → preview/column/ (서버: python3 -m http.server 8000, 주소: /preview/column/)")
+
+
+
 PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "postpartum.html", "accident.html",
          "about.html", "hours-location.html", "faq.html", "reservation.html", "privacy.html"]
 
 
 def build_meta():
     urls = "".join(f"  <url><loc>{DOMAIN}/{'' if p == 'index.html' else p}</loc><lastmod>{TODAY}</lastmod></url>\n" for p in PAGES)
+    if ARTICLES:
+        urls += f"  <url><loc>{DOMAIN}/column/</loc><lastmod>{ARTICLES[0]['updated']}</lastmod></url>\n"
+        urls += "".join(f"  <url><loc>{DOMAIN}/{col_url(a)}</loc><lastmod>{a['updated']}</lastmod></url>\n" for a in ARTICLES)
     open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
     bots = ["GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "Claude-User", "Claude-SearchBot", "PerplexityBot", "Google-Extended", "Applebot-Extended"]
-    robots = "User-agent: *\nAllow: /\n\n" + "".join(f"User-agent: {b}\nAllow: /\n\n" for b in bots) + f"Sitemap: {DOMAIN}/sitemap.xml\n"
+    hide = "Disallow: /columns/\nDisallow: /blog_out/\nDisallow: /preview/\n"
+    robots = "User-agent: *\nAllow: /\n" + hide + "\n" + "".join(f"User-agent: {b}\nAllow: /\n{hide}\n" for b in bots) + f"Sitemap: {DOMAIN}/sitemap.xml\n"
     open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8").write(robots)
+    col_llms = "".join(f"- [{a['title']}]({DOMAIN}/{col_url(a)}): {a['description']}\n" for a in ARTICLES)
     llms = f"""# {CLINIC['name']}
 
 > 서울 은평구 구파발역 인근의 한의원입니다. 원장 {CLINIC['doctor']}.
@@ -1200,6 +1483,8 @@ def build_meta():
 - 주차: 708동 지하주차장 무료 주차 가능
 - 지도: {CLINIC['naver']} (네이버), {CLINIC['kakao']} (카카오)
 
+## 건강칼럼
+{col_llms}
 ## 기타
 - [원장 소개]({DOMAIN}/about.html)
 - [진료시간 · 오시는 길]({DOMAIN}/hours-location.html)
@@ -1212,6 +1497,8 @@ def build_meta():
 
 if __name__ == "__main__":
     for fn in (build_home, build_diet, lambda: build_product("bopae"), lambda: build_product("anshim"), lambda: build_product("bujong"), build_herbal_redirect, build_gongjindan, build_patch, build_yakchim, build_growth, build_postpartum, build_accident,
-               build_about, build_visit, build_faq, build_reservation, build_privacy, build_404, build_meta):
+               build_about, build_visit, build_faq, build_reservation, build_privacy, build_404, build_columns, build_meta):
         fn()
-    print("built", len(PAGES) + 1, "pages")
+    print("built", len(PAGES) + 1, "pages +", len(ARTICLES), "columns")
+    if "--preview" in sys.argv:
+        build_column_preview()

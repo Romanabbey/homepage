@@ -1,31 +1,61 @@
 User-agent: *
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: Claude-User
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /columns/
+Disallow: /blog_out/
+Disallow: /preview/
 
 Sitemap: https://gupabalhani.org/sitemap.xml

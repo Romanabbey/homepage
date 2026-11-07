@@ -412,3 +412,29 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .brand img.brand-mark{width:44px;height:44px;flex:none;display:block}
 .hours tr.lunch td{text-align:right;padding-right:0;color:var(--ink2);font-weight:600}
 .hours .lunch-note{display:block;font-weight:400;font-size:13px}
+
+/* ───────── 건강칼럼 ───────── */
+.col-list{border-top:1px solid var(--ink)}
+.col-item{display:grid;grid-template-columns:120px 1fr 28px;gap:20px;align-items:start;padding:24px 6px;border-bottom:1px solid var(--line);transition:.15s}
+.col-item:hover{background:#fff;padding-left:16px}
+.ci-date{font-size:13px;font-weight:800;color:var(--c);letter-spacing:.02em}
+.ci-date small{display:block;margin-top:2px;font-weight:700;color:var(--ink2);font-size:12px}
+.ci-t b{display:block;font-size:clamp(18px,2vw,23px);letter-spacing:-.03em;line-height:1.35}
+.ci-t small{display:block;color:var(--ink2);font-size:14.5px;margin-top:6px;line-height:1.6}
+.ci-go{justify-self:end;color:var(--ink2);padding-top:4px}
+.col-item:hover .ci-go{color:var(--c)}
+.col-meta{margin-top:12px;color:var(--ink2);font-size:14px}
+.col-body{margin-top:26px}
+.col-body p{font-size:17px;line-height:1.9;margin:14px 0;color:var(--ink)}
+.col-body h2{margin:44px 0 10px;font-size:clamp(22px,2.8vw,28px)}
+.col-body h3{margin:26px 0 6px;font-size:18px}
+.col-body ul,.col-body ol{margin:12px 0 12px 4px}
+.col-body ul li{position:relative;padding:5px 0 5px 18px;color:var(--ink)}
+.col-body ul li::before{content:"";position:absolute;left:0;top:.95em;width:6px;height:6px;border-radius:50%;background:var(--c)}
+.col-body ol{list-style:decimal;padding-left:22px}
+.col-body ol li{padding:5px 0 5px 4px;color:var(--ink)}
+.col-src{margin-top:40px;padding-top:22px;border-top:1px solid var(--line)}
+.col-src h2{font-size:18px;margin-bottom:8px}
+.col-src ol{list-style:decimal;padding-left:20px;color:var(--ink2);font-size:14px;line-height:1.7}
+.col-src a{color:var(--c);text-decoration:underline}
+@media (max-width:760px){.col-item{grid-template-columns:1fr;gap:6px}.ci-go{display:none}}

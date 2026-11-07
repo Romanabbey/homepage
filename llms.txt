@@ -30,6 +30,8 @@
 - 주차: 708동 지하주차장 무료 주차 가능
 - 지도: https://map.naver.com/p/entry/place/13116400 (네이버), https://place.map.kakao.com/1052835355 (카카오)
 
+## 건강칼럼
+
 ## 기타
 - [원장 소개](https://gupabalhani.org/about.html)
 - [진료시간 · 오시는 길](https://gupabalhani.org/hours-location.html)
