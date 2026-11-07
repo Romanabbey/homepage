@@ -114,9 +114,11 @@ FAQS = [
     ("보폐고 엔오는 하루에 몇 번 복용하나요?",
      "하루 3회 복용을 기준으로 1박스(45포)가 15일분입니다. 증상이 있을 때는 하루 3회, 증상이 심할 때는 하루 3~5회, 증상이 없는 관리 목적이라면 하루 1회로 조절하며, 정확한 복용법은 진찰 후 안내합니다."),
     ("활력공진단과 해울공진단 중 무엇을 선택하나요?",
-     "가장 쉬운 기준은 커피입니다. 커피를 마셔도 잠을 잘 주무시는 편이면 활력공진단, 커피를 마시면 가슴이 뛰거나 잠들기 어려운 편이면 해울공진단을 고려합니다. 활력공진단에는 녹차가 들어 카페인이 함유되어 있고, 해울공진단에는 카페인 성분이 없습니다. 최종 선택은 진찰 후 정합니다."),
+     "기본은 활력공진단입니다. 스트레스가 심하고 신경이 예민한 편이라면 활력공진단 대신 해울공진단을 대안으로 고려합니다. 최종 선택은 진찰 후 체질과 상태를 보고 정하며, 카페인에 민감하시면 진찰 시 알려 주세요."),
     ("활력공진단·해울공진단 가격은 얼마인가요?",
      "소비자가격 기준으로 활력공진단·해울공진단은 1환 15,000원, 30환 450,000원이고, 사향을 더한 프리미엄 라인(사향활력·사향해울)은 1환(6g) 70,000원입니다. 가격은 변동될 수 있어 방문 전 확인을 권해 드립니다."),
+    ("활력공진단은 어떻게 만드나요?",
+     "녹용, 산수유, 당귀, 구기자, 황기, 향부자, 육계, 백출, 건강, 녹차, 감국, 박하 12가지 약재와 엔오(NO)를 초미세분말로 갈아 꿀로 반죽한 뒤, 5일간 숙성하고 금박을 입혀 완성합니다."),
 ]
 
 
@@ -379,9 +381,9 @@ def build_home():
 </a>""" for k, pr in PRODUCTS.items())
     gong = f"""<a class="lineup t-gong reveal" href="gongjindan.html">
   <span class="lu-emb">{emblem('gong')}</span>
-  <span class="lu-tag">카페인 여부로 고르는 환제</span>
+  <span class="lu-tag">공진단</span>
   <h3>활력 · 해울 공진단</h3>
-  <p>녹용이 들어간 공진단 기본 처방. 사향 프리미엄 라인도 있습니다.</p>
+  <p>기운을 뿌리부터 채우는 활력공진단. 예민한 분께는 해울공진단.</p>
   <span class="lu-price">소비자가격 1환 15,000원~</span>
   <img src="assets/img/p-gong.jpg" alt="" loading="lazy" width="1400" height="1090">
   <span class="lu-go">{ico('arrow')}</span>
@@ -654,47 +656,28 @@ def build_herbal_redirect():
 
 
 GONG = [
-    dict(id="hwal", name="활력공진단", img="n-gong-hwal.jpg", tag="카페인 함유 · 오후 활력",
-         lead="공진단 기본 처방에 녹차, 지각, 산화질소(소량)를 더한 환제입니다. 녹차가 들어 있어 카페인이 함유되어 있습니다.",
-         core="공진단 기본 처방(녹용 포함) + 녹차, 지각, 산화질소(소량)",
-         feats=["경옥고처럼 5일간 고아서 만든 고(膏) 형태로, 식감이 촉촉하고 쫄깃합니다.", "1환은 5.5g이며, 녹용은 뉴질랜드산 분골을 사용합니다.", "녹차 성분이 들어 있어 카페인에 민감하시면 해울공진단을 권합니다."],
-         targets=["커피를 마셔도 잠을 잘 주무시는 편인 분", "오후에 나른하고 처지는 느낌이 있는 직장인·수험생", "운동이나 골프 전후로 기력 관리가 필요한 분"]),
-    dict(id="haeul", name="해울공진단", img="n-gong-haeul.jpg", tag="카페인 없음 · 편안한 구성",
-         lead="활력공진단에서 녹차를 빼고, 기운을 순조롭게 하고 답답함을 풀어 주는 이기해울(理氣解鬱) 약재를 보강한 환제입니다.",
-         core="공진단 기본 처방(녹용 포함) + 향부자, 진피, 지각(용량 증대)",
-         feats=["카페인 성분이 없어 카페인에 민감한 분도 선택할 수 있습니다.", "활력공진단과 같은 고(膏) 형태로, 식감이 촉촉하고 쫄깃합니다.", "1환은 5.5g이며, 녹용은 뉴질랜드산 분골을 사용합니다."],
-         targets=["커피를 마시면 가슴이 뛰거나 잠들기 어려운 분", "스트레스가 많고 가슴이 답답한 느낌이 있는 분", "긴장을 많이 하는 수험생"]),
+    dict(id="hwal", name="활력공진단",
+         herbs=["녹용", "산수유", "당귀", "구기자", "황기", "향부자", "육계", "백출", "건강", "녹차", "감국", "박하"]),
 ]
 GONG_PRICE = [("1환", 15000), ("30환", 450000)]
 MUSK_PRICE = [("1환 (6g)", 70000)]
 
 
 def build_gongjindan():
-    def card(g):
-        return f"""<article class="gcard reveal" id="{g['id']}">
-  <figure><img src="assets/img/{g['img']}" alt="" loading="lazy" width="1600" height="1244"></figure>
-  <div>
-    <span class="pp-tag-s">{g['tag']}</span>
-    <h3>{g['name']}</h3>
-    <p>{g['lead']}</p>
-    <h4>구성</h4><p class="herbs">{g['core']}</p>
-    <h4>특징</h4>{checks(g['feats'])}
-    <h4>이런 분께 상담을 권합니다</h4>{checks(g['targets'])}
-  </div>
-</article>"""
-    rows = "".join(f"<div class='pcardp'><span>{l}</span><b>{won(v)}</b></div>" for l, v in GONG_PRICE)
+    chips = "".join(f"<li>{esc(h)}</li>" for h in GONG[0]["herbs"])
+    price_rows = "".join(f"<div class='pcardp'><span>{l}</span><b>{won(v)}</b></div>" for l, v in GONG_PRICE)
     musk = "".join(f"<div class='pcardp'><span>사향 프리미엄 {l.split(' (')[0]}</span><b>{won(v)}</b><small>6g</small></div>" for l, v in MUSK_PRICE)
-    faqs = [FAQS[15], FAQS[16], FAQS[10]]
+    faqs = [FAQS[15], FAQS[17], FAQS[16], FAQS[10]]
     body = f"""
 <section class="pphero">
   <div class="container pphero-grid">
     <div class="pp-copy">
       {crumb_html("활력 · 해울 공진단")}
-      <span class="pp-tag">{emblem('gong', 'emb-s')} 카페인 여부로 고르는 환제</span>
-      <h1>활력공진단<br>해울공진단</h1>
-      <p class="pp-tagline">커피를 기준으로 고릅니다</p>
-      <p class="pp-lead">녹용이 들어간 공진단 기본 처방을 바탕으로 한 환제입니다. 카페인 여부에 따라 두 가지 중에서 진찰 후 선택해 드립니다.</p>
-      <ul class="pp-facts"><li>1환 5.5g</li><li>녹용(뉴질랜드산 분골)</li><li>사향 프리미엄 6g</li></ul>
+      <span class="pp-tag">{emblem('gong', 'emb-s')} 공진단</span>
+      <h1>활력공진단</h1>
+      <p class="pp-tagline">기운을 뿌리부터 채우는 처방</p>
+      <p class="pp-lead">아무리 자도 피곤하고 몸이 무거울 때, 구파발경희한의원은 녹용을 비롯한 12가지 약재와 엔오를 더한 활력공진단을 처방합니다.</p>
+      <ul class="pp-facts"><li>12가지 약재 + 엔오</li><li>5일 숙성 · 금박</li><li>1환 5.5g</li></ul>
       <div class="btn-row">
         <a class="btn btn-white" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
         <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
@@ -703,45 +686,89 @@ def build_gongjindan():
     <figure class="pp-visual"><img src="assets/img/p-gong.jpg" alt="" width="1400" height="1090" fetchpriority="high"><span class="pp-emb">{emblem('gong')}</span></figure>
   </div>
 </section>
+
 <section class="sec">
-  <div class="container narrow">
-    <div class="sec-head left"><span class="tag">CHOOSE</span><h2>어떤 것을 고르면 좋을까요?</h2><p>가장 쉬운 기준은 <b>커피</b>입니다.</p></div>
-    <div class="choose">
-      <div><b>커피를 마셔도 잠을 잘 주무신다</b><span>→ 활력공진단</span></div>
-      <div><b>커피를 마시면 가슴이 뛰거나 잠들기 어렵다</b><span>→ 해울공진단</span></div>
-    </div>
-    <p class="muted">최종 선택은 진찰 후 체질과 상태를 보고 정합니다.</p>
+  <div class="container narrow story">
+    <div class="sec-head left"><span class="tag">STORY</span><h2>피로가 잘 풀리지 않을 때</h2></div>
+    <p class="quote">"아무리 자도 몸이 무겁고 집중이 잘 안 돼요."</p>
+    <p>요즘 많은 분들이 이렇게 말씀하십니다. 비타민이나 영양제를 챙기고, 커피로 버티고, 힘들 땐 링거를 맞기도 합니다. 하지만 하루 이틀 나아지는 듯하다가도 일을 하고 나면 금세 다시 지치는 느낌이 들기도 합니다.</p>
+    <p>구파발경희한의원은 잠깐의 보충보다 <b>기운의 뿌리</b>를 살피는 데 무게를 둡니다. 원기와 영양을 채워 주는 약재를 갖춘 활력공진단을 그래서 권해 드립니다.</p>
+    <p>약재는 원장과 가족이 먹는 것과 같은 기준으로 고릅니다.</p>
   </div>
 </section>
-<section class="sec sec-tint"><div class="container gcards">{card(GONG[0])}{card(GONG[1])}</div></section>
-<section class="sec" id="musk">
+
+<section class="sec sec-tint">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">COMPOSITION</span><h2>12가지 약재와 엔오</h2><p>원기와 영양을 보충하는 약재를 바탕으로 하고, 엔오(NO, 산화질소)를 더했습니다.</p></div>
+    <ul class="herb-chips">{chips}<li class="chip-no">엔오(NO)</li></ul>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">PROCESS</span><h2>이렇게 만듭니다</h2></div>
+    {steps([("12가지 약재와 엔오", "녹용, 산수유, 당귀 등 12가지 약재에 엔오(NO)를 더해 준비합니다."), ("초미세분말", "약재를 아주 곱게 갈아 입자를 고르게 합니다."), ("꿀 반죽", "곱게 간 약재를 꿀로 반죽해 환을 빚습니다."), ("5일 숙성", "5일간 숙성하는 과정을 거칩니다."), ("금박", "금박을 입혀 완성합니다.")])}
+    <p class="muted">초미세분말로 갈아 5일간 숙성하는 방식으로 만듭니다.</p>
+  </div>
+</section>
+
+<section class="sec sec-tint">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">FOR YOU</span><h2>이런 분께 상담을 권합니다</h2></div>
+    {checks(["잠을 충분히 자도 피로가 잘 풀리지 않는 분", "몸이 무겁고 집중이 잘 안 되는 분", "영양제나 커피로 버티는 날이 많은 분", "수험생, 직장인 등 체력 관리가 필요한 분"])}
+  </div>
+</section>
+
+<section class="sec haeul" id="haeul">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">ALTERNATIVE</span><h2>예민하고 스트레스가 많다면, 해울공진단</h2></div>
+    <p class="lead-s">스트레스가 심하고 신경이 예민한 분은 활력공진단 대신 <b>해울공진단</b>이라는 대안이 있습니다.</p>
+    <div class="alt-card">
+      <figure><img src="assets/img/n-gong-haeul.jpg" alt="" loading="lazy" width="1600" height="1244"></figure>
+      <div>
+        <h3>해울공진단</h3>
+        <p>활력공진단과 같은 방식으로 만들되, 기운을 순조롭게 하고 답답함을 풀어 주는 이기해울(理氣解鬱) 약재를 보강한 처방입니다.</p>
+        <h4>구성</h4><p class="herbs">공진단 기본 처방(녹용 포함) + 향부자, 진피, 지각(용량 증대)</p>
+        <h4>이런 분께 상담을 권합니다</h4>
+        {checks(["스트레스가 많고 가슴이 답답한 느낌이 있는 분", "신경이 예민하고 긴장을 많이 하는 분", "긴장을 많이 하는 수험생"])}
+        <p class="muted">1환은 5.5g이며, 녹용은 뉴질랜드산 분골을 사용합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-tint" id="musk">
   <div class="container narrow">
     <div class="sec-head left"><span class="tag">PREMIUM</span><h2>사향 프리미엄 라인</h2></div>
-    <p>활력공진단과 해울공진단에 <b>사향</b>을 더한 프리미엄 제품입니다. 사향활력공진단과 사향해울공진단 두 가지가 있으며, 선택 기준은 기존 활력·해울과 같습니다(카페인 여부).</p>
+    <p>활력공진단과 해울공진단에 <b>사향</b>을 더한 프리미엄 제품입니다. 사향활력공진단과 사향해울공진단 두 가지가 있으며, 선택 기준은 기존과 같습니다.</p>
     <ul class="plain"><li>구성: 기존 활력·해울 처방 + 사향 + 엔오(NO) 소량</li><li>1환은 6g으로, 일반 활력·해울(5.5g)보다 큽니다.</li></ul>
   </div>
 </section>
-<section class="sec sec-tint">
+
+<section class="sec">
   <div class="container narrow">
     <div class="sec-head left"><span class="tag">PRICE</span><h2>소비자가격</h2></div>
     <p class="muted">활력공진단 · 해울공진단 (일반)</p>
-    <div class="pcards">{rows}</div>
+    <div class="pcards">{price_rows}</div>
     <p class="muted" style="margin-top:22px">사향활력공진단 · 사향해울공진단 (프리미엄)</p>
     <div class="pcards">{musk}</div>
     <p class="price-note">※ 소비자가격이며 변동될 수 있습니다. 복용 방법과 기간은 진찰 후 안내해 드립니다.</p>
-    {notice("임신·수유 중이거나, 복용 중인 약이 있거나, 약재 알레르기가 있으시면 진찰 시 꼭 알려 주세요. 특히 사향이 들어간 제품은 임신 중이시면 복용 전 반드시 상담해 주세요. 카페인에 민감하시면 활력공진단(녹차 함유)은 피하세요.")}
+    {notice("임신·수유 중이거나, 복용 중인 약이 있거나, 약재 알레르기가 있으시면 진찰 시 꼭 알려 주세요. 특히 사향이 들어간 제품은 임신 중이시면 복용 전 반드시 상담해 주세요. 카페인에 민감하시면 진찰 시 알려 주세요.")}
     {disclaimer()}
   </div>
 </section>
 {faq_block(faqs, "공진단 관련 질문")}
 {cta_band()}"""
-    prod_schema = [{"@type": "Product", "name": g["name"], "description": g["lead"],
-                    "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW",
-                                "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in GONG_PRICE]} for g in GONG]
-    prod_schema.append({"@type": "Product", "name": "사향 활력공진단 · 사향 해울공진단 (프리미엄)", "description": "활력·해울공진단에 사향과 엔오(소량)를 더한 프리미엄 제품. 1환 6g.",
-                        "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in MUSK_PRICE]})
-    page("gongjindan.html", "활력공진단 · 해울공진단 · 사향 프리미엄 가격 | 구파발경희한의원",
-         "구파발경희한의원의 활력공진단·해울공진단과 사향 프리미엄 라인. 카페인 여부에 따른 선택 기준, 녹용 포함 구성, 소비자가격(1환 15,000원, 30환 450,000원, 사향 프리미엄 1환 70,000원)을 안내합니다.",
+    prod_schema = [
+        {"@type": "Product", "name": "활력공진단", "description": "녹용, 산수유, 당귀, 구기자, 황기, 향부자, 육계, 백출, 건강, 녹차, 감국, 박하 12가지 약재와 엔오를 더해 5일간 숙성하고 금박을 입힌 환제.",
+         "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in GONG_PRICE]},
+        {"@type": "Product", "name": "해울공진단", "description": "활력공진단과 같은 방식으로 만들며 향부자, 진피, 지각을 보강한 환제. 스트레스가 많고 신경이 예민한 분을 위한 대안.",
+         "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in GONG_PRICE]},
+        {"@type": "Product", "name": "사향 활력공진단 · 사향 해울공진단 (프리미엄)", "description": "활력·해울공진단에 사향과 엔오(소량)를 더한 프리미엄 제품. 1환 6g.",
+         "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in MUSK_PRICE]},
+    ]
+    page("gongjindan.html", "활력공진단 · 해울공진단 가격 | 구파발경희한의원",
+         "구파발경희한의원의 활력공진단. 녹용 등 12가지 약재와 엔오를 더해 5일 숙성하는 공진단과, 스트레스가 많고 예민한 분을 위한 해울공진단, 사향 프리미엄 라인의 구성과 소비자가격(1환 15,000원)을 안내합니다.",
          body, current="gongjindan.html", crumbs=[("홈", ""), ("활력 · 해울 공진단", "gongjindan.html")],
          schema=[faq_schema(faqs)] + prod_schema, og="p-gong.jpg", theme="gong")
 
