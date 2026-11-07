@@ -409,3 +409,4 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 
 .more-link{margin-top:22px}
 .plain.career li{color:var(--ink)}
+.brand img.brand-mark{width:44px;height:44px;flex:none;display:block}

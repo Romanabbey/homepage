@@ -245,8 +245,8 @@ def header_html(current):
 <header class="site-header">
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#16211c"/><path d="M12 28c0-9 6-15 17-16 0 10-6 16-15 16" fill="none" stroke="#f6f6f3" stroke-width="2" stroke-linejoin="round"/><path d="M11 29l10-10" stroke="#9fd3b8" stroke-width="2" stroke-linecap="round"/></svg>
-      <span><b>{CLINIC['name']}</b><small>은평뉴타운 평생주치의</small></span>
+      <img class="brand-mark" src="assets/img/logo-mark.png" alt="" width="44" height="44">
+      <span><b>{CLINIC['name']}</b><small>우리 가족 평생주치의</small></span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
       <ul class="gnb">{nav}</ul>
