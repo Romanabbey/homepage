@@ -80,6 +80,13 @@ EMBLEMS = {
 def emblem(key, cls="emb"):
     return f'<svg class="{cls}" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{EMBLEMS[key]}</svg>'
 
+# ------------------------------------------------------------------ 약력 (홈·원장소개 공통)
+CAREER = ["경희대학교 한의과대학 졸업", "횡성군보건소 한방진료과장", "경희대학교 침구경락센터 협력 한의사",
+              "한국한의학연구원 임상연구협력 한의사", "국민건강보험공단 장기요양등급판정위원",
+              "N약침 초음파 유도하 약침 정규과정 수료", "제중학회 학술부회장", "한방비만학회 회원", "대한스포츠한의학회 회원",
+              "前) 으뜸경희한의원 진료원장", "前) 365경희솔한의원 대표원장"]
+
+
 # ------------------------------------------------------------------ FAQ
 F = {
     "hours": ("진료시간은 어떻게 되나요?",
@@ -198,7 +205,7 @@ def doctor_schema():
         "@type": "Physician",
         "@id": DOMAIN + "/#doctor",
         "name": CLINIC["doctor"],
-        "jobTitle": "대표원장 (한의사)",
+        "jobTitle": "원장 (한의사)",
         "worksFor": {"@id": DOMAIN + "/#clinic"},
         "alumniOf": {"@type": "CollegeOrUniversity", "name": "경희대학교 한의과대학"},
         "image": DOMAIN + "/assets/img/doctor.jpg",
@@ -270,7 +277,7 @@ def footer_html():
       <div class="foot-id">
         <p class="foot-brand">{CLINIC['name']}</p>
         <address>
-          대표원장 {CLINIC['doctor']} · 사업자등록번호 {CLINIC['biz']}<br>
+          원장 {CLINIC['doctor']} · 사업자등록번호 {CLINIC['biz']}<br>
           {CLINIC['address']}<br>
           TEL <a href="{TEL}">{CLINIC['phone']}</a>
         </address>
@@ -422,7 +429,6 @@ def build_home():
     <div class="hero-copy">
       <p class="kicker"><span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>구파발역 인근 · 은평구 진관4로</p>
       <h1>진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.</h1>
-      <p class="lead">교통사고 후유증, 저칼로리 다이어트, 바른성장, 산후보약, 초음파 가이드 약침 진료를 대표원장 {CLINIC['doctor']}이 직접 살핍니다.</p>
       <div class="btn-row">
         <a class="btn btn-ink btn-lg" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
         <a class="btn btn-line btn-lg" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
@@ -465,7 +471,7 @@ def build_home():
   <div class="container">
     <div class="sec-head left"><span class="tag">PRINCIPLES</span><h2>진료 원칙</h2></div>
     <div class="trio">
-      <div class="reveal"><span class="num">01</span><h3>충분히 듣고, 직접 진찰합니다</h3><p>증상뿐 아니라 생활 습관과 걱정까지 듣고, 대표원장이 직접 진찰합니다.</p></div>
+      <div class="reveal"><span class="num">01</span><h3>충분히 듣고, 직접 진찰합니다</h3><p>증상뿐 아니라 생활 습관과 걱정까지 듣고, 원장이 직접 진찰합니다.</p></div>
       <div class="reveal"><span class="num">02</span><h3>개인별로 구성해 원내에서 달입니다</h3><p>진찰 결과에 맞춰 약재를 구성하고, 한의원 안에서 직접 달여 조제합니다.</p></div>
       <div class="reveal"><span class="num">03</span><h3>영상으로 확인하고 설명드립니다</h3><p>초음파로 부위를 확인하고, 치료 방향과 기간, 관리법을 알기 쉽게 설명드립니다.</p></div>
     </div>
@@ -474,13 +480,12 @@ def build_home():
 
 <section class="sec sec-tint">
   <div class="container doc-grid">
-    <figure class="doc-photo reveal"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 대표원장 최솔" width="1024" height="1024" loading="lazy"></figure>
+    <figure class="doc-photo reveal"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="1024" height="1024" loading="lazy"></figure>
     <div class="reveal">
       <span class="tag">DOCTOR</span>
-      <h2>대표원장 {CLINIC['doctor']}</h2>
-      <p>경희대학교 한의과대학을 졸업하고 횡성군보건소 한방진료과장, 경희대학교 침구경락센터 협력 한의사, 한국한의학연구원 임상연구협력 한의사로 근무했습니다. 초음파 유도하 약침 정규과정을 수료했습니다.</p>
-      <ul class="plain"><li>국민건강보험공단 장기요양등급판정위원</li><li>제중학회 학술부회장</li><li>한방비만학회 · 대한스포츠한의학회 회원</li></ul>
-      <p><a class="btn btn-line" href="about.html">약력 전체 보기 {ico('arrow')}</a></p>
+      <h2>원장 {CLINIC['doctor']}</h2>
+      <ul class="plain career">{"".join(f"<li>{esc(c)}</li>" for c in CAREER)}</ul>
+      <p><a class="btn btn-line" href="about.html">원장 소개 보기 {ico('arrow')}</a></p>
     </div>
   </div>
 </section>
@@ -506,7 +511,7 @@ def build_home():
 """
     page("index.html",
          "구파발 한의원 | 구파발경희한의원 – 보폐고·안심환·부종환 엔오, 공진단, 초음파 가이드 약침",
-         "서울 은평구 구파발역 인근 구파발경희한의원. 보폐고 엔오·안심환 엔오·부종환 엔오·활력해울공진단 처방, 저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료. 대표원장 최솔.",
+         "서울 은평구 구파발역 인근 구파발경희한의원. 보폐고 엔오·안심환 엔오·부종환 엔오·활력해울공진단 처방, 저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료. 원장 최솔.",
          body, current="index.html", home=True)
 
 
@@ -961,15 +966,12 @@ def build_accident():
 
 
 def build_about():
-    career = ["경희대학교 한의과대학 졸업", "횡성군보건소 한방진료과장", "경희대학교 침구경락센터 협력 한의사",
-              "한국한의학연구원 임상연구협력 한의사", "국민건강보험공단 장기요양등급판정위원",
-              "N약침 초음파 유도하 약침 정규과정 수료", "제중학회 학술부회장", "한방비만학회 회원", "대한스포츠한의학회 회원",
-              "前) 으뜸경희한의원 진료원장", "前) 365경희솔한의원 대표원장"]
+    career = CAREER
     body = f"""
 <section class="phero"><div class="container phero-grid">
-  <div>{crumb_html("원장소개")}<h1>대표원장 {CLINIC['doctor']}</h1>
+  <div>{crumb_html("원장소개")}<h1>원장 {CLINIC['doctor']}</h1>
   <p class="lead">환자 한 분 한 분의 이야기를 듣고, 직접 진찰하고, 쉽게 설명드립니다.</p></div>
-  <figure class="phero-img round"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 대표원장 최솔" width="1024" height="1024"></figure>
+  <figure class="phero-img round"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="1024" height="1024"></figure>
 </div></section>
 <section class="sec"><div class="container narrow prose">
   <h2>약력</h2>
@@ -984,8 +986,8 @@ def build_about():
 <section class="sec sec-sand"><div class="container split"><figure><img src="assets/img/n-clinic.jpg" alt="상담실 예시 이미지" loading="lazy" width="1600" height="1244"><figcaption>상담실 예시 이미지 (AI 생성)</figcaption></figure>
   <div class="prose"><h2>구파발경희한의원</h2><p>{CLINIC['address']}에 있습니다. 지하철 3호선 구파발역 인근이며, 저칼로리 다이어트, N약침·초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 하고 있습니다.</p><p><a class="btn btn-line" href="hours-location.html">진료시간 · 오시는 길</a></p></div></div></section>
 {cta_band()}"""
-    page("about.html", "원장 소개 | 구파발경희한의원 대표원장 최솔",
-         "구파발경희한의원 대표원장 최솔 약력 – 경희대학교 한의과대학 졸업, 횡성군보건소 한방진료과장, 한국한의학연구원 임상연구협력 한의사.",
+    page("about.html", "원장 소개 | 구파발경희한의원 원장 최솔",
+         "구파발경희한의원 원장 최솔 약력 – 경희대학교 한의과대학 졸업, 횡성군보건소 한방진료과장, 한국한의학연구원 임상연구협력 한의사.",
          body, current="about.html", crumbs=[("홈", ""), ("원장소개", "about.html")], schema=[doctor_schema()], og="doctor.jpg")
 
 
@@ -1106,7 +1108,7 @@ def build_privacy():
   <h2>9. 개인정보 보호책임자</h2>
   <p>한의원은 개인정보 처리에 관한 업무를 총괄하고, 정보주체의 불만 처리와 피해 구제를 위해 아래와 같이 개인정보 보호책임자를 지정합니다.</p>
   <ul>
-    <li>성명: {c['doctor']} (대표원장)</li>
+    <li>성명: {c['doctor']} (원장)</li>
     <li>연락처: <a href="{TEL}">{c['phone']}</a></li>
     <li>주소: {c['address']}</li>
   </ul>
@@ -1145,7 +1147,7 @@ def build_meta():
     open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8").write(robots)
     llms = f"""# {CLINIC['name']}
 
-> 서울 은평구 구파발역 인근의 한의원입니다. 대표원장 {CLINIC['doctor']}.
+> 서울 은평구 구파발역 인근의 한의원입니다. 원장 {CLINIC['doctor']}.
 > 주소: {CLINIC['address']} / 전화: {CLINIC['phone']}
 
 ## 진료시간
