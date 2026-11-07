@@ -377,3 +377,5 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .btn-kakao:hover{background:#F5DC00;border-color:#F5DC00}
 
 .ref{margin-top:18px;font-size:13px;line-height:1.7;color:var(--ink2);max-width:860px}
+
+.checks.labeled li b{display:block;color:var(--ink);font-size:15.5px;margin-bottom:1px}
