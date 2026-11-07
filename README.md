@@ -4,7 +4,7 @@
 
 ## 수정 방법
 1. 전화번호·진료시간·주소·사업자번호·FAQ·페이지 문구는 **`build.py`** 에서 수정합니다.
-   (맨 위 `CLINIC`, `HOURS`, `FAQS` 와 각 `build_*` 함수)
+   (맨 위 `CLINIC`, `HOURS`, `FAQS`, 네이버 예약 주소 `BOOKING` 과 각 `build_*` 함수)
 2. 터미널에서 `python3 build.py` 실행 → HTML, sitemap.xml, robots.txt, llms.txt가 다시 만들어집니다.
 3. `git add -A && git commit -m "내용" && git push`
 
@@ -24,7 +24,7 @@
 - [ ] 네이버 서치어드바이저, 구글 서치콘솔에 https://gupabalhani.org 등록 후 sitemap.xml 제출
 - [ ] 네이버 플레이스·카카오맵 등록 (지역 검색 노출에 중요)
 - [ ] 확인 필요한 문구 점검: 부종환 엔오, 엔오 리커버리 패치, 성장클리닉 설명은 상세 정보 없이 일반 문구로 작성됨
-- [ ] 예약 폼 연결(현재는 접수되지 않고 전화 안내만 표시)
+- [x] 온라인 예약: 네이버 예약으로 연결 완료 (`BOOKING`)
 - [ ] 개인정보처리방침 실제 문안으로 교체
 - [ ] AI 생성 이미지를 실제 사진으로 교체
 

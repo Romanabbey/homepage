@@ -20,6 +20,8 @@ CLINIC = dict(
     kakao="https://map.kakao.com/?q=" + "%EC%84%9C%EC%9A%B8%20%EC%9D%80%ED%8F%89%EA%B5%AC%20%EC%A7%84%EA%B4%804%EB%A1%9C%2047",
 )
 TEL = "tel:" + CLINIC["phone"].replace("-", "")
+BOOKING = "https://booking.naver.com/booking/13/bizes/1548936"  # 네이버 예약
+EXT = 'target="_blank" rel="noopener"'
 
 # (표시용 요일, 시간, 비고)
 HOURS = [
@@ -55,7 +57,7 @@ FAQS = [
     ("위치와 가는 방법을 알려 주세요.",
      "서울 은평구 진관4로 47, 708동 상가 115호에 있으며 지하철 3호선 구파발역 인근입니다. 네이버지도·카카오맵에서 '구파발경희한의원'을 검색하시면 길 안내를 받으실 수 있습니다."),
     ("예약 없이 방문해도 되나요?",
-     "방문은 가능하지만 초음파 가이드 약침이나 초음파 성장 검사는 확인과 준비에 시간이 더 걸려 사전 예약을 권해 드립니다. 전화 02-355-4517 또는 온라인 예약으로 문의해 주세요."),
+     "방문은 가능하지만 초음파 가이드 약침이나 초음파 성장 검사는 확인과 준비에 시간이 더 걸려 사전 예약을 권해 드립니다. 네이버 예약 또는 전화 02-355-4517로 문의해 주세요."),
     ("저칼로리 다이어트는 어떻게 진행되나요?",
      "상담과 진찰로 현재 상태를 확인한 뒤, 저칼로리 식단과 함께 개인별로 구성한 맞춤 한약을 원내에서 직접 달여 드립니다. 진행 중에는 경과를 확인하며 식단과 처방을 조정하고, 이후 유지 관리까지 상담합니다. 건강 상태에 따라 적합하지 않을 수 있어 사전 진찰이 필요합니다."),
     ("'원내에서 직접 달이는 개별 맞춤 한약'은 무슨 뜻인가요?",
@@ -130,6 +132,9 @@ def clinic_schema():
         "availableService": [{"@type": "MedicalTherapy", "name": s} for s in services],
         "founder": {"@id": DOMAIN + "/#doctor"},
         "medicalSpecialty": "TraditionalChineseMedicine",
+        "potentialAction": {"@type": "ReserveAction", "name": "네이버 예약",
+                            "target": {"@type": "EntryPoint", "urlTemplate": BOOKING, "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]},
+                            "result": {"@type": "Reservation", "name": "구파발경희한의원 진료 예약"}},
     }
 
 
@@ -185,7 +190,7 @@ def header_html(current):
       <span><b>{CLINIC['name']}</b><small>구파발 한의원 · 대표원장 {CLINIC['doctor']}</small></span>
     </a>
     <nav aria-label="주 메뉴"><ul class="gnb" id="gnb">{nav}</ul></nav>
-    <a class="btn btn-solid nav-cta" href="reservation.html">예약 · 문의</a>
+    <a class="btn btn-solid nav-cta" href="{BOOKING}" {EXT}>네이버 예약</a>
     <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </header>"""
@@ -196,7 +201,7 @@ def footer_html():
         ("저칼로리 다이어트", "diet.html"), ("맞춤 한약", "herbal.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html"),
         ("N약침 · 초음파 가이드 약침", "yakchim.html"), ("성장클리닉", "growth.html"),
         ("교통사고 후유증", "accident.html"), ("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"),
-        ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")])
+        ("예약 · 문의", "reservation.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")])
     return f"""<footer class="site-footer">
   <div class="container">
     <div class="foot-grid">
@@ -217,7 +222,7 @@ def footer_html():
 </footer>
 <div class="fab" aria-label="빠른 메뉴">
   <a class="fab-call" href="{TEL}"><span aria-hidden="true">☎</span> 전화 상담</a>
-  <a class="fab-rsv" href="reservation.html"><span aria-hidden="true">📅</span> 온라인 예약</a>
+  <a class="fab-rsv" href="{BOOKING}" {EXT}><span aria-hidden="true">📅</span> 네이버 예약</a>
 </div>
 <button class="to-top" id="toTop" aria-label="맨 위로">↑</button>
 <script src="js/main.js" defer></script>"""
@@ -282,7 +287,7 @@ def hero_sub(name, h1, lead, img, extra=""):
       <h1>{h1}</h1>
       <p class="lead">{lead}</p>
       <div class="btn-row">
-        <a class="btn btn-solid" href="reservation.html">예약 · 문의</a>
+        <a class="btn btn-solid" href="{BOOKING}" {EXT}>네이버 예약</a>
         <a class="btn btn-line" href="{TEL}">☎ {CLINIC['phone']}</a>
       </div>
       {extra}
@@ -296,7 +301,7 @@ def cta_band():
     return f"""<section class="cta-band">
   <div class="container cta-inner">
     <div><h2>궁금한 점은 편하게 문의해 주세요</h2><p>진찰 후 상태에 맞는 방법을 설명드립니다.</p></div>
-    <div class="btn-row"><a class="btn btn-light" href="{TEL}">☎ {CLINIC['phone']}</a><a class="btn btn-ghost" href="reservation.html">온라인 예약</a></div>
+    <div class="btn-row"><a class="btn btn-light" href="{TEL}">☎ {CLINIC['phone']}</a><a class="btn btn-ghost" href="{BOOKING}" {EXT}>네이버 예약</a></div>
   </div>
 </section>"""
 
@@ -349,7 +354,7 @@ def build_home():
       <p class="lead">구파발경희한의원은 저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 대표원장 {CLINIC['doctor']}이 직접 살핍니다.</p>
       <div class="btn-row">
         <a class="btn btn-solid" href="{TEL}">☎ 전화 상담 {CLINIC['phone']}</a>
-        <a class="btn btn-line" href="reservation.html">온라인 예약</a>
+        <a class="btn btn-line" href="{BOOKING}" {EXT}>네이버 온라인 예약</a>
       </div>
       <ul class="hero-chips">
         <li>📍 구파발역 인근</li><li>🕘 평일 저녁 8시까지</li><li>🌿 개별 맞춤 한약</li>
@@ -363,7 +368,7 @@ def build_home():
   <a href="hours-location.html#hours"><span class="qi">🕘</span><b>진료시간</b><small>월·화·수·금 09:30–20:00<br>목 14:00–20:00 · 토 09:30–13:00</small></a>
   <a href="hours-location.html#map"><span class="qi">📍</span><b>오시는 길</b><small>은평구 진관4로 47<br>708동 상가 115호</small></a>
   <a href="{TEL}"><span class="qi">☎</span><b>전화 상담</b><small>{CLINIC['phone']}</small></a>
-  <a href="reservation.html"><span class="qi">📅</span><b>온라인 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></a>
+  <a href="{BOOKING}" {EXT}><span class="qi">📅</span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></a>
 </div></section>
 
 <section class="sec">
@@ -792,26 +797,21 @@ def build_faq():
 
 
 def build_reservation():
-    opts = "".join(f"<option>{o}</option>" for o in ["저칼로리 다이어트", "맞춤 한약 · 엔오 시리즈", "엔오 리커버리 패치", "N약침 · 초음파 가이드 약침", "성장클리닉 · 초음파 성장 검사", "교통사고 후유증", "기타 상담"])
     body = f"""
-<section class="phero phero-plain"><div class="container">{crumb_html("예약 · 문의")}<h1>예약 · 문의</h1><p class="lead">전화가 가장 빠릅니다. 아래 양식으로도 문의하실 수 있습니다.</p></div></section>
+<section class="phero phero-plain"><div class="container">{crumb_html("예약 · 문의")}<h1>예약 · 문의</h1><p class="lead">네이버 예약으로 편하게 예약하시거나, 전화로 문의해 주세요.</p></div></section>
 <section class="sec"><div class="container info-grid">
-  <div class="panel"><h3>문의 양식</h3>
-    <form class="rsv" id="rsvForm">
-      <div class="row2"><div class="field"><label for="n">성함</label><input id="n" required autocomplete="name"></div><div class="field"><label for="p">연락처</label><input id="p" type="tel" required autocomplete="tel" placeholder="010-0000-0000"></div></div>
-      <div class="row2"><div class="field"><label for="d">희망 일자</label><input id="d" type="date"></div><div class="field"><label for="s">관심 진료</label><select id="s">{opts}</select></div></div>
-      <div class="field"><label for="m">문의 내용</label><textarea id="m" rows="4"></textarea></div>
-      <label class="agree"><input type="checkbox" required> 개인정보 수집·이용에 동의합니다. (<a href="privacy.html">내용 보기</a>)</label>
-      <button class="btn btn-solid" type="submit">문의하기</button>
-      <div class="form-msg" id="formMsg" role="status"></div>
-    </form></div>
+  <div class="panel"><h3>네이버 예약</h3>
+    <p>원하시는 날짜와 시간을 선택해 예약하실 수 있습니다. 초음파 가이드 약침과 초음파 성장 검사는 확인과 준비에 시간이 더 걸려 사전 예약을 권해 드립니다.</p>
+    <p><a class="btn btn-solid" href="{BOOKING}" {EXT}>네이버 예약하러 가기 →</a></p>
+    <p class="muted">네이버 예약 페이지로 이동합니다. 예약 가능 시간은 진료시간과 같습니다.</p></div>
   <div class="panel"><h3>전화 상담</h3><p class="bigtel"><a href="{TEL}">{CLINIC['phone']}</a></p>
     <table class="hours"><tbody>{hours_rows()}</tbody></table>
-    <p class="muted">초음파 가이드 약침과 초음파 성장 검사는 사전 예약을 권해 드립니다.</p></div>
-</div></section>"""
-    page("reservation.html", "예약 · 문의 | 구파발경희한의원",
-         "구파발경희한의원 예약·문의. 전화 02-355-4517 또는 온라인 문의. 초음파 가이드 약침·성장 검사는 사전 예약 권장.",
-         body, current="reservation.html", crumbs=[("홈", ""), ("예약 · 문의", "reservation.html")])
+    <p class="muted">공휴일과 임시 휴진은 달라질 수 있어 전화로 확인해 주세요.</p></div>
+</div></section>
+{faq_block(FAQS[2:3] + FAQS[0:1], "예약 관련 질문")}"""
+    page("reservation.html", "예약 · 문의 | 구파발경희한의원 (네이버 예약)",
+         "구파발경희한의원 예약·문의. 네이버 예약 또는 전화 02-355-4517. 초음파 가이드 약침·성장 검사는 사전 예약 권장.",
+         body, current="reservation.html", crumbs=[("홈", ""), ("예약 · 문의", "reservation.html")], schema=[faq_schema(FAQS[2:3] + FAQS[0:1])])
 
 
 def build_privacy():
@@ -862,6 +862,10 @@ def build_meta():
 - [N약침 · 초음파 가이드 약침]({DOMAIN}/yakchim.html)
 - [성장클리닉 · 초음파 성장 검사]({DOMAIN}/growth.html): RUF 연골 측정 방식, 성조숙증 지연·맞춤한약·성장침·성장추나
 - [교통사고 후유증]({DOMAIN}/accident.html): 침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약
+
+## 예약
+- 네이버 예약: {BOOKING}
+- 전화: {CLINIC['phone']}
 
 ## 기타
 - [원장 소개]({DOMAIN}/about.html)
