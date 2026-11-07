@@ -314,6 +314,8 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
+<meta name="google-site-verification" content="0WJRUcRq2db2Q2VVxxIYOsuU9rB9CT01z4pxZ5DoDhI" />
+<meta name="naver-site-verification" content="aa77e98bd2a46fc62fb05d2a746f7d0d25014f06" />
 <link rel="canonical" href="{url}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#1d4a3a">
