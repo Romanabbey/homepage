@@ -347,6 +347,8 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 """
     if slug == "404.html" or slug.startswith("column/"):  # 어떤 경로에서 열려도 깨지지 않도록 절대경로 사용
         out = re.sub(r'(href|src)=(["\'])(?!https?:|tel:|mailto:|#|/)', lambda mm: f"{mm.group(1)}={mm.group(2)}/", out)
+    if OUT != ROOT:  # 미리보기: 칼럼 링크가 preview 폴더 안의 글로 연결되도록
+        out = out.replace('href="/column/', 'href="/preview/column/').replace("href='/column/", "href='/preview/column/")
     path = os.path.join(OUT, slug)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
