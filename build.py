@@ -2,7 +2,7 @@
 """구파발경희한의원 사이트 생성기.
 사용법: python3 build.py   (이 폴더에 HTML, sitemap.xml, robots.txt, llms.txt 생성)
 정보(전화/시간/주소)는 아래 CLINIC 한 곳에서만 수정하세요."""
-import json, html, datetime, os
+import json, html, datetime, os, re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DOMAIN = "https://gupabalhani.org"
@@ -34,21 +34,52 @@ HOURS = [
 DISCLAIMER = "치료 효과와 경과는 개인에 따라 다를 수 있습니다. 이 페이지는 일반적인 안내이며, 실제 치료는 진찰 후 개인별로 안내드립니다."
 
 NAV = [
-    ("진료 프로그램", "#", [
-        ("저칼로리 다이어트", "diet.html"),
-        ("맞춤 한약 · 엔오 시리즈", "herbal.html"),
+    ("처방", "#", [
+        ("보폐고 엔오", "bopae.html"),
+        ("안심환 엔오", "anshim.html"),
+        ("부종환 엔오", "bujong.html"),
         ("활력 · 해울 공진단", "gongjindan.html"),
-        ("엔오 리커버리 패치", "patch.html"),
-        ("N약침 · 초음파 가이드 약침", "yakchim.html"),
     ]),
-    ("성장클리닉", "growth.html", []),
-    ("교통사고 후유증", "accident.html", []),
+    ("진료", "#", [
+        ("저칼로리 다이어트", "diet.html"),
+        ("성장클리닉", "growth.html"),
+        ("교통사고 후유증", "accident.html"),
+        ("N약침 · 초음파 가이드 약침", "yakchim.html"),
+        ("엔오 리커버리 패치", "patch.html"),
+    ]),
     ("원장소개", "about.html", []),
     ("진료안내", "hours-location.html", [
         ("진료시간 · 오시는 길", "hours-location.html"),
+        ("예약 · 문의", "reservation.html"),
         ("자주 묻는 질문", "faq.html"),
     ]),
 ]
+
+ICON_PATHS = {
+    "phone": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/>',
+    "cal": '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+    "clock": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    "pin": '<path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    "arrow": '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    "ext": '<path d="M7 17L17 7M9 7h8v8"/>',
+}
+
+
+def ico(name, cls="ic"):
+    return f'<svg class="{cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{ICON_PATHS[name]}</svg>'
+
+
+EMBLEMS = {
+    "bopae": '<path d="M8 22h30a8 8 0 10-8-8"/><path d="M8 33h40a8 8 0 11-8 8"/><path d="M8 44h20"/>',
+    "anshim": '<path d="M42 8a24 24 0 1014 32 19 19 0 01-14-32z"/><circle cx="50" cy="16" r="1.5"/><circle cx="56" cy="26" r="1"/>',
+    "bujong": '<path d="M32 6C23 19 14 28 14 39a18 18 0 0036 0C50 28 41 19 32 6z"/><path d="M24 41a8 8 0 008 8"/>',
+    "gong": '<circle cx="32" cy="32" r="19"/><circle cx="32" cy="32" r="8"/><path d="M32 4v6M32 54v6M4 32h6M54 32h6"/>',
+    "patch": '<rect x="10" y="10" width="44" height="44" rx="16"/><path d="M23 32h18M32 23v18"/>',
+}
+
+
+def emblem(key, cls="emb"):
+    return f'<svg class="{cls}" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{EMBLEMS[key]}</svg>'
 
 # ------------------------------------------------------------------ FAQ
 FAQS = [
@@ -72,11 +103,11 @@ FAQS = [
      "일반적으로 여아는 만 8세 이전, 남아는 만 9세 이전에 2차 성징이 나타나면 성조숙증을 의심해 확인해 볼 것을 권합니다. 정확한 판단은 진찰과 검사를 통해 이루어지므로 걱정되시면 상담을 받아 보세요."),
     ("교통사고 후유증 치료는 어떻게 받나요?",
      "침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약 중 상태에 맞는 치료를 조합해 진행합니다. 자동차보험 접수 방법은 전화로 문의해 주세요. 의식 소실, 극심한 통증, 팔다리 마비 같은 증상이 있으면 먼저 응급실을 방문하셔야 합니다."),
-    ("엔오(NO) 시리즈 한약은 누구나 복용할 수 있나요?",
+    ("엔오(NO)가 들어간 처방은 누구나 복용할 수 있나요?",
      "체질과 상태, 복용 중인 약에 따라 맞지 않을 수 있습니다. 임신·수유 중이거나 다른 약을 복용 중이시면 진찰 시 꼭 알려 주세요."),
     ("치료 효과는 얼마나 기대할 수 있나요?",
      "증상과 경과는 사람마다 다르므로 특정 효과를 약속드릴 수 없습니다. 진찰 후 예상되는 치료 방향과 기간, 생활 관리법을 설명드립니다."),
-    ("엔오 시리즈(보폐고·안심환·부종환) 가격은 얼마인가요?",
+    ("보폐고 엔오, 안심환 엔오, 부종환 엔오 가격은 얼마인가요?",
      "소비자가격 기준으로 보폐고 엔오는 1박스(45포) 170,000원, 2박스(90포) 300,000원, 안심환 엔오는 1박스(30포) 99,000원, 3박스(90포) 270,000원, 부종환 엔오는 10일 체험분(30포) 60,000원, 1개월분(90포) 150,000원입니다. 가격은 변동될 수 있어 방문 전 확인을 권해 드립니다."),
     ("엔오 리커버리 패치의 구성과 가격을 알려 주세요.",
      "1팩에 16장(2장씩 8포)이 들어 있고 소비자가격은 15,900원입니다. 의약품이 아닌 일반 제품(공산품)이며, 임신 중에는 멘톨이 함유되어 있어 사용을 권하지 않습니다."),
@@ -170,65 +201,72 @@ def faq_schema(faqs):
 def header_html(current):
     items = []
     for label, href, subs in NAV:
-        active = " class='active'" if current and (href == current or any(u == current for _, u in subs)) else ""
+        is_active = current and (href == current or any(u == current for _, u in subs))
+        active = " class='active'" if is_active else ""
         if subs:
             sub = "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in subs)
-            top = f"<a href='{href}'{active}>{esc(label)}</a>" if href != "#" else f"<button type='button' class='navbtn'{active}>{esc(label)}</button>"
+            top = f"<a href='{href}'{active}>{esc(label)}</a>" if href != "#" else f"<span class='navbtn'{active} tabindex='0'>{esc(label)}</span>"
             items.append(f"<li class='has-sub'>{top}<div class='sub'>{sub}</div></li>")
         else:
             items.append(f"<li><a href='{href}'{active}>{esc(label)}</a></li>")
     nav = "".join(items)
     return f"""<a class="skip" href="#main">본문 바로가기</a>
 <header class="site-header">
-  <div class="topbar"><div class="container">
-    <span class="tb-addr">📍 {CLINIC['address']}</span>
-    <span><a href="{TEL}">☎ {CLINIC['phone']}</a><span class="tb-sep">·</span><span id="openNow" class="open-now">진료시간 확인</span></span>
-  </div></div>
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#1d4a3a"/><path d="M12 28c0-9 6-15 17-16 0 10-6 16-15 16" fill="none" stroke="#f6f1e7" stroke-width="2" stroke-linejoin="round"/><path d="M11 29l10-10" stroke="#e7b89b" stroke-width="2" stroke-linecap="round"/></svg>
-      <span><b>{CLINIC['name']}</b><small>구파발 한의원 · 대표원장 {CLINIC['doctor']}</small></span>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#16211c"/><path d="M12 28c0-9 6-15 17-16 0 10-6 16-15 16" fill="none" stroke="#f6f6f3" stroke-width="2" stroke-linejoin="round"/><path d="M11 29l10-10" stroke="#9fd3b8" stroke-width="2" stroke-linecap="round"/></svg>
+      <span><b>{CLINIC['name']}</b><small>구파발 한의원</small></span>
     </a>
-    <nav aria-label="주 메뉴"><ul class="gnb" id="gnb">{nav}</ul></nav>
-    <a class="btn btn-solid nav-cta" href="{BOOKING}" {EXT}>네이버 예약</a>
-    <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav aria-label="주 메뉴" id="mainnav">
+      <ul class="gnb">{nav}</ul>
+      <div class="nav-cta-m">
+        <a class="btn btn-ink" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
+        <a class="btn btn-line" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
+      </div>
+    </nav>
+    <div class="nav-right">
+      <a class="tel" href="{TEL}">{ico('phone')}<span>{CLINIC['phone']}</span></a>
+      <a class="btn btn-ink" href="{BOOKING}" {EXT}>네이버 예약</a>
+    </div>
+    <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mainnav"><span></span><span></span></button>
   </div>
 </header>"""
 
 
 def footer_html():
-    links = "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in [
-        ("저칼로리 다이어트", "diet.html"), ("맞춤 한약", "herbal.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html"),
-        ("N약침 · 초음파 가이드 약침", "yakchim.html"), ("성장클리닉", "growth.html"),
-        ("교통사고 후유증", "accident.html"), ("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"),
-        ("예약 · 문의", "reservation.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")])
+    groups = [
+        ("처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html")]),
+        ("진료", [("저칼로리 다이어트", "diet.html"), ("성장클리닉", "growth.html"), ("교통사고 후유증", "accident.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html"), ("엔오 리커버리 패치", "patch.html")]),
+        ("안내", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
+    ]
+    cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls) + "</div>" for g, ls in groups)
     return f"""<footer class="site-footer">
   <div class="container">
     <div class="foot-grid">
-      <div>
+      <div class="foot-id">
         <p class="foot-brand">{CLINIC['name']}</p>
         <address>
           대표원장 {CLINIC['doctor']} · 사업자등록번호 {CLINIC['biz']}<br>
           {CLINIC['address']}<br>
           TEL <a href="{TEL}">{CLINIC['phone']}</a>
         </address>
-        <p class="foot-hours">월·화·수·금 09:30–20:00 (점심 12:30–14:00) · 목 14:00–20:00 · 토 09:30–13:00 · 일·공휴일 휴진</p>
+        <p class="foot-hours">월·화·수·금 09:30–20:00 (점심 12:30–14:00)<br>목 14:00–20:00 · 토 09:30–13:00 · 일·공휴일 휴진</p>
       </div>
-      <nav class="foot-links" aria-label="푸터 메뉴">{links}</nav>
+      <nav class="foot-links" aria-label="푸터 메뉴">{cols}</nav>
     </div>
     <p class="foot-note">본 사이트의 내용은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. {DISCLAIMER.split('. ')[0]}. 일부 이미지는 AI로 생성한 예시 이미지이며 실제 한의원 모습과 다를 수 있습니다.</p>
     <p class="foot-note">© {datetime.date.today().year} {CLINIC['name']}. All rights reserved.</p>
   </div>
 </footer>
 <div class="fab" aria-label="빠른 메뉴">
-  <a class="fab-call" href="{TEL}"><span aria-hidden="true">☎</span> 전화 상담</a>
-  <a class="fab-rsv" href="{BOOKING}" {EXT}><span aria-hidden="true">📅</span> 네이버 예약</a>
+  <a class="fab-call" href="{TEL}">{ico('phone')} 전화 상담</a>
+  <a class="fab-rsv" href="{BOOKING}" {EXT}>{ico('cal')} 네이버 예약</a>
 </div>
-<button class="to-top" id="toTop" aria-label="맨 위로">↑</button>
+<button class="to-top" id="toTop" aria-label="맨 위로">{ico('arrow')}</button>
 <script src="js/main.js" defer></script>"""
 
 
-def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-og.jpg", home=False):
+def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-og.jpg", home=False, theme=None, extra_head=""):
     graph = [website_schema(), clinic_schema(), doctor_schema()] if home else [clinic_schema(), doctor_schema()]
     if crumbs:
         graph.append(breadcrumb(crumbs))
@@ -254,10 +292,10 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{DOMAIN}/assets/img/{og}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/site.css">
 <script type="application/ld+json">{ld}</script>
-</head>
-<body>
+{extra_head}</head>
+<body{(" class='theme-" + theme + "'") if theme else ""}>
 {header_html(current)}
 <main id="main">
 {body}
@@ -267,10 +305,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 </html>
 """
     if slug == "404.html":  # 어떤 경로에서 열려도 깨지지 않도록 절대경로 사용
-        for a in ("css/", "js/", "favicon.svg", "index.html", "about.html", "diet.html", "herbal.html", "patch.html",
-                  "yakchim.html", "growth.html", "accident.html", "hours-location.html", "faq.html", "reservation.html", "privacy.html"):
-            out = out.replace(f"href='{a}", f"href='/{a}").replace(f'href="{a}', f'href="/{a}').replace(f'src="{a}', f'src="/{a}')
-        out = out.replace('href="//index.html"', 'href="/index.html"')
+        out = re.sub(r'(href|src)=(["\'])(?!https?:|tel:|mailto:|#|/)', lambda mm: f"{mm.group(1)}={mm.group(2)}/", out)
     with open(os.path.join(ROOT, slug), "w", encoding="utf-8") as f:
         f.write(out)
 
@@ -287,8 +322,8 @@ def hero_sub(name, h1, lead, img, extra=""):
       <h1>{h1}</h1>
       <p class="lead">{lead}</p>
       <div class="btn-row">
-        <a class="btn btn-solid" href="{BOOKING}" {EXT}>네이버 예약</a>
-        <a class="btn btn-line" href="{TEL}">☎ {CLINIC['phone']}</a>
+        <a class="btn btn-ink" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
+        <a class="btn btn-line" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
       </div>
       {extra}
     </div>
@@ -301,7 +336,7 @@ def cta_band():
     return f"""<section class="cta-band">
   <div class="container cta-inner">
     <div><h2>궁금한 점은 편하게 문의해 주세요</h2><p>진찰 후 상태에 맞는 방법을 설명드립니다.</p></div>
-    <div class="btn-row"><a class="btn btn-light" href="{TEL}">☎ {CLINIC['phone']}</a><a class="btn btn-ghost" href="{BOOKING}" {EXT}>네이버 예약</a></div>
+    <div class="btn-row"><a class="btn btn-light" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a><a class="btn btn-ghost" href="{BOOKING}" {EXT}>네이버 예약</a></div>
   </div>
 </section>"""
 
@@ -333,55 +368,79 @@ def disclaimer():
 
 # ------------------------------------------------------------------ pages
 def build_home():
-    programs = [
-        ("n-diet.jpg", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약으로 진행합니다.", "diet.html"),
-        ("n-decoction.jpg", "맞춤 한약 · 엔오 시리즈", "보폐고 엔오, 안심환 엔오, 부종환 엔오를 진찰 후 안내합니다.", "herbal.html"),
-        ("n-gong-hero.jpg", "활력공진단 · 해울공진단", "녹용이 들어간 공진단 기본 처방의 환제입니다. 카페인 여부에 따라 선택하며, 사향 프리미엄 라인도 있습니다.", "gongjindan.html"),
-        ("n-patch.jpg", "엔오 리커버리 패치", "하이드로콜로이드 소재의 패치로, 내원하지 않는 날에도 간편하게 사용할 수 있습니다.", "patch.html"),
-        ("n-nyakchim.jpg", "N약침 (엔오약침)", "산화질소(NO) 관련 성분을 함유한 약침 치료입니다.", "yakchim.html#n"),
-        ("n-ultrasound.jpg", "초음파 가이드 약침", "초음파 영상으로 위치를 확인하며 진행하는 약침 시술입니다.", "yakchim.html#us"),
-        ("n-growth2.jpg", "성장클리닉 · 초음파 성장 검사", "RUF 연골 측정 방식의 검사와 나이·성별 맞춤 성장 상담을 진행합니다.", "growth.html"),
-        ("n-accident.jpg", "교통사고 후유증", "침·부항·물리치료·추나·약침·맞춤 한약을 상태에 맞게 조합합니다.", "accident.html"),
+    prods = "".join(f"""<a class="lineup t-{k} reveal" href="{pr['slug']}">
+  <span class="lu-emb">{emblem(k)}</span>
+  <span class="lu-tag">{pr['tag']}</span>
+  <h3>{pr['name']}</h3>
+  <p>{pr['tagline']}</p>
+  <span class="lu-price">소비자가격 {pr['from_txt']}~</span>
+  <img src="assets/img/{pr['img']}" alt="" loading="lazy" width="1400" height="1090">
+  <span class="lu-go">{ico('arrow')}</span>
+</a>""" for k, pr in PRODUCTS.items())
+    gong = f"""<a class="lineup t-gong reveal" href="gongjindan.html">
+  <span class="lu-emb">{emblem('gong')}</span>
+  <span class="lu-tag">카페인 여부로 고르는 환제</span>
+  <h3>활력 · 해울 공진단</h3>
+  <p>녹용이 들어간 공진단 기본 처방. 사향 프리미엄 라인도 있습니다.</p>
+  <span class="lu-price">소비자가격 1환 15,000원~</span>
+  <img src="assets/img/p-gong.jpg" alt="" loading="lazy" width="1400" height="1090">
+  <span class="lu-go">{ico('arrow')}</span>
+</a>"""
+    services = [
+        ("01", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약", "diet.html", "n-diet.jpg"),
+        ("02", "성장클리닉 · 초음파 성장 검사", "RUF 연골 측정 방식 검사, 나이·성별 맞춤 상담", "growth.html", "n-growth2.jpg"),
+        ("03", "교통사고 후유증", "침 · 부항 · 물리치료 · 추나 · 약침 · 맞춤 한약", "accident.html", "n-accident.jpg"),
+        ("04", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "n-ultrasound.jpg"),
+        ("05", "엔오 리커버리 패치", "내원하지 않는 날에도 간편하게 쓰는 패치(공산품)", "patch.html", "p-patch.jpg"),
     ]
-    cards = "".join(f"""<a class="pcard reveal" href="{h}"><img src="assets/img/{i}" alt="" loading="lazy" width="1600" height="1244">
-<div><h3>{esc(t)}</h3><p>{esc(d)}</p><span class="more">자세히 보기 →</span></div></a>""" for i, t, d, h in programs)
+    rows = "".join(f"""<a class="srow reveal" href="{h}"><span class="sr-n">{n}</span><span class="sr-t"><b>{esc(ti)}</b><small>{esc(d)}</small></span><img src="assets/img/{im}" alt="" loading="lazy" width="1600" height="1244"><span class="sr-go">{ico('arrow')}</span></a>""" for n, ti, d, h, im in services)
     body = f"""
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow">서울 은평구 구파발역 인근 한의원</span>
-      <h1>진찰은 꼼꼼하게,<br>한약은 <em>원내에서 직접</em> 달입니다</h1>
-      <p class="lead">구파발경희한의원은 저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 대표원장 {CLINIC['doctor']}이 직접 살핍니다.</p>
+      <p class="kicker"><span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>구파발역 인근 · 은평구 진관4로</p>
+      <h1>진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.</h1>
+      <p class="lead">저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 대표원장 {CLINIC['doctor']}이 직접 살핍니다.</p>
       <div class="btn-row">
-        <a class="btn btn-solid" href="{TEL}">☎ 전화 상담 {CLINIC['phone']}</a>
-        <a class="btn btn-line" href="{BOOKING}" {EXT}>네이버 온라인 예약</a>
+        <a class="btn btn-ink btn-lg" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
+        <a class="btn btn-line btn-lg" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
       </div>
-      <ul class="hero-chips">
-        <li>📍 구파발역 인근</li><li>🕘 평일 저녁 8시까지</li><li>🌿 개별 맞춤 한약</li>
-      </ul>
     </div>
-    <figure class="hero-img"><img src="assets/img/n-hero.jpg" alt="구파발경희한의원 접수 공간 예시 이미지" width="1600" height="914" fetchpriority="high"></figure>
+    <figure class="hero-img">
+      <img src="assets/img/n-hero.jpg" alt="구파발경희한의원 접수 공간 예시 이미지" width="1600" height="914" fetchpriority="high">
+      <figcaption class="hero-card">
+        <span>{ico('clock')} 진료시간</span>
+        <b>월·화·수·금 09:30–20:00</b>
+        <small>목 14:00–20:00 · 토 09:30–13:00</small>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
-<section class="quick"><div class="container quick-grid">
-  <a href="hours-location.html#hours"><span class="qi">🕘</span><b>진료시간</b><small>월·화·수·금 09:30–20:00<br>목 14:00–20:00 · 토 09:30–13:00</small></a>
-  <a href="hours-location.html#map"><span class="qi">📍</span><b>오시는 길</b><small>은평구 진관4로 47<br>708동 상가 115호</small></a>
-  <a href="{TEL}"><span class="qi">☎</span><b>전화 상담</b><small>{CLINIC['phone']}</small></a>
-  <a href="{BOOKING}" {EXT}><span class="qi">📅</span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></a>
+<section class="facts"><div class="container facts-grid">
+  <a href="hours-location.html#map">{ico('pin')}<span><b>오시는 길</b><small>은평구 진관4로 47, 708동 상가 115호</small></span></a>
+  <a href="{TEL}">{ico('phone')}<span><b>전화 상담</b><small>{CLINIC['phone']}</small></span></a>
+  <a href="{BOOKING}" {EXT}>{ico('cal')}<span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></span></a>
 </div></section>
 
-<section class="sec">
+<section class="sec" id="products">
   <div class="container">
-    <div class="sec-head"><span class="tag">PROGRAMS</span><h2>진료 프로그램</h2><p>구파발경희한의원에서 상담하실 수 있는 진료입니다.</p></div>
-    <div class="pgrid">{cards}</div>
+    <div class="sec-head left"><span class="tag">PRESCRIPTIONS</span><h2>처방</h2><p>각각의 처방은 구성과 복용 방법, 가격이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
+    <div class="lineups">{prods}{gong}</div>
     {disclaimer()}
   </div>
 </section>
 
-<section class="sec sec-sand">
+<section class="sec sec-tint" id="services">
   <div class="container">
-    <div class="sec-head"><span class="tag">PRINCIPLES</span><h2>진료 원칙</h2></div>
+    <div class="sec-head left"><span class="tag">CARE</span><h2>진료</h2></div>
+    <div class="srows">{rows}</div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-head left"><span class="tag">PRINCIPLES</span><h2>진료 원칙</h2></div>
     <div class="trio">
       <div class="reveal"><span class="num">01</span><h3>충분히 듣고, 직접 진찰합니다</h3><p>증상뿐 아니라 생활 습관과 걱정까지 듣고, 대표원장이 직접 진찰합니다.</p></div>
       <div class="reveal"><span class="num">02</span><h3>개인별로 구성해 원내에서 달입니다</h3><p>진찰 결과에 맞춰 약재를 구성하고, 한의원 안에서 직접 달여 조제합니다.</p></div>
@@ -390,7 +449,7 @@ def build_home():
   </div>
 </section>
 
-<section class="sec">
+<section class="sec sec-tint">
   <div class="container doc-grid">
     <figure class="doc-photo reveal"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 대표원장 최솔" width="1024" height="1024" loading="lazy"></figure>
     <div class="reveal">
@@ -398,24 +457,24 @@ def build_home():
       <h2>대표원장 {CLINIC['doctor']}</h2>
       <p>경희대학교 한의과대학을 졸업하고 횡성군보건소 한방진료과장, 경희대학교 침구경락센터 협력 한의사, 한국한의학연구원 임상연구협력 한의사로 근무했습니다. 초음파 유도하 약침 정규과정을 수료했습니다.</p>
       <ul class="plain"><li>국민건강보험공단 장기요양등급판정위원</li><li>제중학회 학술부회장</li><li>한방비만학회 · 대한스포츠한의학회 회원</li></ul>
-      <p><a class="btn btn-line" href="about.html">원장 소개 · 약력 전체 보기</a></p>
+      <p><a class="btn btn-line" href="about.html">약력 전체 보기 {ico('arrow')}</a></p>
     </div>
   </div>
 </section>
 
 {faq_block(FAQS[:5])}
-<div class="container narrow more-faq"><a class="btn btn-line" href="faq.html">질문 더 보기</a></div>
+<div class="container narrow more-faq"><a class="btn btn-line" href="faq.html">질문 더 보기 {ico('arrow')}</a></div>
 
-<section class="sec sec-sand" id="visit">
+<section class="sec sec-tint" id="visit">
   <div class="container">
-    <div class="sec-head"><span class="tag">VISIT</span><h2>진료시간 · 오시는 길</h2></div>
+    <div class="sec-head left"><span class="tag">VISIT</span><h2>진료시간 · 오시는 길</h2></div>
     <div class="info-grid">
       <div class="panel"><h3>진료시간</h3>
         <table class="hours"><tbody>{hours_rows()}</tbody></table></div>
       <div class="panel"><h3>오시는 길</h3>
         <p class="addr">{CLINIC['address']}</p>
         <p class="muted">지하철 3호선 구파발역 인근</p>
-        <div class="btn-row"><a class="btn btn-solid" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도</a><a class="btn btn-line" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵</a></div>
+        <div class="btn-row"><a class="btn btn-ink" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도</a><a class="btn btn-line" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵</a></div>
         <p class="muted">전화 <a href="{TEL}">{CLINIC['phone']}</a></p></div>
     </div>
   </div>
@@ -423,8 +482,8 @@ def build_home():
 {cta_band()}
 """
     page("index.html",
-         "구파발 한의원 | 구파발경희한의원 – 맞춤 한약·초음파 가이드 약침·성장클리닉",
-         "서울 은평구 구파발역 인근 구파발경희한의원. 저칼로리 다이어트 맞춤 한약, N약침, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료. 대표원장 최솔.",
+         "구파발 한의원 | 구파발경희한의원 – 보폐고·안심환·부종환 엔오, 공진단, 초음파 가이드 약침",
+         "서울 은평구 구파발역 인근 구파발경희한의원. 보폐고 엔오·안심환 엔오·부종환 엔오·활력해울공진단 처방, 저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료. 대표원장 최솔.",
          body, current="index.html", home=True)
 
 
@@ -456,12 +515,48 @@ def build_diet():
 
 
 PRODUCTS = {
-    "bopae": dict(name="보폐고 엔오", desc="호흡기와 목의 불편감을 관리하기 위한 한약 처방",
-                  packs=[("1박스 (45포 · 하루 3회 기준 15일분)", 170000), ("2박스 (90포 · 한 달분)", 300000), ("낱개 1포", 4000)]),
-    "anshim": dict(name="안심환 엔오", desc="신경과민·불안·긴장·스트레스와 관련된 불편감을 관리하기 위한 한약 환제",
-                   packs=[("1박스 (30포 · 하루 3회 기준 10일분)", 99000), ("3박스 (90포 · 한 달분)", 270000)]),
-    "bujong": dict(name="부종환 엔오", desc="붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방",
-                   packs=[("10일 체험분 (30포)", 60000), ("1개월분 (90포)", 150000)]),
+    "bopae": dict(
+        slug="bopae.html", name="보폐고 엔오", theme="bopae", img="p-bopae.jpg", tag="호흡기 · 목",
+        tagline="숨 쉬는 일상을 위한 처방",
+        lead="호흡기와 목의 불편감을 관리하기 위한 한약 처방입니다. 영양제처럼 꾸준히 복용하는 방식으로 상담합니다.",
+        extra="엔오(NO)는 처방의 작용을 보조하는 역할로 구성했습니다.",
+        facts=["1박스 45포", "하루 3회 기준 15일분", "꿀 함유"],
+        herbs=["길경", "대청엽", "우방자", "금은화", "연교", "죽엽", "포공영", "박하", "오미자", "사삼", "맥문동", "유근피", "산약", "감초", "건강"],
+        herbnote="길경 등은 가래와 염증 관리, 오미자·사삼·맥문동은 기침 관리, 유근피·산약은 소화 부담을 줄이는 데, 감초·건강은 처방의 조화를 위해 구성했습니다.",
+        targets=["만성적인 코막힘, 후비루, 축농증 등 코 불편", "기침과 가래가 오래 가는 경우", "목이 칼칼하거나 쉰 목소리, 인후 불편이 잦은 경우", "말을 많이 하는 직업(교사, 강사, 가수 등)으로 목 관리가 필요한 경우", "흡연으로 목이 답답하고 가래가 끼는 느낌이 있는 경우"],
+        how=["1포씩, 하루 3회를 기본으로 합니다(1박스 45포 = 15일분).", "증상이 있을 때는 하루 3회, 증상이 심할 때는 하루 3~5회, 증상이 없는 관리 목적이라면 하루 1회로 조절합니다.", "코 증상처럼 오래된 불편은 한 달 이상 꾸준히 복용하며 경과를 살피는 경우가 많습니다."],
+        cautions="위염·식도염이 있어 공복에 속쓰림이 나타나면 식후 복용을 상담하세요. 박하(멘톨)에 알레르기가 있으면 복용을 중단하고 알려 주세요. 꿀이 들어 있어 당 섭취를 조절 중이시거나 만 1세 미만 영아는 복용 전 반드시 상담해 주세요. 소아는 연령과 상태에 따라 용량이 달라 진찰 후 안내합니다.",
+        desc="호흡기와 목의 불편감을 관리하기 위한 한약 처방",
+        packs=[("1박스 (45포 · 하루 3회 기준 15일분)", 170000), ("2박스 (90포 · 한 달분)", 300000), ("낱개 1포", 4000)],
+        from_txt="1박스 170,000원"),
+    "anshim": dict(
+        slug="anshim.html", name="안심환 엔오", theme="anshim", img="p-anshim.jpg", tag="긴장 · 스트레스 · 수면",
+        tagline="예민한 하루를 위한 처방",
+        lead="신경과민, 불안, 긴장, 스트레스와 관련된 불편감을 관리하기 위한 한약 환제입니다. 오래 사용해 온 탕약 처방을 스틱 포장 환제로 만들어, 쓴 탕약을 꾸준히 먹기 어려운 분도 휴대하며 복용하기 편합니다.",
+        extra="특정 진단명에만 한정하지 않고, 예민함과 긴장이 증상에 함께 작용하는지를 폭넓게 살핍니다. 한약 처방이 중심이고 엔오(NO)는 보조 역할입니다.",
+        facts=["1포 7g", "1박스 30포", "하루 3회 기준 10일분"],
+        herbs=["복령", "시호", "황련", "야교등", "백자인", "합환피", "용골", "모려", "산조인", "원지", "석창포", "용안육", "향부자", "조구등", "유근피", "산약", "건강", "후박"],
+        herbnote="",
+        targets=["작은 자극에도 예민해지고 긴장이 잘 풀리지 않는 경우", "생각이 많고 스트레스 상황을 계속 떠올리는 경우", "두근거림, 얕아지는 호흡 느낌, 몸의 과도한 긴장이 함께 있는 경우", "스트레스에 따라 통증이 심해지고 근육이 굳거나, 신경성 소화 불편·이 악물기·눈 떨림이 있는 경우", "불안과 긴장 때문에 잠들기 어렵거나 숙면이 어려운 경우"],
+        how=["1포는 7g이며, 1회 1포 하루 3회를 기본으로 합니다(1박스 30포 = 10일분).", "처음에는 1박스(10일분)로 복용감과 변화를 살펴봅니다.", "복용 직후의 강한 느낌보다, 예전보다 덜 신경 쓰이고 덜 예민해지는지를 살피며 3개월 정도의 관점으로 경과를 봅니다.", "예민함이 줄어든 뒤에는 하루 1회 유지 관리로 이어가기도 합니다."],
+        cautions="복용 초기에 대소변 횟수가 달라지거나 나른할 수 있습니다. 졸림이나 소화 불편이 있으면 1포를 반씩 나누어 드시거나 횟수를 조절할 수 있으니 상담해 주세요. 고카페인 식품(커피, 녹차, 홍차, 콜라, 초콜릿, 에너지 음료)은 신경을 예민하게 할 수 있어 줄이시길 권합니다. 복용 중인 약이 있거나 임신·수유 중이시면 알려 주세요.",
+        desc="신경과민·불안·긴장·스트레스와 관련된 불편감을 관리하기 위한 한약 환제",
+        packs=[("1박스 (30포 · 하루 3회 기준 10일분)", 99000), ("3박스 (90포 · 한 달분)", 270000)],
+        from_txt="1박스 99,000원"),
+    "bujong": dict(
+        slug="bujong.html", name="부종환 엔오", theme="bujong", img="p-bujong.jpg", tag="붓기 · 순환",
+        tagline="붓기와 순환을 위한 처방",
+        lead="붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방입니다. 전통 처방인 당귀작약산을 기본으로 하되 약재 비율을 달리하고 산화질소(NO)를 함께 구성했습니다.",
+        extra="'서근이수(舒筋利水)', 즉 근육과 인대를 풀고 수분 배출을 돕는다는 한의학적 치료 원칙에 기반한 처방입니다.",
+        facts=["10일 체험분 30포", "1개월분 90포", "저녁 늦은 복용 주의"],
+        herbs=["당귀", "작약", "창출", "복령", "택사", "오약", "현호색", "산화질소(NO)"],
+        herbnote="당귀·작약·창출·복령·택사가 기본 구성이며, 오약과 현호색, 산화질소(NO)를 더했습니다.",
+        targets=["오래 서 있거나 앉아서 일하다 보면 다리가 붓는 경우", "종아리가 당기고 뭉치거나 다리가 저린 느낌이 있는 경우", "얼굴이나 몸이 자주 붓는 경우, 산후 붓기 관리가 필요한 경우", "식이 조절과 함께 붓기와 컨디션 관리를 하고 싶은 경우(식욕을 억제하는 처방은 아닙니다)"],
+        how=["하루 3회 복용을 기준으로 1개월분은 90포입니다.", "처음에는 10일 체험분(30포)으로 복용감과 변화를 살펴볼 수 있습니다."],
+        cautions="이뇨 작용이 있어 저녁 늦게 복용하면 잠자는 동안 소변으로 깰 수 있습니다. 복용 시간은 진찰 시 안내해 드립니다. 신장·심장 질환이 있으시거나, 복용 중인 약이 있거나, 임신·수유 중이시면 반드시 알려 주세요. 복용 중 소화 불편이나 알레르기 반응이 있으면 상담해 주세요.",
+        desc="붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방",
+        packs=[("10일 체험분 (30포)", 60000), ("1개월분 (90포)", 150000)],
+        from_txt="10일 체험분 60,000원"),
 }
 
 
@@ -476,70 +571,86 @@ def product_schema(key):
                         "seller": {"@id": DOMAIN + "/#clinic"}} for l, pv in pr["packs"]]}
 
 
-def build_herbal():
-    def prod(id_, img, tag, lead, extra, herbs, targets, how, cautions):
-        pr = PRODUCTS[id_]
-        rows = "".join(f"<tr><th scope='row'>{esc(l)}</th><td>{won(v)}</td></tr>" for l, v in pr["packs"])
-        return f"""<article class="prod" id="{id_}">
-  <figure><img src="assets/img/{img}" alt="" loading="lazy" width="1600" height="1244"></figure>
-  <div>
-    <span class="tag">{tag}</span>
-    <h2>{pr['name']}</h2>
-    <p>{lead}</p>
-    {('<p>' + extra + '</p>') if extra else ''}
-    <h3>주요 약재 구성</h3><p class="herbs">{herbs}</p>
-    <h3>상담이 필요한 경우</h3>
-    {checks(targets)}
-    <h3>복용 안내</h3>
-    {checks(how)}
-    <h3>복용 시 참고</h3>
-    <p>{cautions}</p>
-    <h3>소비자가격</h3>
-    <table class="price"><tbody>{rows}</tbody></table>
-  </div>
-</article>"""
+def price_cards(packs):
+    return "<div class='pcards'>" + "".join(
+        f"<div class='pcardp'><span>{esc(l.split(' (')[0])}</span><b>{won(v)}</b>" + (f"<small>{esc(l.split(' (')[1].rstrip(')'))}</small>" if ' (' in l else "") + "</div>"
+        for l, v in packs) + "</div>"
 
-    summary = "".join(
-        f"<tr><th scope='row'><a href='#{k}'>{v['name']}</a></th><td>" + " / ".join(f"{l.split(' (')[0]} {won(pv)}" for l, pv in v['packs'][:2]) + "</td></tr>"
-        for k, v in PRODUCTS.items())
-    body = hero_sub("맞춤 한약 · 엔오 시리즈", "맞춤 한약과<br>엔오(NO) 시리즈",
-                    "진찰 후 상태에 맞춰 한약을 구성합니다. 보폐고 엔오, 안심환 엔오, 부종환 엔오를 상담하실 수 있습니다.", "n-decoction.jpg") + f"""
-<section class="sec"><div class="container narrow prose">
-  <p>엔오(NO)는 산화질소(Nitric Oxide)의 약어로, 엔오 시리즈는 한약 처방을 중심으로 하고 엔오를 보조 역할로 구성한 제품입니다. 어떤 처방이 맞는지, 복용량과 기간은 진찰 후 정해 드립니다.</p>
-  <h2>한눈에 보는 소비자가격</h2>
-  <table class="price big"><tbody>{summary}</tbody></table>
-  <p class="price-note">※ 위는 소비자가격이며 변동될 수 있습니다. 구성별 자세한 가격은 아래 각 제품에서 확인하세요.</p>
-</div></section>
-<section class="sec sec-sand"><div class="container prods">
-{prod("bopae", "n-bopae.jpg", "호흡기 · 목 관리",
-      "호흡기와 목의 불편감을 관리하기 위한 한약 처방입니다. 영양제처럼 꾸준히 복용하는 방식으로 상담합니다.",
-      "엔오(NO)는 처방의 작용을 보조하는 역할로 구성했습니다.",
-      "길경, 대청엽, 우방자, 금은화, 연교, 죽엽, 포공영, 박하, 오미자, 사삼, 맥문동, 유근피, 산약, 감초, 건강<br><span class='herbs-note'>길경 등은 가래와 염증 관리, 오미자·사삼·맥문동은 기침 관리, 유근피·산약은 소화 부담을 줄이는 데, 감초·건강은 처방의 조화를 위해 구성했습니다.</span>",
-      ["만성적인 코막힘, 후비루, 축농증 등 코 불편", "기침과 가래가 오래 가는 경우", "목이 칼칼하거나 쉰 목소리, 인후 불편이 잦은 경우", "말을 많이 하는 직업(교사, 강사, 가수 등)으로 목 관리가 필요한 경우", "흡연으로 목이 답답하고 가래가 끼는 느낌이 있는 경우"],
-      ["1포씩, 하루 3회를 기본으로 합니다(1박스 45포 = 15일분).", "증상이 있을 때는 하루 3회, 증상이 심할 때는 하루 3~5회, 증상이 없는 관리 목적이라면 하루 1회로 조절합니다.", "코 증상처럼 오래된 불편은 한 달 이상 꾸준히 복용하며 경과를 살피는 경우가 많습니다."],
-      "위염·식도염이 있어 공복에 속쓰림이 나타나면 식후 복용을 상담하세요. 박하(멘톨)에 알레르기가 있으면 복용을 중단하고 알려 주세요. 꿀이 들어 있어 당 섭취를 조절 중이시거나 만 1세 미만 영아는 복용 전 반드시 상담해 주세요. 소아는 연령과 상태에 따라 용량이 달라 진찰 후 안내합니다.")}
-{prod("anshim", "n-anshim.jpg", "긴장 · 스트레스 · 수면",
-      "신경과민, 불안, 긴장, 스트레스와 관련된 불편감을 관리하기 위한 한약 환제입니다. 오래 사용해 온 탕약 처방을 스틱 포장 환제로 만들어, 쓴 탕약을 꾸준히 먹기 어려운 분도 휴대하며 복용하기 편합니다.",
-      "특정 진단명에만 한정하지 않고, 예민함과 긴장이 증상에 함께 작용하는지를 폭넓게 살핍니다. 한약 처방이 중심이고 엔오(NO)는 보조 역할입니다.",
-      "복령, 시호, 황련, 야교등, 백자인, 합환피, 용골, 모려, 산조인, 원지, 석창포, 용안육, 향부자, 조구등, 유근피, 산약, 건강, 후박",
-      ["작은 자극에도 예민해지고 긴장이 잘 풀리지 않는 경우", "생각이 많고 스트레스 상황을 계속 떠올리는 경우", "두근거림, 얕아지는 호흡 느낌, 몸의 과도한 긴장이 함께 있는 경우", "스트레스에 따라 통증이 심해지고 근육이 굳거나, 신경성 소화 불편·이 악물기·눈 떨림이 있는 경우", "불안과 긴장 때문에 잠들기 어렵거나 숙면이 어려운 경우"],
-      ["1포는 7g이며, 1회 1포 하루 3회를 기본으로 합니다(1박스 30포 = 10일분).", "처음에는 1박스(10일분)로 복용감과 변화를 살펴봅니다.", "복용 직후의 강한 느낌보다, 예전보다 덜 신경 쓰이고 덜 예민해지는지를 살피며 3개월 정도의 관점으로 경과를 봅니다.", "예민함이 줄어든 뒤에는 하루 1회 유지 관리로 이어가기도 합니다."],
-      "복용 초기에 대소변 횟수가 달라지거나 나른할 수 있습니다. 졸림이나 소화 불편이 있으면 1포를 반씩 나누어 드시거나 횟수를 조절할 수 있으니 상담해 주세요. 고카페인 식품(커피, 녹차, 홍차, 콜라, 초콜릿, 에너지 음료)은 신경을 예민하게 할 수 있어 줄이시길 권합니다. 복용 중인 약이 있거나 임신·수유 중이시면 알려 주세요.")}
-{prod("bujong", "n-bujong.jpg", "붓기 · 순환 관리",
-      "붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방입니다. 전통 처방인 당귀작약산을 기본으로 하되 약재 비율을 달리하고 산화질소(NO)를 함께 구성했습니다.",
-      "'서근이수(舒筋利水)', 즉 근육과 인대를 풀고 수분 배출을 돕는다는 한의학적 치료 원칙에 기반한 처방입니다.",
-      "당귀, 작약, 창출, 복령, 택사(기본 구성) + 오약, 현호색 + 산화질소(NO)",
-      ["오래 서 있거나 앉아서 일하다 보면 다리가 붓는 경우", "종아리가 당기고 뭉치거나 다리가 저린 느낌이 있는 경우", "얼굴이나 몸이 자주 붓는 경우, 산후 붓기 관리가 필요한 경우", "식이 조절과 함께 붓기와 컨디션 관리를 하고 싶은 경우(식욕을 억제하는 처방은 아닙니다)"],
-      ["하루 3회 복용을 기준으로 1개월분은 90포입니다.", "처음에는 10일 체험분(30포)으로 복용감과 변화를 살펴볼 수 있습니다."],
-      "이뇨 작용이 있어 저녁 늦게 복용하면 잠자는 동안 소변으로 깰 수 있습니다. 복용 시간은 진찰 시 안내해 드립니다. 신장·심장 질환이 있으시거나, 복용 중인 약이 있거나, 임신·수유 중이시면 반드시 알려 주세요. 복용 중 소화 불편이나 알레르기 반응이 있으면 상담해 주세요.")}
-</div></section>
-<section class="sec"><div class="container narrow">{notice("한약은 체질과 상태, 복용 중인 약에 따라 맞지 않을 수 있습니다. 임신·수유 중이시면 반드시 진찰 시 알려 주세요. 복용량과 기간은 진찰 후 정해 드립니다.")}{disclaimer()}</div></section>
-{faq_block([FAQS[12], FAQS[14], FAQS[10], FAQS[4]], "한약 관련 질문")}
+
+def build_product(key):
+    pr = PRODUCTS[key]
+    q_price = (f"{pr['name']} 가격은 얼마인가요?",
+               "소비자가격 기준으로 " + ", ".join(f"{l.split(' (')[0]} {won(v)}" for l, v in pr["packs"]) + "입니다. 가격은 변동될 수 있어 방문 전 확인을 권해 드립니다.")
+    faqs = [q_price, FAQS[14] if key == "bopae" else FAQS[11], FAQS[10]]
+    chips = "".join(f"<li>{esc(h)}</li>" for h in pr["herbs"])
+    facts = "".join(f"<li>{esc(f)}</li>" for f in pr["facts"])
+    body = f"""
+<section class="pphero">
+  <div class="container pphero-grid">
+    <div class="pp-copy">
+      {crumb_html(pr['name'])}
+      <span class="pp-tag">{emblem(key, 'emb-s')} {pr['tag']}</span>
+      <h1>{pr['name']}</h1>
+      <p class="pp-tagline">{pr['tagline']}</p>
+      <p class="pp-lead">{pr['lead']}</p>
+      <ul class="pp-facts">{facts}</ul>
+      <div class="btn-row">
+        <a class="btn btn-white" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
+        <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
+      </div>
+    </div>
+    <figure class="pp-visual">
+      <img src="assets/img/{pr['img']}" alt="" width="1400" height="1090" fetchpriority="high">
+      <span class="pp-emb">{emblem(key)}</span>
+    </figure>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">COMPOSITION</span><h2>구성</h2>{('<p>' + pr['extra'] + '</p>') if pr['extra'] else ''}</div>
+    <ul class="herb-chips">{chips}</ul>
+    {('<p class="herb-note">' + pr['herbnote'] + '</p>') if pr['herbnote'] else ''}
+  </div>
+</section>
+
+<section class="sec sec-tint">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">FOR YOU</span><h2>이런 경우 상담해 보세요</h2></div>
+    {checks(pr['targets'])}
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">HOW TO</span><h2>복용 안내</h2></div>
+    {checks(pr['how'])}
+    {notice(pr['cautions'], '복용 시 참고')}
+  </div>
+</section>
+
+<section class="sec sec-tint">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">PRICE</span><h2>소비자가격</h2></div>
+    {price_cards(pr['packs'])}
+    <p class="price-note">※ 소비자가격이며 변동될 수 있습니다. 복용량과 기간은 진찰 후 정해 드립니다.</p>
+    {disclaimer()}
+  </div>
+</section>
+{faq_block(faqs, pr['name'] + " 관련 질문")}
 {cta_band()}"""
-    page("herbal.html", "맞춤 한약 · 보폐고 안심환 부종환 엔오 가격 | 구파발경희한의원",
-         "구파발경희한의원의 맞춤 한약과 엔오(NO) 시리즈 – 보폐고 엔오, 안심환 엔오, 부종환 엔오의 약재 구성, 복용 안내, 소비자가격. 진찰 후 개인별로 안내합니다.",
-         body, current="herbal.html", crumbs=[("홈", ""), ("맞춤 한약 · 엔오 시리즈", "herbal.html")],
-         schema=[faq_schema([FAQS[12], FAQS[14], FAQS[10], FAQS[4]])] + [product_schema(k) for k in PRODUCTS], og="n-decoction.jpg")
+    page(pr["slug"], f"{pr['name']} 가격 · 복용법 | 구파발경희한의원",
+         f"구파발경희한의원의 {pr['name']}. {pr['desc']}. 약재 구성, 복용 안내, 소비자가격({pr['from_txt']}부터)을 안내합니다.",
+         body, current=pr["slug"], crumbs=[("홈", ""), (pr["name"], pr["slug"])],
+         schema=[faq_schema(faqs), product_schema(key)], og=pr["img"], theme=pr["theme"])
+
+
+def build_herbal_redirect():
+    """예전 주소(herbal.html)는 홈의 처방 영역으로 이동"""
+    page("herbal.html", "처방 안내 | 구파발경희한의원", "구파발경희한의원 처방 안내 페이지로 이동합니다.",
+         "<section class='sec'><div class='container narrow center'><p class='lead'>처방별 페이지로 이동합니다. 자동으로 이동하지 않으면 아래 링크를 눌러 주세요.</p>"
+         "<p><a class='btn btn-ink' href='index.html#products'>처방 보러 가기</a></p></div></section>",
+         extra_head='<meta http-equiv="refresh" content="0;url=index.html#products">\n<meta name="robots" content="noindex">\n')
 
 
 GONG = [
@@ -559,50 +670,70 @@ MUSK_PRICE = [("1환 (6g)", 70000)]
 
 
 def build_gongjindan():
-    def item(g):
-        return f"""<article class="prod" id="{g['id']}">
+    def card(g):
+        return f"""<article class="gcard reveal" id="{g['id']}">
   <figure><img src="assets/img/{g['img']}" alt="" loading="lazy" width="1600" height="1244"></figure>
   <div>
-    <span class="tag">{g['tag']}</span>
-    <h2>{g['name']}</h2>
+    <span class="pp-tag-s">{g['tag']}</span>
+    <h3>{g['name']}</h3>
     <p>{g['lead']}</p>
-    <h3>구성</h3><p class="herbs">{g['core']}</p>
-    <h3>특징</h3>{checks(g['feats'])}
-    <h3>이런 분께 상담을 권합니다</h3>{checks(g['targets'])}
+    <h4>구성</h4><p class="herbs">{g['core']}</p>
+    <h4>특징</h4>{checks(g['feats'])}
+    <h4>이런 분께 상담을 권합니다</h4>{checks(g['targets'])}
   </div>
 </article>"""
-    rows = "".join(f"<tr><th scope='row'>{l}</th><td>{won(v)}</td></tr>" for l, v in GONG_PRICE)
-    musk_rows = "".join(f"<tr><th scope='row'>{l}</th><td>{won(v)}</td></tr>" for l, v in MUSK_PRICE)
-    body = hero_sub("활력 · 해울 공진단", "활력공진단과<br>해울공진단",
-                    "공진단 기본 처방을 바탕으로 한 환제입니다. 카페인 여부에 따라 두 가지 중에서 진찰 후 선택해 드립니다.", "n-gong-hero.jpg") + f"""
-<section class="sec"><div class="container narrow prose">
-  <h2>어떤 것을 선택하면 좋을까요?</h2>
-  <p>가장 쉬운 기준은 <b>커피</b>입니다.</p>
-  {checks(["커피를 마셔도 잠을 잘 주무신다 → 활력공진단", "커피를 마시면 가슴이 뛰거나 잠들기 어렵다 → 해울공진단"])}
-  <p class="muted">최종 선택은 진찰 후 체질과 상태를 보고 정합니다.</p>
-</div></section>
-<section class="sec sec-sand"><div class="container prods">
-{item(GONG[0])}
-{item(GONG[1])}
-</div></section>
-<section class="sec" id="musk"><div class="container narrow prose">
-  <span class="tag">PREMIUM</span>
-  <h2>사향 프리미엄 라인</h2>
-  <p>활력공진단과 해울공진단에 <b>사향</b>을 더한 프리미엄 제품입니다. 사향활력공진단과 사향해울공진단 두 가지가 있으며, 선택 기준은 기존 활력·해울과 같습니다(카페인 여부).</p>
-  <ul class="plain"><li>구성: 기존 활력·해울 처방 + 사향 + 엔오(NO) 소량</li><li>1환은 6g으로, 일반 활력·해울(5.5g)보다 큽니다.</li></ul>
-  <p class="muted">가격은 아래 소비자가격에서 확인하실 수 있습니다.</p>
-</div></section>
-<section class="sec sec-sand"><div class="container narrow prose">
-  <h2>소비자가격</h2>
-  <p class="muted">활력공진단 · 해울공진단 (일반)</p>
-  <table class="price"><tbody>{rows}</tbody></table>
-  <p class="muted" style="margin-top:14px">사향활력공진단 · 사향해울공진단 (프리미엄)</p>
-  <table class="price"><tbody>{musk_rows}</tbody></table>
-  <p class="price-note">※ 소비자가격이며 변동될 수 있습니다. 복용 방법과 기간은 진찰 후 안내해 드립니다.</p>
-  {notice("임신·수유 중이거나, 복용 중인 약이 있거나, 약재 알레르기가 있으시면 진찰 시 꼭 알려 주세요. 특히 사향이 들어간 제품은 임신 중이시면 복용 전 반드시 상담해 주세요. 카페인에 민감하시면 활력공진단(녹차 함유)은 피하세요.")}
-  {disclaimer()}
-</div></section>
-{faq_block([FAQS[15], FAQS[16], FAQS[10]], "공진단 관련 질문")}
+    rows = "".join(f"<div class='pcardp'><span>{l}</span><b>{won(v)}</b></div>" for l, v in GONG_PRICE)
+    musk = "".join(f"<div class='pcardp'><span>사향 프리미엄 {l.split(' (')[0]}</span><b>{won(v)}</b><small>6g</small></div>" for l, v in MUSK_PRICE)
+    faqs = [FAQS[15], FAQS[16], FAQS[10]]
+    body = f"""
+<section class="pphero">
+  <div class="container pphero-grid">
+    <div class="pp-copy">
+      {crumb_html("활력 · 해울 공진단")}
+      <span class="pp-tag">{emblem('gong', 'emb-s')} 카페인 여부로 고르는 환제</span>
+      <h1>활력공진단<br>해울공진단</h1>
+      <p class="pp-tagline">커피를 기준으로 고릅니다</p>
+      <p class="pp-lead">녹용이 들어간 공진단 기본 처방을 바탕으로 한 환제입니다. 카페인 여부에 따라 두 가지 중에서 진찰 후 선택해 드립니다.</p>
+      <ul class="pp-facts"><li>1환 5.5g</li><li>녹용(뉴질랜드산 분골)</li><li>사향 프리미엄 6g</li></ul>
+      <div class="btn-row">
+        <a class="btn btn-white" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
+        <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
+      </div>
+    </div>
+    <figure class="pp-visual"><img src="assets/img/p-gong.jpg" alt="" width="1400" height="1090" fetchpriority="high"><span class="pp-emb">{emblem('gong')}</span></figure>
+  </div>
+</section>
+<section class="sec">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">CHOOSE</span><h2>어떤 것을 고르면 좋을까요?</h2><p>가장 쉬운 기준은 <b>커피</b>입니다.</p></div>
+    <div class="choose">
+      <div><b>커피를 마셔도 잠을 잘 주무신다</b><span>→ 활력공진단</span></div>
+      <div><b>커피를 마시면 가슴이 뛰거나 잠들기 어렵다</b><span>→ 해울공진단</span></div>
+    </div>
+    <p class="muted">최종 선택은 진찰 후 체질과 상태를 보고 정합니다.</p>
+  </div>
+</section>
+<section class="sec sec-tint"><div class="container gcards">{card(GONG[0])}{card(GONG[1])}</div></section>
+<section class="sec" id="musk">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">PREMIUM</span><h2>사향 프리미엄 라인</h2></div>
+    <p>활력공진단과 해울공진단에 <b>사향</b>을 더한 프리미엄 제품입니다. 사향활력공진단과 사향해울공진단 두 가지가 있으며, 선택 기준은 기존 활력·해울과 같습니다(카페인 여부).</p>
+    <ul class="plain"><li>구성: 기존 활력·해울 처방 + 사향 + 엔오(NO) 소량</li><li>1환은 6g으로, 일반 활력·해울(5.5g)보다 큽니다.</li></ul>
+  </div>
+</section>
+<section class="sec sec-tint">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">PRICE</span><h2>소비자가격</h2></div>
+    <p class="muted">활력공진단 · 해울공진단 (일반)</p>
+    <div class="pcards">{rows}</div>
+    <p class="muted" style="margin-top:22px">사향활력공진단 · 사향해울공진단 (프리미엄)</p>
+    <div class="pcards">{musk}</div>
+    <p class="price-note">※ 소비자가격이며 변동될 수 있습니다. 복용 방법과 기간은 진찰 후 안내해 드립니다.</p>
+    {notice("임신·수유 중이거나, 복용 중인 약이 있거나, 약재 알레르기가 있으시면 진찰 시 꼭 알려 주세요. 특히 사향이 들어간 제품은 임신 중이시면 복용 전 반드시 상담해 주세요. 카페인에 민감하시면 활력공진단(녹차 함유)은 피하세요.")}
+    {disclaimer()}
+  </div>
+</section>
+{faq_block(faqs, "공진단 관련 질문")}
 {cta_band()}"""
     prod_schema = [{"@type": "Product", "name": g["name"], "description": g["lead"],
                     "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW",
@@ -612,7 +743,7 @@ def build_gongjindan():
     page("gongjindan.html", "활력공진단 · 해울공진단 · 사향 프리미엄 가격 | 구파발경희한의원",
          "구파발경희한의원의 활력공진단·해울공진단과 사향 프리미엄 라인. 카페인 여부에 따른 선택 기준, 녹용 포함 구성, 소비자가격(1환 15,000원, 30환 450,000원, 사향 프리미엄 1환 70,000원)을 안내합니다.",
          body, current="gongjindan.html", crumbs=[("홈", ""), ("활력 · 해울 공진단", "gongjindan.html")],
-         schema=[faq_schema([FAQS[15], FAQS[16], FAQS[10]])] + prod_schema, og="n-gong-hero.jpg")
+         schema=[faq_schema(faqs)] + prod_schema, og="p-gong.jpg", theme="gong")
 
 
 def build_patch():
@@ -772,7 +903,7 @@ def build_visit():
 <section class="sec"><div class="container info-grid">
   <div class="panel" id="hours"><h3>진료시간</h3><table class="hours"><tbody>{hours_rows()}</tbody></table>
     <p class="muted">공휴일과 임시 휴진은 달라질 수 있어 전화로 확인해 주세요.</p>
-    <p><a class="btn btn-solid" href="{TEL}">☎ {CLINIC['phone']}</a></p></div>
+    <p><a class="btn btn-solid" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a></p></div>
   <div class="panel" id="map"><h3>오시는 길</h3><p class="addr">{CLINIC['address']}</p>
     <p class="muted">지하철 3호선 구파발역 인근 · 708동 상가 1층 115호</p>
     <div class="btn-row"><a class="btn btn-solid" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도</a><a class="btn btn-line" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵</a></div>
@@ -832,7 +963,7 @@ def build_404():
     page("404.html", "페이지를 찾을 수 없습니다 | 구파발경희한의원", "요청하신 페이지를 찾을 수 없습니다.", body)
 
 
-PAGES = ["index.html", "diet.html", "herbal.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "accident.html",
+PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "accident.html",
          "about.html", "hours-location.html", "faq.html", "reservation.html", "privacy.html"]
 
 
@@ -856,7 +987,9 @@ def build_meta():
 
 ## 진료 프로그램
 - [저칼로리 다이어트]({DOMAIN}/diet.html): 저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약
-- [맞춤 한약 · 엔오 시리즈]({DOMAIN}/herbal.html): 보폐고 엔오(1박스 45포 170,000원), 안심환 엔오(1박스 30포 99,000원), 부종환 엔오(1개월분 90포 150,000원) 소비자가격
+- [보폐고 엔오]({DOMAIN}/bopae.html): 호흡기·목 관리 한약 처방. 1박스(45포) 170,000원
+- [안심환 엔오]({DOMAIN}/anshim.html): 긴장·스트레스 관련 한약 환제. 1박스(30포) 99,000원
+- [부종환 엔오]({DOMAIN}/bujong.html): 붓기·순환 관리 한약 처방. 1개월분(90포) 150,000원
 - [활력공진단 · 해울공진단]({DOMAIN}/gongjindan.html): 녹용 포함, 1환 15,000원·30환 450,000원, 사향 프리미엄 1환 70,000원 (소비자가격)
 - [엔오 리커버리 패치]({DOMAIN}/patch.html): 1팩 16장 15,900원, 공산품
 - [N약침 · 초음파 가이드 약침]({DOMAIN}/yakchim.html)
@@ -878,7 +1011,7 @@ def build_meta():
 
 
 if __name__ == "__main__":
-    for fn in (build_home, build_diet, build_herbal, build_gongjindan, build_patch, build_yakchim, build_growth, build_accident,
+    for fn in (build_home, build_diet, lambda: build_product("bopae"), lambda: build_product("anshim"), lambda: build_product("bujong"), build_herbal_redirect, build_gongjindan, build_patch, build_yakchim, build_growth, build_accident,
                build_about, build_visit, build_faq, build_reservation, build_privacy, build_404, build_meta):
         fn()
     print("built", len(PAGES) + 1, "pages")

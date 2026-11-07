@@ -2,15 +2,21 @@
 (function () {
   document.documentElement.classList.add("js");
 
-  // 모바일 메뉴
+  // 모바일 메뉴 (전체 화면 오버레이)
   var burger = document.getElementById("burger");
-  var nav = document.querySelector('nav[aria-label="주 메뉴"]');
+  var nav = document.getElementById("mainnav");
+  function setMenu(open) {
+    if (!burger || !nav) return;
+    nav.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    burger.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
+    document.body.classList.toggle("menu-open", open);
+  }
   if (burger && nav) {
-    burger.addEventListener("click", function () {
-      var o = nav.classList.toggle("open");
-      burger.setAttribute("aria-expanded", o);
-      document.body.style.overflow = o ? "hidden" : "";
-    });
+    burger.addEventListener("click", function () { setMenu(!nav.classList.contains("open")); });
+    nav.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+    window.addEventListener("resize", function () { if (window.innerWidth > 920) setMenu(false); });
   }
 
   // 오늘 진료 여부 (한국 시간 기준)
@@ -32,8 +38,7 @@
       else if (m >= spans[spans.length - 1][1]) el.textContent = "오늘 진료 종료";
       else el.textContent = "점심시간";
     }
-    var rows = document.querySelectorAll("table.hours tbody");
-    rows.forEach(function (tb) {
+    document.querySelectorAll("table.hours tbody").forEach(function (tb) {
       var tr = tb.children[LABEL[d]];
       if (tr) tr.classList.add("today");
     });
@@ -51,16 +56,7 @@
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, { threshold: .12 });
+    }, { threshold: .1 });
     items.forEach(function (el) { io.observe(el); });
   } else { items.forEach(function (el) { el.classList.add("in"); }); }
-
-  // 문의 양식 (서버가 없어 접수되지 않음 → 전화 안내)
-  var form = document.getElementById("rsvForm");
-  if (form) form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var msg = document.getElementById("formMsg");
-    msg.style.display = "block";
-    msg.textContent = "온라인 접수는 준비 중입니다. 02-355-4517로 전화 주시면 빠르게 예약을 도와드립니다.";
-  });
 })();
