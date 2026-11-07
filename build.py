@@ -584,7 +584,7 @@ def build_gongjindan():
   <span class="tag">PREMIUM</span>
   <h2>사향 프리미엄 라인</h2>
   <p>활력공진단과 해울공진단에 <b>사향</b>을 더한 프리미엄 제품입니다. 사향활력공진단과 사향해울공진단 두 가지가 있으며, 선택 기준은 기존 활력·해울과 같습니다(카페인 여부).</p>
-  <ul class="plain"><li>구성: 기존 활력·해울 처방 + 원방 용량의 사향(100mg) + 엔오(NO) 소량</li><li>1환은 6g으로, 일반 활력·해울(5.5g)보다 큽니다.</li></ul>
+  <ul class="plain"><li>구성: 기존 활력·해울 처방 + 사향 + 엔오(NO) 소량</li><li>1환은 6g으로, 일반 활력·해울(5.5g)보다 큽니다.</li></ul>
   <p class="muted">가격은 아래 소비자가격에서 확인하실 수 있습니다.</p>
 </div></section>
 <section class="sec sec-sand"><div class="container narrow prose">
@@ -602,7 +602,7 @@ def build_gongjindan():
     prod_schema = [{"@type": "Product", "name": g["name"], "description": g["lead"],
                     "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW",
                                 "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in GONG_PRICE]} for g in GONG]
-    prod_schema.append({"@type": "Product", "name": "사향 활력공진단 · 사향 해울공진단 (프리미엄)", "description": "활력·해울공진단에 사향(100mg)과 엔오(소량)를 더한 프리미엄 제품. 1환 6g.",
+    prod_schema.append({"@type": "Product", "name": "사향 활력공진단 · 사향 해울공진단 (프리미엄)", "description": "활력·해울공진단에 사향과 엔오(소량)를 더한 프리미엄 제품. 1환 6g.",
                         "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in MUSK_PRICE]})
     page("gongjindan.html", "활력공진단 · 해울공진단 · 사향 프리미엄 가격 | 구파발경희한의원",
          "구파발경희한의원의 활력공진단·해울공진단과 사향 프리미엄 라인. 카페인 여부에 따른 선택 기준, 녹용 포함 구성, 소비자가격(1환 15,000원, 30환 450,000원, 사향 프리미엄 1환 70,000원)을 안내합니다.",
