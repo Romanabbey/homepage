@@ -379,3 +379,19 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .ref{margin-top:18px;font-size:13px;line-height:1.7;color:var(--ink2);max-width:860px}
 
 .checks.labeled li b{display:block;color:var(--ink);font-size:15.5px;margin-bottom:1px}
+
+/* 개인정보처리방침 표 / 성장 검사 뼈 카드 */
+.privacy h2{font-size:clamp(20px,2.4vw,24px);margin:40px 0 12px}
+.privacy ul{margin:8px 0}
+.privacy ul li{position:relative;padding-left:16px;color:var(--ink2);margin:6px 0}
+.privacy ul li::before{content:"";position:absolute;left:0;top:.8em;width:5px;height:5px;border-radius:50%;background:var(--c)}
+.ptable-wrap{overflow-x:auto;margin:12px 0}
+.ptable{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
+.ptable th,.ptable td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top;color:var(--ink2)}
+.ptable th{background:var(--tint);color:var(--ink);font-weight:800}
+.ptable td:first-child{color:var(--ink);font-weight:700}
+.bones{margin:18px 0}
+.bones .fcard{padding:20px}
+.bones .fcard h3{font-size:18px}
+@media (max-width:920px){.bones{grid-template-columns:1fr 1fr 1fr}}
+@media (max-width:600px){.bones{grid-template-columns:1fr}}
