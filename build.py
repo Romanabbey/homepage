@@ -116,7 +116,7 @@ F = {
     "gong_make": ("활력공진단은 어떻게 만드나요?",
                   "녹용, 산수유, 당귀, 구기자, 황기, 향부자, 육계, 백출, 건강, 녹차, 감국, 박하 12가지 약재와 엔오(NO)를 초미세분말로 갈아 꿀로 반죽한 뒤, 5일간 숙성하고 금박을 입혀 완성합니다."),
     "price": ("처방과 제품의 소비자가격은 얼마인가요?",
-              "소비자가격 기준으로 보폐고 엔오는 1박스(45포) 170,000원·2박스(90포) 300,000원, 안심환 엔오는 1박스(30포) 99,000원·3박스(90포) 270,000원, 부종환 엔오는 10일 체험분(30포) 60,000원·1개월분(90포) 150,000원, 활력공진단·해울공진단은 1환 15,000원·30환 450,000원, 사향 프리미엄 공진단은 1환(6g) 70,000원, 엔오 리커버리 패치는 1팩(16장) 15,900원입니다. 가격은 변동될 수 있어 방문 전 확인을 권해 드립니다."),
+              "소비자가격 기준으로 보폐고 엔오는 1박스(45포) 170,000원·2박스(90포) 300,000원, 안심환 엔오는 1박스(30포) 99,000원·3박스(90포) 270,000원, 부종환 엔오는 10일 체험분(30포) 60,000원·1개월분(90포) 150,000원, 활력공진단·해울공진단은 30환 450,000원·100환+10환 1,500,000원, 사향 프리미엄 공진단은 10환 700,000원, 엔오 리커버리 패치는 1팩(16장) 15,900원입니다. 가격은 변동될 수 있어 방문 전 확인을 권해 드립니다."),
 }
 FAQS = list(F.values())  # faq.html 전체 목록 (페이지마다 필요한 것만 골라 씁니다)
 
@@ -385,7 +385,7 @@ def build_home():
   <span class="lu-tag">공진단</span>
   <h3>활력 · 해울 공진단</h3>
   <p>기운을 뿌리부터 채우는 활력공진단. 예민한 분께는 해울공진단.</p>
-  <span class="lu-price">소비자가격 1환 15,000원~</span>
+  <span class="lu-price">소비자가격 30환 450,000원~</span>
   <img src="assets/img/p-gong.jpg" alt="" loading="lazy" width="1400" height="1090">
   <span class="lu-go">{ico('arrow')}</span>
 </a>"""
@@ -667,14 +667,14 @@ GONG = [
     dict(id="hwal", name="활력공진단",
          herbs=["녹용", "산수유", "당귀", "구기자", "황기", "향부자", "육계", "백출", "건강", "녹차", "감국", "박하"]),
 ]
-GONG_PRICE = [("1환", 15000), ("30환", 450000)]
-MUSK_PRICE = [("1환 (6g)", 70000)]
+GONG_PRICE = [("30환", 450000), ("100환 + 10환 (총 110환)", 1500000)]
+MUSK_PRICE = [("10환 (1환 6g)", 700000)]
 
 
 def build_gongjindan():
     chips = "".join(f"<li>{esc(h)}</li>" for h in GONG[0]["herbs"])
-    price_rows = "".join(f"<div class='pcardp'><span>{l}</span><b>{won(v)}</b></div>" for l, v in GONG_PRICE)
-    musk = "".join(f"<div class='pcardp'><span>사향 프리미엄 {l.split(' (')[0]}</span><b>{won(v)}</b><small>6g</small></div>" for l, v in MUSK_PRICE)
+    price_rows = "".join(f"<div class='pcardp'><span>{l.split(' (')[0]}</span><b>{won(v)}</b>" + (f"<small>{l.split(' (')[1].rstrip(')')}</small>" if ' (' in l else "") + "</div>" for l, v in GONG_PRICE)
+    musk = "".join(f"<div class='pcardp'><span>사향 프리미엄 {l.split(' (')[0]}</span><b>{won(v)}</b>" + (f"<small>{l.split(' (')[1].rstrip(')')}</small>" if ' (' in l else "") + "</div>" for l, v in MUSK_PRICE)
     body = f"""
 <section class="pphero">
   <div class="container pphero-grid">
@@ -774,7 +774,7 @@ def build_gongjindan():
          "offers": [{"@type": "Offer", "name": l, "price": str(v), "priceCurrency": "KRW", "seller": {"@id": DOMAIN + "/#clinic"}} for l, v in MUSK_PRICE]},
     ]
     page("gongjindan.html", "활력공진단 · 해울공진단 가격 | 구파발경희한의원",
-         "구파발경희한의원의 활력공진단. 녹용 등 12가지 약재와 엔오를 더해 5일 숙성하는 공진단과, 스트레스가 많고 예민한 분을 위한 해울공진단, 사향 프리미엄 라인의 구성과 소비자가격(1환 15,000원)을 안내합니다.",
+         "구파발경희한의원의 활력공진단. 녹용 등 12가지 약재와 엔오를 더해 5일 숙성하는 공진단과, 스트레스가 많고 예민한 분을 위한 해울공진단, 사향 프리미엄 라인의 구성과 소비자가격(30환 450,000원, 사향 프리미엄 10환 700,000원)을 안내합니다.",
          body, current="gongjindan.html", crumbs=[("홈", ""), ("활력 · 해울 공진단", "gongjindan.html")],
          schema=prod_schema, og="p-gong.jpg", theme="gong")
 
@@ -1110,7 +1110,7 @@ def build_meta():
 - [보폐고 엔오]({DOMAIN}/bopae.html): 호흡기·목 관리 한약 처방. 1박스(45포) 170,000원. 꿀이 들어가지 않은 제로 버전도 있음
 - [안심환 엔오]({DOMAIN}/anshim.html): 긴장·스트레스 관련 한약 환제. 1박스(30포) 99,000원
 - [부종환 엔오]({DOMAIN}/bujong.html): 붓기·순환 관리 한약 처방. 1개월분(90포) 150,000원
-- [활력공진단 · 해울공진단]({DOMAIN}/gongjindan.html): 녹용 포함, 1환 15,000원·30환 450,000원, 사향 프리미엄 1환 70,000원 (소비자가격)
+- [활력공진단 · 해울공진단]({DOMAIN}/gongjindan.html): 녹용 포함, 30환 450,000원·100환+10환 1,500,000원, 사향 프리미엄 10환 700,000원 (소비자가격)
 - [엔오 리커버리 패치]({DOMAIN}/patch.html): 1팩 16장 15,900원, 공산품
 - [N약침 · 초음파 가이드 약침]({DOMAIN}/yakchim.html)
 - [성장클리닉 · 초음파 성장 검사]({DOMAIN}/growth.html): RUF 방식(요골·척골·대퇴골 연골과 골화 비율 분석)으로 현재 성장 상태와 예상키 확인, 성조숙증 지연·맞춤한약·성장침·성장추나

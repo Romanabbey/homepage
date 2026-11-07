@@ -395,3 +395,4 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .bones .fcard h3{font-size:18px}
 @media (max-width:920px){.bones{grid-template-columns:1fr 1fr 1fr}}
 @media (max-width:600px){.bones{grid-template-columns:1fr}}
+.pcardp{align-content:start}
