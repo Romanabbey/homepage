@@ -357,3 +357,10 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .alt-card h4{font-size:15px;margin:18px 0 6px;color:var(--deep)}
 .alt-card p{color:var(--ink2);font-size:15px}
 @media (max-width:920px){.alt-card{grid-template-columns:1fr}.alt-card>div{padding:0 24px 26px}.alt-card figure img{min-height:0;aspect-ratio:16/10}}
+
+/* 제로 버전 안내 */
+.variant{background:var(--soft);border-radius:20px;padding:30px 32px}
+.variant h3{font-size:clamp(22px,2.6vw,30px);margin:2px 0 8px;color:var(--deep)}
+.variant p{color:var(--deep);opacity:.85}
+.variant .btn-line{border-color:var(--deep);color:var(--deep)}
+.variant .btn-line:hover{background:var(--deep);color:#fff}
