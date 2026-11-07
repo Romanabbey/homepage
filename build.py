@@ -787,8 +787,7 @@ def build_patch():
 def build_yakchim():
     body = hero_sub("N약침 · 초음파 가이드 약침", "N약침(엔오약침)과<br>초음파 가이드 약침",
                     "산화질소(NO) 관련 성분을 함유한 약침과, 초음파 영상으로 위치를 확인하며 진행하는 약침 시술을 상담하실 수 있습니다.", "n-nyakchim.jpg") + f"""
-<section class="sec" id="n"><div class="container split">
-  <figure><img src="assets/img/n-nyakchim.jpg" alt="" loading="lazy" width="1600" height="1244"></figure>
+<section class="sec" id="n"><div class="container narrow">
   <div class="prose">
     <span class="tag">N-YAKCHIM</span>
     <h2>N약침 (엔오약침)</h2>
