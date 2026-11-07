@@ -263,3 +263,13 @@ button{font-family:inherit}
   .panel{padding:24px 20px}
   .more-faq{margin-top:-34px}
 }
+
+/* price */
+.price{width:100%;border-collapse:collapse;margin:6px 0 4px;font-size:15px}
+.price th,.price td{padding:10px 0;border-bottom:1px solid var(--line);font-weight:600;text-align:left}
+.price td{text-align:right;color:var(--terra-d);font-weight:800;white-space:nowrap;padding-left:14px}
+.price.big th{font-size:16px}
+.price.big th a{color:var(--g9);text-decoration:none;border-bottom:1px solid var(--line)}
+.price-note{font-size:13px;color:var(--ink2)}
+.herbs-note{display:block;margin-top:8px;font-size:13.5px;color:var(--ink2)}
+@media (max-width:600px){.price td{white-space:normal;text-align:right}}
