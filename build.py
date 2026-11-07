@@ -1089,7 +1089,7 @@ def build_privacy():
   <p>한의원은 원활한 업무 처리를 위해 아래와 같이 개인정보 처리업무를 위탁하며, 수탁자가 개인정보를 안전하게 처리하도록 관리·감독합니다.</p>
   <div class="ptable-wrap"><table class="ptable">
     <thead><tr><th>수탁자</th><th>위탁 업무</th></tr></thead>
-    <tbody><tr><td>전자의무기록(EMR) 프로그램 공급업체</td><td>전자차트 시스템의 운영·유지보수 (진료 정보의 저장·관리 시스템)</td></tr></tbody>
+    <tbody><tr><td>(주)한메디 (OK차트)</td><td>전자차트(전자의무기록, EMR) 시스템의 운영·유지보수 (진료 정보의 저장·관리 시스템)</td></tr></tbody>
   </table></div>
   <p class="muted">위탁 업무의 내용이나 수탁자가 바뀌면 이 방침을 통해 알려 드립니다.</p>
 
