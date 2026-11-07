@@ -34,25 +34,24 @@ HOURS = [
 DISCLAIMER = "치료 효과와 경과는 개인에 따라 다를 수 있습니다. 이 페이지는 일반적인 안내이며, 실제 치료는 진찰 후 개인별로 안내드립니다."
 
 NAV = [
-    ("처방", "#", [
-        ("보폐고 엔오", "bopae.html"),
-        ("안심환 엔오", "anshim.html"),
-        ("부종환 엔오", "bujong.html"),
-        ("활력 · 해울 공진단", "gongjindan.html"),
-    ]),
-    ("진료", "#", [
-        ("저칼로리 다이어트", "diet.html"),
-        ("성장클리닉", "growth.html"),
-        ("교통사고 후유증", "accident.html"),
-        ("N약침 · 초음파 가이드 약침", "yakchim.html"),
-        ("엔오 리커버리 패치", "patch.html"),
-    ]),
-    ("원장소개", "about.html", []),
-    ("진료안내", "hours-location.html", [
+    ("병원소개", "about.html", [
+        ("원장소개", "about.html"),
         ("진료시간 · 오시는 길", "hours-location.html"),
         ("예약 · 문의", "reservation.html"),
         ("자주 묻는 질문", "faq.html"),
     ]),
+    ("교통사고", "accident.html", []),
+    ("엔오처방", "index.html#products", [
+        ("보폐고 엔오", "bopae.html"),
+        ("안심환 엔오", "anshim.html"),
+        ("부종환 엔오", "bujong.html"),
+        ("활력 · 해울 공진단", "gongjindan.html"),
+        ("엔오 리커버리 패치", "patch.html"),
+    ]),
+    ("다이어트", "diet.html", []),
+    ("바른성장", "growth.html", []),
+    ("산후보약", "postpartum.html", []),
+    ("N약침", "yakchim.html", []),
 ]
 
 ICON_PATHS = {
@@ -115,6 +114,14 @@ F = {
                   "초음파 검사는 방사선을 사용하지 않습니다. RUF 방식의 성장 검사는 요골, 척골, 대퇴골의 연골과 골화 비율을 분석해 아이의 현재 성장 상태와 예상키를 확인합니다. 예상키는 검사 시점의 상태를 바탕으로 한 추정치이며 성장 결과를 보장하는 것은 아닙니다."),
     "puberty": ("성조숙증은 몇 살부터 의심하나요?",
                 "일반적으로 여아는 만 8세 미만에 유방이 발달하기 시작하거나, 남아는 만 9세 미만에 고환이 커지기 시작하면(고환 용적 4mL 이상) 성조숙증을 의심합니다. 대한소아내분비학회 2022 진료지침 등에서 제시하는 일반적인 기준이며, 정확한 진단은 진찰과 뼈 나이·성호르몬 검사 등으로 이루어집니다. 걱정되시면 상담을 받아 보세요."),
+    "pp_when": ("산후보약은 언제부터 먹나요?",
+                "출산 방식과 회복 정도, 수유 여부에 따라 달라 진찰 후 시작 시기를 안내합니다. 출산 후 몸 상태가 걱정되시면 시기와 상관없이 상담해 주세요."),
+    "pp_nursing": ("모유 수유 중에도 산후보약을 먹을 수 있나요?",
+                   "수유 여부와 아기의 상태, 복용 중인 약을 확인한 뒤 처방을 구성합니다. 수유 중이시라면 진찰 시 꼭 알려 주세요."),
+    "pp_cs": ("제왕절개를 했어도 진료받을 수 있나요?",
+              "네. 자연분만과 제왕절개 모두 상담할 수 있으며, 출산 방식과 회복 상태에 맞춰 진료 방법을 조정합니다."),
+    "pp_late": ("출산한 지 시간이 오래 지났는데도 상담할 수 있나요?",
+                "네. 출산 후 몇 달 또는 몇 년이 지났어도 피로, 관절 시림, 붓기 같은 불편이 이어지면 진찰 후 상태에 맞춰 안내해 드립니다."),
     "accident": ("교통사고 후유증 치료는 어떻게 받나요?",
                  "침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약 중 상태에 맞는 치료를 조합해 진행합니다. 자동차보험 접수 방법은 전화로 문의해 주세요. 의식 소실, 극심한 통증, 팔다리 마비 같은 증상이 있으면 먼저 응급실을 방문하셔야 합니다."),
     "acc_late": ("사고 직후엔 괜찮았는데 며칠 뒤부터 아파도 진료받을 수 있나요?",
@@ -157,7 +164,7 @@ def clinic_schema():
     add(["Thursday"], "14:00", "20:00")
     add(["Saturday"], "09:30", "13:00")
     services = ["저칼로리 다이어트 맞춤 한약", "맞춤 한약", "활력공진단", "해울공진단", "사향 프리미엄 공진단", "N약침(엔오약침)",
-                "초음파 가이드 약침", "초음파 성장 검사", "성장 클리닉", "침", "부항", "추나요법", "교통사고 후유증 진료"]
+                "초음파 가이드 약침", "초음파 성장 검사", "바른성장(성장 클리닉)", "산후보약", "침", "부항", "추나요법", "교통사고 후유증 진료"]
     return {
         "@type": ["MedicalClinic", "LocalBusiness"],
         "@id": DOMAIN + "/#clinic",
@@ -252,9 +259,9 @@ def header_html(current):
 
 def footer_html():
     groups = [
-        ("처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html")]),
-        ("진료", [("저칼로리 다이어트", "diet.html"), ("성장클리닉", "growth.html"), ("교통사고 후유증", "accident.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html"), ("엔오 리커버리 패치", "patch.html")]),
-        ("안내", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
+        ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
+        ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
+        ("병원소개", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
     cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls) + "</div>" for g, ls in groups)
     return f"""<footer class="site-footer">
@@ -402,11 +409,11 @@ def build_home():
   <span class="lu-go">{ico('arrow')}</span>
 </a>"""
     services = [
-        ("01", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약", "diet.html", "n-diet.jpg"),
-        ("02", "성장클리닉 · 초음파 성장 검사", "요골·척골·대퇴골 연골을 분석하는 초음파 검사, 나이·성별 맞춤 상담", "growth.html", "n-growth2.jpg"),
-        ("03", "교통사고 후유증", "침 · 부항 · 물리치료 · 추나 · 약침 · 맞춤 한약", "accident.html", "n-accident.jpg"),
-        ("04", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "n-ultrasound.jpg"),
-        ("05", "엔오 리커버리 패치", "내원하지 않는 날에도 간편하게 쓰는 패치(공산품)", "patch.html", "p-patch.jpg"),
+        ("01", "교통사고 후유증", "침 · 부항 · 물리치료 · 추나 · 약침 · 맞춤 한약", "accident.html", "n-accident.jpg"),
+        ("02", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약", "diet.html", "n-diet.jpg"),
+        ("03", "바른성장 · 초음파 성장 검사", "요골·척골·대퇴골 연골을 분석하는 초음파 검사, 나이·성별 맞춤 상담", "growth.html", "n-growth2.jpg"),
+        ("04", "산후보약", "출산 후 기력·붓기·관절·수면까지 진찰 후 개인별로 상담", "postpartum.html", "pp-a.jpg"),
+        ("05", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "n-ultrasound.jpg"),
     ]
     rows = "".join(f"""<a class="srow reveal" href="{h}"><span class="sr-n">{n}</span><span class="sr-t"><b>{esc(ti)}</b><small>{esc(d)}</small></span><img src="assets/img/{im}" alt="" loading="lazy" width="1600" height="1244"><span class="sr-go">{ico('arrow')}</span></a>""" for n, ti, d, h, im in services)
     body = f"""
@@ -415,7 +422,7 @@ def build_home():
     <div class="hero-copy">
       <p class="kicker"><span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>구파발역 인근 · 은평구 진관4로</p>
       <h1>진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.</h1>
-      <p class="lead">저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 대표원장 {CLINIC['doctor']}이 직접 살핍니다.</p>
+      <p class="lead">교통사고 후유증, 저칼로리 다이어트, 바른성장, 산후보약, 초음파 가이드 약침 진료를 대표원장 {CLINIC['doctor']}이 직접 살핍니다.</p>
       <div class="btn-row">
         <a class="btn btn-ink btn-lg" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
         <a class="btn btn-line btn-lg" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
@@ -440,8 +447,9 @@ def build_home():
 
 <section class="sec" id="products">
   <div class="container">
-    <div class="sec-head left"><span class="tag">PRESCRIPTIONS</span><h2>처방</h2><p>각각의 처방은 구성과 복용 방법이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
+    <div class="sec-head left"><span class="tag">N.O PRESCRIPTIONS</span><h2>엔오처방</h2><p>각각의 처방은 구성과 복용 방법이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
     <div class="lineups">{prods}{gong}</div>
+    <p class="more-link"><a class="btn btn-line" href="patch.html">엔오 리커버리 패치 보기 {ico('arrow')}</a></p>
     {disclaimer()}
   </div>
 </section>
@@ -815,7 +823,7 @@ def build_growth():
             ("성장침", "아이가 받아들일 수 있는 방식으로 성장과 관련된 혈위를 자극하는 침 치료입니다."),
             ("성장 추나", "자세와 척추·골반 균형을 살피는 수기 치료로, 바른 자세 관리를 돕습니다.")]
     fc = "".join(f"<div class='fcard reveal'><h3>{esc(t)}</h3><p>{esc(d)}</p></div>" for t, d in four)
-    body = hero_sub("성장클리닉", "초음파 성장 검사와<br>맞춤 성장 상담",
+    body = hero_sub("바른성장", "초음파 성장 검사와<br>맞춤 성장 상담",
                     "방사선을 사용하지 않는 초음파 성장 검사로 아이의 현재 성장 상태와 예상키를 확인하고, 나이와 성별에 맞춰 성장 치료를 상담합니다.", "n-growth2.jpg", poster="poster-growth.jpg") + f"""
 <section class="sec"><div class="container narrow prose">
   <h2>초음파 성장 검사 (RUF 방식)</h2>
@@ -846,10 +854,60 @@ def build_growth():
 </div></section>
 {faq_block([F["growth_us"], F["puberty"]], "성장 관련 질문")}
 {cta_band()}"""
-    page("growth.html", "성장클리닉 · 초음파 성장 검사 | 구파발경희한의원",
-         "구파발경희한의원 성장클리닉. 방사선 없는 RUF 방식 초음파 성장 검사로 요골·척골·대퇴골의 연골과 골화 비율을 분석해 현재 성장 상태와 예상키를 확인합니다. 성조숙증 지연, 맞춤한약, 성장침, 성장추나 상담.",
-         body, current="growth.html", crumbs=[("홈", ""), ("성장클리닉", "growth.html")],
+    page("growth.html", "바른성장 · 초음파 성장 검사 (성장클리닉) | 구파발경희한의원",
+         "구파발경희한의원 바른성장(성장클리닉). 방사선 없는 RUF 방식 초음파 성장 검사로 요골·척골·대퇴골의 연골과 골화 비율을 분석해 현재 성장 상태와 예상키를 확인합니다. 성조숙증 지연, 맞춤한약, 성장침, 성장추나 상담.",
+         body, current="growth.html", crumbs=[("홈", ""), ("바른성장", "growth.html")],
          schema=[faq_schema([F["growth_us"], F["puberty"]])], og="poster-growth.jpg")
+
+
+def build_postpartum():
+    kinds = [("기력과 컨디션", "피로, 무기력, 땀이 많고 으슬으슬한 느낌"),
+             ("붓기와 체중", "얼굴·손발·하체 붓기, 체중과 복부 체형의 변화"),
+             ("관절·허리·골반", "관절이 시리거나 아픈 느낌, 허리·골반·손목 통증"),
+             ("수면·정서·모발", "불면, 예민함, 감정 기복, 머리카락 빠짐")]
+    kc = "".join(f"<div class='fcard reveal'><h3>{esc(a)}</h3><p>{esc(b)}</p></div>" for a, b in kinds)
+    care = [("맞춤 한약", "산모의 체질과 증상, 수유 여부를 고려해 산후보약을 구성합니다."),
+            ("침", "뭉치고 시린 부위와 순환을 살피며 침 치료를 합니다."),
+            ("추나요법", "출산 후 틀어지기 쉬운 골반·척추의 균형을 살피는 수기 치료입니다."),
+            ("약침", "통증이 이어지는 부위에 약침액을 주입합니다. 필요하면 초음파로 위치를 확인합니다.")]
+    cc = "".join(f"<div class='fcard reveal'><h3>{esc(a)}</h3><p>{esc(b)}</p></div>" for a, b in care)
+    faqs = [F["pp_when"], F["pp_nursing"], F["pp_cs"], F["pp_late"]]
+    body = hero_sub("산후보약", "산후보약,<br>출산 후 회복을 맞춤으로 살핍니다",
+                    "출산 후 기력과 붓기, 관절·골반 불편, 수면과 컨디션까지 진찰하고, 산모의 상태에 맞춰 산후보약과 치료를 상담합니다.", "pp-a.jpg") + f"""
+<section class="sec"><div class="container">
+  <div class="sec-head"><span class="tag">AFTER BIRTH</span><h2>출산 후, 몸은 이렇게 달라집니다</h2><p>출산은 몸 전체가 큰 변화를 겪는 시기입니다. 특히 출산 후 6~8주의 산욕기에는 기력과 붓기, 호르몬 변화가 함께 일어나 불편이 여러 곳에서 나타나기도 합니다.</p></div>
+  <div class="fgrid">{kc}</div>
+  <div class="container narrow" style="padding:0;margin-top:26px">{notice("출산 후 갑작스러운 대량 출혈, 고열, 심한 복통이 있거나 극심한 우울감으로 힘드시면 먼저 산부인과 또는 응급실, 정신건강 전문기관을 이용해 주세요.", "먼저 확인하세요")}</div>
+</div></section>
+<section class="sec sec-sand"><div class="container narrow prose">
+  <h2>산후보약이란</h2>
+  <p>산후보약은 출산으로 소모된 기운과 혈(血)을 보충하고 몸의 회복 흐름을 살피는 맞춤 한약입니다. 같은 산후보약이라도 산모의 체질, 불편한 증상, 출산 방식(자연분만·제왕절개), 수유 여부에 따라 구성이 달라집니다.</p>
+  <p>구파발경희한의원은 정해진 처방을 일괄로 드리지 않고, 진찰을 마친 뒤 산모 개인에 맞춰 약재를 구성합니다. 한의학에서는 출산 후 정체되기 쉬운 혈(어혈)을 살피고 기혈을 보충하는 방향으로 처방을 구성합니다.</p>
+</div></section>
+<section class="sec"><div class="container narrow prose">
+  <h2>시기에 따라 살핍니다</h2>
+  {steps([("출산 직후 ~ 6주 내외 (산욕기)", "몸이 회복되는 시기입니다. 기력과 땀, 붓기, 소화 상태를 살피고 무리하지 않도록 관리 방향을 안내합니다."), ("6주 ~ 3개월", "붓기와 관절·허리·골반 불편, 수유로 인한 피로가 이어지는 시기입니다. 침, 추나요법, 약침 등을 상태에 맞게 더합니다."), ("3개월 ~ 1년", "체력, 체형과 체중, 모발, 수면 등 오래 이어지는 불편을 함께 살펴 관리합니다.")])}
+  <p class="muted">시기와 기간은 산모마다 다르며, 출산 후 시간이 지났더라도 상담하실 수 있습니다.</p>
+</div></section>
+<section class="sec sec-sand"><div class="container">
+  <div class="sec-head"><span class="tag">CARE</span><h2>함께 하는 치료</h2></div>
+  <div class="fgrid">{cc}</div>
+  <div class="container narrow prose" style="padding:0;margin-top:28px">
+    <p>붓기가 두드러지면 <a href="bujong.html">부종환 엔오</a>를, 출산 후 체중 관리가 필요하면 수유 여부와 회복 상태를 확인한 뒤 <a href="diet.html">저칼로리 다이어트</a>를 함께 상담할 수 있습니다.</p>
+  </div>
+</div></section>
+<section class="sec"><div class="container narrow prose">
+  <h2>이런 분께 상담을 권합니다</h2>
+  {checks(["출산 후 피로가 오래 이어지고 기운이 나지 않는 분", "땀이 많거나 몸이 으슬으슬하고 관절이 시린 분", "붓기가 잘 가라앉지 않는 분", "허리·골반·손목 통증으로 아이를 돌보기 힘든 분", "잠들기 어렵거나 감정 기복이 커서 힘드신 분", "출산 후 체형과 체중, 머리카락 빠짐이 걱정되시는 분"])}
+  {notice("모유 수유 중이시라면 진찰 시 꼭 알려 주세요. 수유 여부와 처방 구성을 확인한 뒤 복용 가능 여부를 안내해 드립니다.")}
+  {disclaimer()}
+</div></section>
+{faq_block(faqs, "산후보약 관련 질문")}
+{cta_band()}"""
+    page("postpartum.html", "산후보약 · 산후 회복 한의원 | 은평구 구파발경희한의원",
+         "구파발경희한의원 산후보약. 출산 후 기력, 붓기, 관절·골반 불편, 수면까지 진찰하고 산모의 체질과 수유 여부에 맞춰 맞춤 한약과 침·추나·약침 치료를 상담합니다.",
+         body, current="postpartum.html", crumbs=[("홈", ""), ("산후보약", "postpartum.html")],
+         schema=[faq_schema(faqs)], og="pp-a.jpg")
 
 
 def build_accident():
@@ -1074,7 +1132,7 @@ def build_404():
     page("404.html", "페이지를 찾을 수 없습니다 | 구파발경희한의원", "요청하신 페이지를 찾을 수 없습니다.", body)
 
 
-PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "accident.html",
+PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "postpartum.html", "accident.html",
          "about.html", "hours-location.html", "faq.html", "reservation.html", "privacy.html"]
 
 
@@ -1103,8 +1161,9 @@ def build_meta():
 - [부종환 엔오]({DOMAIN}/bujong.html): 붓기·순환 관리 한약 처방
 - [활력공진단 · 해울공진단]({DOMAIN}/gongjindan.html): 녹용 포함, 활력공진단 중심, 예민한 분께는 해울공진단, 사향 프리미엄 라인
 - [엔오 리커버리 패치]({DOMAIN}/patch.html): 1팩 16장, 공산품
+- [산후보약]({DOMAIN}/postpartum.html): 출산 후 기력·붓기·관절·수면 상담, 진찰 후 개인별 맞춤 한약
 - [N약침 · 초음파 가이드 약침]({DOMAIN}/yakchim.html)
-- [성장클리닉 · 초음파 성장 검사]({DOMAIN}/growth.html): RUF 방식(요골·척골·대퇴골 연골과 골화 비율 분석)으로 현재 성장 상태와 예상키 확인, 성조숙증 지연·맞춤한약·성장침·성장추나
+- [바른성장(성장클리닉) · 초음파 성장 검사]({DOMAIN}/growth.html): RUF 방식(요골·척골·대퇴골 연골과 골화 비율 분석)으로 현재 성장 상태와 예상키 확인, 성조숙증 지연·맞춤한약·성장침·성장추나
 - [교통사고 후유증]({DOMAIN}/accident.html): 침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약
 
 ## 비용
@@ -1127,7 +1186,7 @@ def build_meta():
 
 
 if __name__ == "__main__":
-    for fn in (build_home, build_diet, lambda: build_product("bopae"), lambda: build_product("anshim"), lambda: build_product("bujong"), build_herbal_redirect, build_gongjindan, build_patch, build_yakchim, build_growth, build_accident,
+    for fn in (build_home, build_diet, lambda: build_product("bopae"), lambda: build_product("anshim"), lambda: build_product("bujong"), build_herbal_redirect, build_gongjindan, build_patch, build_yakchim, build_growth, build_postpartum, build_accident,
                build_about, build_visit, build_faq, build_reservation, build_privacy, build_404, build_meta):
         fn()
     print("built", len(PAGES) + 1, "pages")

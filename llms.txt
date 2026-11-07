@@ -16,8 +16,9 @@
 - [부종환 엔오](https://gupabalhani.org/bujong.html): 붓기·순환 관리 한약 처방
 - [활력공진단 · 해울공진단](https://gupabalhani.org/gongjindan.html): 녹용 포함, 활력공진단 중심, 예민한 분께는 해울공진단, 사향 프리미엄 라인
 - [엔오 리커버리 패치](https://gupabalhani.org/patch.html): 1팩 16장, 공산품
+- [산후보약](https://gupabalhani.org/postpartum.html): 출산 후 기력·붓기·관절·수면 상담, 진찰 후 개인별 맞춤 한약
 - [N약침 · 초음파 가이드 약침](https://gupabalhani.org/yakchim.html)
-- [성장클리닉 · 초음파 성장 검사](https://gupabalhani.org/growth.html): RUF 방식(요골·척골·대퇴골 연골과 골화 비율 분석)으로 현재 성장 상태와 예상키 확인, 성조숙증 지연·맞춤한약·성장침·성장추나
+- [바른성장(성장클리닉) · 초음파 성장 검사](https://gupabalhani.org/growth.html): RUF 방식(요골·척골·대퇴골 연골과 골화 비율 분석)으로 현재 성장 상태와 예상키 확인, 성조숙증 지연·맞춤한약·성장침·성장추나
 - [교통사고 후유증](https://gupabalhani.org/accident.html): 침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약
 
 ## 비용
