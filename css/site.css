@@ -364,3 +364,8 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .variant p{color:var(--deep);opacity:.85}
 .variant .btn-line{border-color:var(--deep);color:var(--deep)}
 .variant .btn-line:hover{background:var(--deep);color:#fff}
+
+/* 오시는 길 */
+.way{font-size:14px;font-weight:800;margin:20px 0 4px;color:var(--ink)}
+.parking{display:inline-block;background:var(--soft);color:var(--deep);padding:10px 16px;border-radius:12px;font-weight:600}
+.parking b{color:var(--c)}

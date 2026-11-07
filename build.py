@@ -11,13 +11,13 @@ TODAY = datetime.date.today().isoformat()
 CLINIC = dict(
     name="구파발경희한의원",
     doctor="최솔",
-    address="서울 은평구 진관4로 47, 708동 상가 115호",
-    street="진관4로 47, 708동 상가 115호",
+    address="서울 은평구 진관4로 47, 은평뉴타운 상림마을 708동 상가 115호",
+    street="진관4로 47, 은평뉴타운 상림마을 708동 상가 115호",
     phone="02-355-4517",
     phone_intl="+82-2-355-4517",
     biz="218-90-15783",
-    naver="https://map.naver.com/p/search/" + "%EC%84%9C%EC%9A%B8%20%EC%9D%80%ED%8F%89%EA%B5%AC%20%EC%A7%84%EA%B4%804%EB%A1%9C%2047",
-    kakao="https://map.kakao.com/?q=" + "%EC%84%9C%EC%9A%B8%20%EC%9D%80%ED%8F%89%EA%B5%AC%20%EC%A7%84%EA%B4%804%EB%A1%9C%2047",
+    naver="https://map.naver.com/p/entry/place/13116400",   # 네이버지도: 구파발경희한의원 장소
+    kakao="https://place.map.kakao.com/1052835355",          # 카카오맵: 구파발경희한의원 장소
 )
 TEL = "tel:" + CLINIC["phone"].replace("-", "")
 BOOKING = "https://booking.naver.com/booking/13/bizes/1548936"  # 네이버 예약
@@ -86,7 +86,7 @@ FAQS = [
     ("진료시간은 어떻게 되나요?",
      "월·화·수·금요일은 09:30~20:00(점심시간 12:30~14:00), 목요일은 14:00~20:00, 토요일은 09:30~13:00(점심시간 없음)입니다. 일요일과 공휴일은 휴진입니다. 휴진 일정이 바뀔 수 있어 방문 전 전화(02-355-4517)로 확인하시면 가장 정확합니다."),
     ("위치와 가는 방법을 알려 주세요.",
-     "서울 은평구 진관4로 47, 708동 상가 115호에 있으며 지하철 3호선 구파발역 인근입니다. 네이버지도·카카오맵에서 '구파발경희한의원'을 검색하시면 길 안내를 받으실 수 있습니다."),
+     "서울 은평구 진관4로 47, 은평뉴타운 상림마을 708동 상가 115호(708동 상가 1층)에 있으며 지하철 3호선 구파발역 인근입니다. 네이버지도·카카오맵에서 '구파발경희한의원'을 검색하시면 길 안내를 받으실 수 있습니다. 708동 지하주차장에 무료로 주차하실 수 있습니다."),
     ("예약 없이 방문해도 되나요?",
      "방문은 가능하지만 초음파 가이드 약침이나 초음파 성장 검사는 확인과 준비에 시간이 더 걸려 사전 예약을 권해 드립니다. 네이버 예약 또는 전화 02-355-4517로 문의해 주세요."),
     ("저칼로리 다이어트는 어떻게 진행되나요?",
@@ -121,6 +121,8 @@ FAQS = [
      "녹용, 산수유, 당귀, 구기자, 황기, 향부자, 육계, 백출, 건강, 녹차, 감국, 박하 12가지 약재와 엔오(NO)를 초미세분말로 갈아 꿀로 반죽한 뒤, 5일간 숙성하고 금박을 입혀 완성합니다."),
     ("당뇨가 있는데 보폐고 엔오를 복용해도 되나요?",
      "당 섭취가 걱정되는 분을 위해 보폐고 엔오 제로 버전을 별도로 처방합니다. 진찰 시 당뇨 여부와 복용 중인 약을 알려 주시면 상태에 맞게 안내해 드립니다. 구성과 가격은 상담 시 안내해 드립니다."),
+    ("주차는 가능한가요?",
+     "708동 지하주차장에 무료로 주차하실 수 있습니다."),
 ]
 
 
@@ -162,6 +164,8 @@ def clinic_schema():
             "addressRegion": "서울특별시",
             "addressCountry": "KR",
         },
+        "hasMap": [CLINIC["naver"], CLINIC["kakao"]],
+        "amenityFeature": {"@type": "LocationFeatureSpecification", "name": "무료 주차 (708동 지하주차장)", "value": True},
         "areaServed": ["서울특별시 은평구", "구파발", "진관동"],
         "openingHoursSpecification": spec,
         "availableService": [{"@type": "MedicalTherapy", "name": s} for s in services],
@@ -422,7 +426,7 @@ def build_home():
 </section>
 
 <section class="facts"><div class="container facts-grid">
-  <a href="hours-location.html#map">{ico('pin')}<span><b>오시는 길</b><small>은평구 진관4로 47, 708동 상가 115호</small></span></a>
+  <a href="hours-location.html#map">{ico('pin')}<span><b>오시는 길</b><small>은평구 진관4로 47, 상림마을 708동 상가 115호 · 무료 주차</small></span></a>
   <a href="{TEL}">{ico('phone')}<span><b>전화 상담</b><small>{CLINIC['phone']}</small></span></a>
   <a href="{BOOKING}" {EXT}>{ico('cal')}<span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></span></a>
 </div></section>
@@ -477,7 +481,7 @@ def build_home():
         <table class="hours"><tbody>{hours_rows()}</tbody></table></div>
       <div class="panel"><h3>오시는 길</h3>
         <p class="addr">{CLINIC['address']}</p>
-        <p class="muted">지하철 3호선 구파발역 인근</p>
+        <p class="muted">지하철 3호선 구파발역 인근 · 708동 지하주차장 무료 주차</p>
         <div class="btn-row"><a class="btn btn-ink" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도</a><a class="btn btn-line" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵</a></div>
         <p class="muted">전화 <a href="{TEL}">{CLINIC['phone']}</a></p></div>
     </div>
@@ -945,16 +949,19 @@ def build_visit():
     <p class="muted">공휴일과 임시 휴진은 달라질 수 있어 전화로 확인해 주세요.</p>
     <p><a class="btn btn-solid" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a></p></div>
   <div class="panel" id="map"><h3>오시는 길</h3><p class="addr">{CLINIC['address']}</p>
-    <p class="muted">지하철 3호선 구파발역 인근 · 708동 상가 1층 115호</p>
-    <div class="btn-row"><a class="btn btn-solid" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도</a><a class="btn btn-line" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵</a></div>
-    <p class="muted">주차 가능 여부와 자세한 길 안내는 전화로 문의해 주세요.</p></div>
+    <p class="muted">은평뉴타운 상림마을 아이파크 708동 상가 1층 · 708동 앞 버스정류장 바로 뒤쪽</p>
+    <div class="btn-row"><a class="btn btn-ink" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도에서 보기</a><a class="btn btn-line" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵에서 보기</a></div>
+    <h4 class="way">대중교통</h4>
+    <p class="muted">지하철 3호선 구파발역 1번·2번 출구 사이에서 704번, 708번, 7211번, 7723번 버스를 타고 아이파크 701동 앞 정류장에서 내려 건너편으로 오시면 됩니다.</p>
+    <h4 class="way">주차</h4>
+    <p class="parking">708동 지하주차장 <b>무료 주차</b> 가능</p></div>
 </div></section>
-{faq_block(FAQS[:3], "방문 관련 질문")}
+{faq_block([FAQS[1], FAQS[19], FAQS[0], FAQS[2]], "방문 관련 질문")}
 {cta_band()}"""
     page("hours-location.html", "진료시간 · 오시는 길 | 구파발경희한의원 (은평구 진관4로 47)",
-         "구파발경희한의원 진료시간과 오시는 길. 서울 은평구 진관4로 47, 708동 상가 115호, 구파발역 인근. 월·화·수·금 09:30–20:00, 목 14:00–20:00, 토 09:30–13:00.",
+         "구파발경희한의원 진료시간과 오시는 길. 서울 은평구 진관4로 47, 은평뉴타운 상림마을 708동 상가 115호, 구파발역 인근, 708동 지하주차장 무료 주차. 월·화·수·금 09:30–20:00, 목 14:00–20:00, 토 09:30–13:00.",
          body, current="hours-location.html", crumbs=[("홈", ""), ("진료시간 · 오시는 길", "hours-location.html")],
-         schema=[faq_schema(FAQS[:3])])
+         schema=[faq_schema([FAQS[1], FAQS[19], FAQS[0], FAQS[2]])])
 
 
 def build_faq():
@@ -1039,6 +1046,8 @@ def build_meta():
 ## 예약
 - 네이버 예약: {BOOKING}
 - 전화: {CLINIC['phone']}
+- 주차: 708동 지하주차장 무료 주차 가능
+- 지도: {CLINIC['naver']} (네이버), {CLINIC['kakao']} (카카오)
 
 ## 기타
 - [원장 소개]({DOMAIN}/about.html)
