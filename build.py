@@ -25,9 +25,9 @@ EXT = 'target="_blank" rel="noopener"'
 
 # (표시용 요일, 시간, 비고)
 HOURS = [
-    ("월 · 화 · 수 · 금", "09:30 – 20:00", "점심시간 12:30 – 14:00"),
+    ("월 · 화 · 수 · 금", "09:30 – 20:00", ""),
     ("목", "14:00 – 20:00", "오후 진료"),
-    ("토", "09:30 – 13:00", "점심시간 없음"),
+    ("토", "09:30 – 13:00", ""),
     ("일 · 공휴일", "휴진", ""),
 ]
 
@@ -155,9 +155,11 @@ def esc(s):
 
 
 def hours_rows():
-    return "".join(
+    rows = "".join(
         f"<tr><th scope='row'>{d}</th><td>{t}</td><td class='muted'>{n}</td></tr>" for d, t, n in HOURS
     )
+    lunch = "<tr class='lunch'><th scope='row'>점심시간</th><td colspan='2'>12:30 – 14:00 <span class='lunch-note'>(토요일은 점심시간 없음)</span></td></tr>"
+    return rows + lunch
 
 
 def clinic_schema():
@@ -440,6 +442,7 @@ def build_home():
         <span>{ico('clock')} 진료시간</span>
         <b>월·화·수·금 09:30–20:00</b>
         <small>목 14:00–20:00 · 토 09:30–13:00</small>
+        <small>점심시간 12:30–14:00 (토요일 없음)</small>
       </figcaption>
     </figure>
   </div>
