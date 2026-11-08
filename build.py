@@ -1341,11 +1341,11 @@ def build_column_index(arts, preview=False):
 
 def build_column_article(a, preview=False):
     cat_name, cat_link = COL_CATS[a["category"]]
-    reviewed = a.get("reviewer")
-    meta_line = f"{a['date'].replace('-', '.')} 작성"
+    reviewed = a.get("reviewer") or CLINIC["doctor"]   # 공개되는 글은 모두 원장 감수 완료 글
+    meta_line = a['date'].replace('-', '.')
     if a["updated"] != a["date"]:
-        meta_line += f" · {a['updated'].replace('-', '.')} 수정"
-    meta_line += f" · 작성 {CLINIC['name']} 의료진" + (f" · 감수 원장 {reviewed}" if reviewed else "")
+        meta_line += f" · 수정 {a['updated'].replace('-', '.')}"
+    meta_line += f" · 작성 {CLINIC['name']} 의료진 · 감수 {reviewed} 원장"
     src_html = ""
     if a["sources"]:
         src_html = "<div class='col-src'><h2>참고 문헌</h2><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></div>"
