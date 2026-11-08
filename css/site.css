@@ -438,3 +438,4 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .col-src ol{list-style:decimal;padding-left:20px;color:var(--ink2);font-size:14px;line-height:1.7}
 .col-src a{color:var(--c);text-decoration:underline}
 @media (max-width:760px){.col-item{grid-template-columns:1fr;gap:6px}.ci-go{display:none}}
+.col-by{margin-top:34px;font-weight:700;font-size:14.5px;color:var(--ink)}

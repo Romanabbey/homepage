@@ -1342,10 +1342,8 @@ def build_column_index(arts, preview=False):
 def build_column_article(a, preview=False):
     cat_name, cat_link = COL_CATS[a["category"]]
     reviewed = a.get("reviewer") or CLINIC["doctor"]   # 공개되는 글은 모두 원장 감수 완료 글
-    meta_line = a['date'].replace('-', '.')
-    if a["updated"] != a["date"]:
-        meta_line += f" · 수정 {a['updated'].replace('-', '.')}"
-    meta_line += f" · 작성 {CLINIC['name']} 의료진 · 감수 {reviewed} 원장"
+    meta_line = a['date'].replace('-', '.')   # 맨 위에는 날짜만 표시 (수정일은 표시하지 않음)
+    byline = f"작성 {CLINIC['name']} 의료진 · 감수 {reviewed} 원장"
     src_html = ""
     if a["sources"]:
         src_html = "<div class='col-src'><h2>참고 문헌</h2><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></div>"
@@ -1363,7 +1361,8 @@ def build_column_article(a, preview=False):
   <aside class="notice"><b>핵심 요약</b><p>{md_inline(a['summary'])}</p></aside>
   <div class="prose col-body">{a['html']}</div>
   {src_html}
-  <p class="disc">※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. 증상이 있으시면 진찰을 받아 보세요. 치료 효과와 경과는 개인에 따라 다를 수 있습니다.</p>
+  <p class="col-by">{esc(byline)}</p>
+  <p class="disc" style="margin-top:6px">※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. 증상이 있으시면 진찰을 받아 보세요. 치료 효과와 경과는 개인에 따라 다를 수 있습니다.</p>
   <p style="margin-top:18px">{rel_html}</p>
 </div></section>
 {faq_html}
