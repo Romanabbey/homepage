@@ -275,9 +275,9 @@ def footer_html():
     groups = [
         ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
         ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
-        ("병원소개", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("건강칼럼", "column/"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
+        ("병원소개", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("건강칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
-    cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls if ARTICLES or u != "column/") + "</div>" for g, ls in groups)
+    cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls if ARTICLES or u not in ("column/", "editorial-policy.html")) + "</div>" for g, ls in groups)
     return f"""<footer class="site-footer">
   <div class="container">
     <div class="foot-grid">
@@ -345,7 +345,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 </body>
 </html>
 """
-    if slug == "404.html" or slug.startswith("column/"):  # 어떤 경로에서 열려도 깨지지 않도록 절대경로 사용
+    if slug == "404.html" or slug.startswith("column/") or OUT != ROOT:  # 어떤 경로에서 열려도 깨지지 않도록 절대경로 사용
         out = re.sub(r'(href|src)=(["\'])(?!https?:|tel:|mailto:|#|/)', lambda mm: f"{mm.group(1)}={mm.group(2)}/", out)
     if OUT != ROOT:  # 미리보기: 칼럼 링크가 preview 폴더 안의 글로 연결되도록
         out = out.replace('href="/column/', 'href="/preview/column/').replace("href='/column/", "href='/preview/column/")
@@ -1362,7 +1362,7 @@ def build_column_article(a, preview=False):
   <div class="prose col-body">{a['html']}</div>
   {src_html}
   <p class="col-by">{esc(byline)}</p>
-  <p class="disc" style="margin-top:6px">※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. 증상이 있으시면 진찰을 받아 보세요. 치료 효과와 경과는 개인에 따라 다를 수 있습니다.</p>
+  <p class="disc" style="margin-top:6px">※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. 증상이 있으시면 진찰을 받아 보세요. 치료 효과와 경과는 개인에 따라 다를 수 있습니다. <a href="editorial-policy.html" style="text-decoration:underline">작성·감수 원칙</a></p>
   <p style="margin-top:18px">{rel_html}</p>
 </div></section>
 {faq_html}
@@ -1396,11 +1396,15 @@ def build_columns():
     if not ARTICLES:
         if os.path.exists(idx):
             os.remove(idx)
+        ed = os.path.join(ROOT, "editorial-policy.html")
+        if os.path.exists(ed):
+            os.remove(ed)
         build_feed_only()
         return
     build_column_index(ARTICLES)
     for a in ARTICLES:
         build_column_article(a)
+    build_editorial()
     build_feed_only()
     # 네이버 블로그에 옮길 때 쓰는 본문 텍스트 (저장소에는 올리지 않음)
     os.makedirs(os.path.join(ROOT, "blog_out"), exist_ok=True)
@@ -1423,6 +1427,31 @@ def build_feed_only():
         f'<description>진료실에서 자주 받는 질문을 근거와 함께 정리합니다.</description><language>ko-KR</language><lastBuildDate>{now}</lastBuildDate>\n{items}</channel></rss>\n')
 
 
+def build_editorial(preview=False):
+    c = CLINIC
+    body = f"""
+<section class="phero phero-plain"><div class="container">{crumb_html("작성·감수 원칙")}<h1>작성·감수 원칙</h1>
+<p class="lead">{c['name']} 건강칼럼은 진료실에서 자주 받는 질문을 바탕으로, 아래 원칙에 따라 작성합니다.</p></div></section>
+<section class="sec" style="padding-top:20px"><div class="container narrow prose">
+  {steps([
+    ("확인할 수 있는 근거를 바탕으로 씁니다", "학회 진료지침, 논문 등 확인 가능한 자료를 바탕으로 쓰고, 글 아래에 참고 문헌을 밝힙니다. 자료로 확인되지 않은 내용은 단정해서 쓰지 않습니다."),
+    ("원장이 확인한 글만 올립니다", "사실과 표현을 원장이 확인한 뒤에 공개하며, 모든 글 아래에 “작성 구파발경희한의원 의료진 · 감수 최솔 원장”을 표시합니다."),
+    ("쓰지 않는 것이 있습니다", "치료 경험담과 후기, 치료 전후 사진, “최고”·“완치”·“즉시 효과” 같은 효과 단정 표현, 다른 의료기관과의 비교는 쓰지 않습니다."),
+    ("진단과 치료를 대신하지 않습니다", "칼럼은 일반적인 건강 정보입니다. 증상이 있으시면 진찰을 받아 보세요. 응급 증상이 있으면 먼저 가까운 응급실을 이용해 주세요."),
+    ("자료 정리에 도구를 활용할 수 있습니다", "자료를 정리하는 과정에서 인공지능 도구를 활용할 수 있으며, 공개되는 내용은 모두 원장이 확인한 것입니다."),
+    ("잘못된 내용은 확인 후 고칩니다", f"틀린 내용이나 오해를 부를 수 있는 표현을 알려 주시면 확인해서 고칩니다. 전화 {c['phone']} 로 알려 주세요."),
+  ])}
+  {notice("칼럼의 모든 내용은 일반적인 정보이며, 개인의 증상과 상태에 따른 진단과 치료는 진찰 후 안내해 드립니다. 치료 효과와 경과는 개인에 따라 다를 수 있습니다.", "안내")}
+  <p><a class="btn btn-line" href="column/">건강 칼럼 보기 {ico('arrow')}</a></p>
+</div></section>
+{cta_band()}"""
+    page("editorial-policy.html", "작성·감수 원칙 | 구파발경희한의원 건강칼럼",
+         "구파발경희한의원 건강칼럼의 작성·감수 원칙. 확인 가능한 근거를 바탕으로 쓰고, 원장이 확인한 글만 공개하며, 경험담·효과 단정·비교 표현은 쓰지 않습니다.",
+         body, current="about.html", crumbs=[("홈", ""), ("작성·감수 원칙", "editorial-policy.html")],
+         extra_head='<meta name="robots" content="noindex">\n' if preview else "")
+
+
+
 def build_column_preview():
     """초안까지 포함해 preview/ 폴더에 미리보기 페이지를 만듭니다. (공개·색인되지 않음)"""
     global OUT
@@ -1431,8 +1460,9 @@ def build_column_preview():
     build_column_index(arts, preview=True)
     for a in arts:
         build_column_article(a, preview=True)
+    build_editorial(preview=True)
     OUT = ROOT
-    print("미리보기:", len(arts), "편 → preview/column/ (서버: python3 -m http.server 8000, 주소: /preview/column/)")
+    print("미리보기:", len(arts), "편 → preview/column/ (서버: python3 -m http.server 8000, 주소: /preview/column/ , /preview/editorial-policy.html)")
 
 
 
@@ -1445,6 +1475,7 @@ def build_meta():
     if ARTICLES:
         urls += f"  <url><loc>{DOMAIN}/column/</loc><lastmod>{ARTICLES[0]['updated']}</lastmod></url>\n"
         urls += "".join(f"  <url><loc>{DOMAIN}/{col_url(a)}</loc><lastmod>{a['updated']}</lastmod></url>\n" for a in ARTICLES)
+        urls += f"  <url><loc>{DOMAIN}/editorial-policy.html</loc><lastmod>{TODAY}</lastmod></url>\n"
     open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
     bots = ["GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "Claude-User", "Claude-SearchBot", "PerplexityBot", "Google-Extended", "Applebot-Extended"]
