@@ -1345,7 +1345,7 @@ def build_column_article(a, preview=False):
     meta_line = f"{a['date'].replace('-', '.')} 작성"
     if a["updated"] != a["date"]:
         meta_line += f" · {a['updated'].replace('-', '.')} 수정"
-    meta_line += f" · 작성 {CLINIC['name']}" + (f" · 감수 원장 {reviewed}" if reviewed else "")
+    meta_line += f" · 작성 {CLINIC['name']} 의료진" + (f" · 감수 원장 {reviewed}" if reviewed else "")
     src_html = ""
     if a["sources"]:
         src_html = "<div class='col-src'><h2>참고 문헌</h2><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></div>"
@@ -1379,7 +1379,7 @@ def build_column_article(a, preview=False):
     if a["sources"]:
         art_schema["citation"] = [re.sub(r"\*\*|\[([^\]]+)\]\([^)]*\)", lambda m: m.group(1) or "", s) for s in a["sources"]]
     schema = [art_schema] + ([faq_schema(a["faq"])] if a["faq"] else [])
-    page(col_url(a), f"{a['title']} | 구파발경희한의원 건강칼럼", a["description"], body, current="about.html",
+    page(col_url(a), a.get("seo_title") or f"{a['title']} | 구파발경희한의원 건강칼럼", a["description"], body, current="about.html",
          crumbs=[("홈", ""), ("건강칼럼", "column/"), (a["title"], col_url(a))], schema=schema,
          og=a.get("image", "n-og.jpg"), extra_head='<meta name="robots" content="noindex">\n' if preview else "")
 
