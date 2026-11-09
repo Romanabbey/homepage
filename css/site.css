@@ -484,3 +484,10 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .notice-past>summary::-webkit-details-marker{display:none}
 .notice-past>summary::before{content:"+ ";font-weight:800}
 .notice-past[open]>summary::before{content:"− "}
+
+/* 원장 약력: 이어진 선 없이, 글자를 키워 읽기 쉽게 */
+.timeline{border-left:0;padding-left:0;margin:14px 0}
+.timeline li{position:relative;padding:6px 0 6px 24px;font-size:clamp(18px,1.7vw,21px);line-height:1.6;color:var(--ink)}
+.timeline li::before{content:"·";position:absolute;left:6px;top:6px;width:auto;height:auto;border-radius:0;background:none;color:var(--ink);font-weight:800}
+.plain.career li{font-size:clamp(17px,1.5vw,19px);line-height:1.6;padding-left:22px;margin:3px 0}
+.plain.career li::before{content:"·";top:0;width:auto;height:auto;border-radius:0;background:none;color:var(--ink);font-weight:800;left:6px}
