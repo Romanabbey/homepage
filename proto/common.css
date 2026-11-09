@@ -1,0 +1,10 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-serif-kr@5.2.9/index.css");
+:root{--bg:#f5f2ea;--ink:#13201a;--deep:#0e2a20;--gold:#b89658;--ivory:#f3eee0;--serif:"Noto Serif KR Variable","Noto Serif KR",serif;--sans:"Pretendard Variable","Pretendard",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit;text-decoration:none}ul{list-style:none}img{display:block;max-width:100%}
+.mark{width:40px;height:40px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 28px;font-weight:700;font-size:16px;border:1px solid currentColor;border-radius:2px}
+.btn-fill{background:var(--ivory);color:var(--deep);border-color:var(--ivory)}
+.serif{font-family:var(--serif)}
