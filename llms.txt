@@ -35,7 +35,7 @@
 - [성조숙증, 몇 살부터 의심할까요? 여아 8세·남아 9세 기준 정리](https://gupabalhani.org/column/puberty-age-criteria.html): 성조숙증은 일반적으로 여아 만 8세 미만, 남아 만 9세 미만에 사춘기 징후가 나타나는 경우를 말합니다. 대한소아내분비학회 2022 진료지침을 바탕으로 기준과 확인 방법을 정리했습니다.
 
 ## 기타
-- [의료진 소개 (원장 최솔)](https://gupabalhani.org/about.html)
+- [원장이력 (원장 최솔)](https://gupabalhani.org/about.html)
 - [진료시간 · 오시는 길](https://gupabalhani.org/hours-location.html)
 - [자주 묻는 질문](https://gupabalhani.org/faq.html)
 

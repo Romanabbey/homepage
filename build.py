@@ -37,7 +37,7 @@ DISCLAIMER = "치료 효과와 경과는 개인에 따라 다를 수 있습니�
 
 NAV = [
     ("병원소개", "about.html", [
-        ("의료진소개", "about.html"),
+        ("원장이력", "about.html"),
         ("진료시간 · 오시는 길", "hours-location.html"),
         ("예약 · 문의", "reservation.html"),
         ("공지사항", "notice.html"),
@@ -277,7 +277,7 @@ def footer_html():
     groups = [
         ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
         ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
-        ("병원소개", [("의료진소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("공지사항", "notice.html"), ("생활안내", "lifeguide.html"), ("건강칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
+        ("병원소개", [("원장이력", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("공지사항", "notice.html"), ("생활안내", "lifeguide.html"), ("건강칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
     cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls if ARTICLES or u not in ("column/", "editorial-policy.html")) + "</div>" for g, ls in groups)
     return f"""<footer class="site-footer">
@@ -515,7 +515,7 @@ def build_home():
       <span class="tag">DOCTOR</span>
       <h2>원장&nbsp;&nbsp;최&nbsp;&nbsp;솔</h2>
       <ul class="plain career">{"".join(f"<li>{esc(c)}</li>" for c in CAREER)}</ul>
-      <p><a class="btn btn-line" href="about.html">의료진 소개 보기 {ico('arrow')}</a></p>
+      <p><a class="btn btn-line" href="about.html">원장이력 보기 {ico('arrow')}</a></p>
     </div>
   </div>
 </section>
@@ -999,7 +999,7 @@ def build_about():
     career = CAREER
     body = f"""
 <section class="phero"><div class="container phero-grid">
-  <div>{crumb_html("의료진소개")}<h1>원장&nbsp;&nbsp;최&nbsp;&nbsp;솔</h1>
+  <div>{crumb_html("원장이력")}<h1>원장&nbsp;&nbsp;최&nbsp;&nbsp;솔</h1>
   <p class="lead">환자 한 분 한 분의 이야기를 듣고, 직접 진찰하고, 쉽게 설명드립니다.</p></div>
   <figure class="phero-img round"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="1024" height="1024"></figure>
 </div></section>
@@ -1016,9 +1016,9 @@ def build_about():
 <section class="sec sec-sand"><div class="container split"><figure><img src="assets/img/n-clinic.jpg" alt="상담실 예시 이미지" loading="lazy" width="1600" height="1244"><figcaption>상담실 예시 이미지 (AI 생성)</figcaption></figure>
   <div class="prose"><h2>구파발경희한의원</h2><p>{CLINIC['address']}에 있습니다. 지하철 3호선 구파발역 인근이며, 저칼로리 다이어트, N약침·초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 하고 있습니다.</p><p><a class="btn btn-line" href="hours-location.html">진료시간 · 오시는 길</a></p></div></div></section>
 {cta_band()}"""
-    page("about.html", "의료진 소개 | 구파발경희한의원 원장 최솔",
+    page("about.html", "원장이력 | 구파발경희한의원 원장 최솔",
          "구파발경희한의원 원장 최솔 약력 – 경희대학교 한의과대학 졸업, 횡성군보건소 한방진료과장, 한국한의학연구원 임상연구협력 한의사.",
-         body, current="about.html", crumbs=[("홈", ""), ("의료진소개", "about.html")], schema=[doctor_schema()], og="doctor.jpg")
+         body, current="about.html", crumbs=[("홈", ""), ("원장이력", "about.html")], schema=[doctor_schema()], og="doctor.jpg")
 
 
 def build_visit():
@@ -1633,7 +1633,7 @@ def build_meta():
 ## 건강칼럼
 {col_llms}
 ## 기타
-- [의료진 소개 (원장 최솔)]({DOMAIN}/about.html)
+- [원장이력 (원장 최솔)]({DOMAIN}/about.html)
 - [진료시간 · 오시는 길]({DOMAIN}/hours-location.html)
 - [자주 묻는 질문]({DOMAIN}/faq.html)
 
