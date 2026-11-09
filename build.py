@@ -349,7 +349,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 <link rel="stylesheet" href="css/site.css">
 <script type="application/ld+json">{ld}</script>
 {extra_head}</head>
-<body{(" class='theme-" + theme + "'") if theme else ""}>
+<body{(" class='" + " ".join(c for c in (("home" if home else ""), (("theme-" + theme) if theme else "")) if c) + "'") if (home or theme) else ""}>
 {header_html(current)}
 <main id="main">
 {body}
@@ -450,34 +450,28 @@ def build_home():
         ("05", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "n-ultrasound.jpg"),
     ]
     rows = "".join(f"""<a class="srow reveal" href="{h}"><span class="sr-n">{n}</span><span class="sr-t"><b>{esc(ti)}</b><small>{esc(d)}</small></span><img src="assets/img/{im}" alt="" loading="lazy" width="1600" height="1244"><span class="sr-go">{ico('arrow')}</span></a>""" for n, ti, d, h, im in services)
+    rail_cards = "".join(f"""<a class="rcard t-{k}" href="{pr['slug']}"><img src="assets/img/{pr.get('poster') or pr['img']}" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">{pr['tag']}</span><b>{pr['name']}</b><small>{pr['tagline']}</small></span></a>""" for k, pr in PRODUCTS.items())
+    rail_cards += """<a class="rcard t-gong" href="gongjindan.html"><img src="assets/img/p-gong.jpg" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">공진단</span><b>활력 · 해울 공진단</b><small>기운을 뿌리부터 채우는 활력공진단</small></span></a>"""
     body = f"""
-<section class="hero">
-  <div class="container hero-grid">
+<section class="hero hero-a">
+  <img class="hero-bg" src="assets/img/n-hero.jpg" alt="구파발경희한의원 접수 공간 예시 이미지" width="1600" height="914" fetchpriority="high">
+  <div class="hero-main">
     <div class="hero-copy">
       <p class="kicker"><span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>구파발역 인근 · 은평구 진관4로</p>
       <h1>진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.</h1>
       <div class="btn-row">
-        <a class="btn btn-ink btn-lg" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
-        <a class="btn btn-line btn-lg" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
+        <a class="btn btn-fill btn-lg" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
+        <a class="btn btn-ghost btn-lg" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
       </div>
     </div>
-    <figure class="hero-img">
-      <img src="assets/img/n-hero.jpg" alt="구파발경희한의원 접수 공간 예시 이미지" width="1600" height="914" fetchpriority="high">
-      <figcaption class="hero-card">
-        <span>{ico('clock')} 진료시간</span>
-        <b>월·화·수·금 09:30–20:00</b>
-        <small>목 14:00–20:00 · 토 09:30–13:00</small>
-        <small>점심시간 12:30–14:00 (토요일 없음)</small>
-      </figcaption>
-    </figure>
+    <ul class="hero-list">{"".join(f'<li><a href="{h}"><em>{n}</em><span>{esc(ti)}<small>{esc(d)}</small></span>{ico("arrow")}</a></li>' for n, ti, d, h, im in services)}</ul>
   </div>
+  <div class="rail"><div class="rail-in">
+    <div class="rail-head"><div><b>엔오처방</b><small>N.O PRESCRIPTIONS</small></div><a href="#products">처방 전체 보기 {ico('arrow')}</a></div>
+    <div class="rail-cards">{rail_cards}</div>
+    <div class="rail-meta"><span>월·화·수·금 09:30–20:00 · 목 14:00–20:00 · 토 09:30–13:00</span><span>은평구 진관4로 47, 상림마을 708동 상가 115호 · 무료 주차</span><a href="{TEL}">{CLINIC['phone']}</a></div>
+  </div></div>
 </section>
-
-<section class="facts"><div class="container facts-grid">
-  <a href="hours-location.html#map">{ico('pin')}<span><b>오시는 길</b><small>은평구 진관4로 47, 상림마을 708동 상가 115호 · 무료 주차</small></span></a>
-  <a href="{TEL}">{ico('phone')}<span><b>전화 상담</b><small>{CLINIC['phone']}</small></span></a>
-  <a href="{BOOKING}" {EXT}>{ico('cal')}<span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></span></a>
-</div></section>
 
 <section class="sec" id="products">
   <div class="container">

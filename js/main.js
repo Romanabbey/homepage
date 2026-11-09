@@ -44,6 +44,14 @@
     });
   } catch (e) { /* 지원하지 않는 브라우저에서는 생략 */ }
 
+
+  // 홈: 스크롤하면 헤더를 아이보리 바탕으로
+  var hdr = document.querySelector(".site-header");
+  if (hdr && document.body.classList.contains("home")) {
+    var onS = function () { hdr.classList.toggle("scrolled", window.scrollY > 40); };
+    window.addEventListener("scroll", onS, { passive: true }); onS();
+  }
+
   // 맨 위로
   var top = document.getElementById("toTop");
   if (top) {
