@@ -1130,31 +1130,11 @@ def weather_html():
 
 def build_lifeguide():
     body = f"""
-<section class="phero phero-plain"><div class="container">{crumb_html("생활안내")}<h1>생활안내</h1><p class="lead">처음 오시는 분을 위해 방문 전에 알아 두시면 좋은 내용을 모았습니다.</p></div></section>
+<section class="phero phero-plain"><div class="container">{crumb_html("생활안내")}<h1>생활안내</h1><p class="lead">매일 아침, 은평구 진관동의 날씨와 생활 한 줄을 알려 드립니다.</p></div></section>
 {weather_html()}
-<section class="sec"><div class="container narrow prose">
-  <h2>오시는 길과 주차</h2>
-  <p>{CLINIC['address']}에 있습니다. 구파발역 인근이며, 708동 지하주차장에서 무료로 주차하실 수 있습니다. 지도와 자세한 위치는 <a href="hours-location.html#map">오시는 길</a>에서 확인해 주세요.</p>
-
-  <h2>예약은 이렇게 하세요</h2>
-  <p><a href="{BOOKING}" {EXT}>네이버 예약</a> 또는 전화({CLINIC['phone']})로 예약하실 수 있습니다. 초음파 가이드 약침과 초음파 성장 검사는 확인과 준비에 시간이 더 걸려 사전 예약을 권해 드립니다.</p>
-
-  <h2>진료 전에 준비해 오시면 좋은 것</h2>
-  {checks(["신분증", "복용 중인 약과 건강기능식품(이름을 알면 함께 알려 주세요)", "다른 병원의 진단서나 X-ray·MRI 등 영상 자료(있다면)", "교통사고 진료라면 사고 일시, 가입 보험사, 담당자 연락처"])}
-
-  <h2>진찰과 한약 안내</h2>
-  <p>진찰한 뒤 상태에 맞게 진료와 한약을 안내합니다. 한약은 한의원 안에서 직접 달여 조제하며, 비용은 진찰 후 안내해 드립니다. 임신 중이거나 수유 중이시면, 복용 중인 약이나 알레르기가 있으면 진찰 때 꼭 알려 주세요.</p>
-
-  <h2>자동차보험으로 진료받으실 때</h2>
-  {steps([("보험사에 사고 접수", "가입하신 보험사에 사고를 접수하고 사고번호와 담당자를 확인해 주세요."), ("내원 전 전화 문의", f"전화({CLINIC['phone']})로 접수 방법을 문의해 주세요."), ("진료 접수", "사고 일시, 보험사, 담당자 연락처를 알려 주세요."), ("진료와 비용 처리", "보험사와의 비용 처리 절차는 보험사마다 다를 수 있어 담당자에게 확인하시는 것이 정확합니다.")])}
-
-  <h2>휴진과 공휴일</h2>
-  <p>일요일과 공휴일은 휴진합니다. 임시 휴진이나 시간 변경은 <a href="notice.html">공지사항</a>과 전화로 안내해 드립니다.</p>
-  <p class="disc">{DISCLAIMER}</p>
-</div></section>
 {cta_band()}"""
     page("lifeguide.html", "생활안내 | 구파발경희한의원",
-         "구파발경희한의원 생활안내. 오시는 길과 주차, 예약 방법, 진료 전 준비물, 한약 안내, 자동차보험 진료 순서를 정리했습니다.",
+         "구파발경희한의원 생활안내. 매일 아침 은평구 진관동의 날씨, 미세먼지와 함께 생활 한 줄을 알려 드립니다.",
          body, current="lifeguide.html", crumbs=[("홈", ""), ("생활안내", "lifeguide.html")])
 
 
