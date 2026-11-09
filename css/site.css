@@ -621,3 +621,26 @@ body.home .site-header .container{max-width:1680px;padding:0 clamp(20px,4vw,64px
 @media (max-width:1100px){#products .lineups{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:600px){#products .lineups{grid-template-columns:1fr}}
 h1,h2,h3{word-break:keep-all;text-wrap:balance}
+
+/* ═════════ 움직이는 배경: 동영상(assets/video/hero.mp4) 또는 사진 3장 슬라이드 ═════════ */
+.hero-a .hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero-slides img,.hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-slides img{opacity:0;animation:heroFade 21s infinite;transform-origin:60% 50%}
+.hero-slides img:nth-child(2){animation-delay:7s}.hero-slides img:nth-child(3){animation-delay:14s}
+@keyframes heroFade{0%{opacity:0;transform:scale(1)}6%{opacity:1}33%{opacity:1}40%{opacity:0;transform:scale(1.08)}100%{opacity:0;transform:scale(1.08)}}
+.hero-slides img:first-child{opacity:1}
+.vid-toggle{position:absolute;right:clamp(20px,4vw,64px);top:92px;z-index:3;background:rgba(8,26,19,.55);color:#f3eee0;border:1px solid rgba(243,238,224,.4);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:700;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.hero-slides img{animation:none;opacity:0}.hero-slides img:first-child{opacity:1}}
+
+/* 데스크톱 우측 고정 빠른 연결 */
+.side-rail{display:none}
+@media (min-width:921px){
+  .side-rail{display:flex;flex-direction:column;position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:55;background:var(--bg);border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 10px 30px rgba(14,42,32,.14)}
+  .side-rail a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 14px 12px;font-size:12px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--line);min-width:62px}
+  .side-rail a:last-child{border-bottom:0}
+  .side-rail a:hover{background:var(--deep);color:#f3eee0}
+  .side-rail .ic{width:22px;height:22px}
+}
+@media (min-width:921px){
+  body.home .hero-main,body.home .rail-in{padding-right:calc(clamp(20px,4vw,64px) + 76px)}
+}

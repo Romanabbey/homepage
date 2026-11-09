@@ -52,6 +52,18 @@
     window.addEventListener("scroll", onS, { passive: true }); onS();
   }
 
+
+  // 배경 동영상: 동작 줄이기 설정이면 멈춤, 일시정지 버튼
+  var hv = document.getElementById("heroVideo"), vt = document.getElementById("vidToggle");
+  if (hv) {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) { hv.removeAttribute("autoplay"); try { hv.pause(); } catch (e) {} if (vt) vt.textContent = "재생"; }
+    if (vt) vt.addEventListener("click", function () {
+      if (hv.paused) { hv.play(); vt.textContent = "일시정지"; vt.setAttribute("aria-label", "배경 영상 일시정지"); }
+      else { hv.pause(); vt.textContent = "재생"; vt.setAttribute("aria-label", "배경 영상 재생"); }
+    });
+  }
+
   // 맨 위로
   var top = document.getElementById("toTop");
   if (top) {

@@ -300,6 +300,11 @@ def footer_html():
   <a class="fab-call" href="{TEL}">{ico('phone')} 전화 상담</a>
   <a class="fab-rsv" href="{BOOKING}" {EXT}>{ico('cal')} 네이버 예약</a>
 </div>
+<nav class="side-rail" aria-label="빠른 연결">
+  <a href="{BOOKING}" {EXT}>{ico('cal')}<span>예약</span></a>
+  <a href="{TEL}">{ico('phone')}<span>전화</span></a>
+  <a href="{CLINIC['naver']}" target="_blank" rel="noopener">{ico('pin')}<span>지도</span></a>
+</nav>
 <button class="to-top" id="toTop" aria-label="맨 위로">{ico('arrow')}</button>
 <script src="js/main.js" defer></script>"""
 
@@ -450,11 +455,22 @@ def build_home():
         ("05", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "n-ultrasound.jpg"),
     ]
     rows = "".join(f"""<a class="srow reveal" href="{h}"><span class="sr-n">{n}</span><span class="sr-t"><b>{esc(ti)}</b><small>{esc(d)}</small></span><img src="assets/img/{im}" alt="" loading="lazy" width="1600" height="1244"><span class="sr-go">{ico('arrow')}</span></a>""" for n, ti, d, h, im in services)
+    # 배경: assets/video/hero.mp4 가 있으면 동영상, 없으면 사진 3장이 천천히 바뀌는 배경
+    if os.path.exists(os.path.join(ROOT, "assets", "video", "hero.mp4")):
+        webm = '<source src="assets/video/hero.webm" type="video/webm">' if os.path.exists(os.path.join(ROOT, "assets", "video", "hero.webm")) else ""
+        hero_media = ('<div class="hero-bg hero-video"><video id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/img/n-hero.jpg" aria-hidden="true">'
+                      + webm + '<source src="assets/video/hero.mp4" type="video/mp4"></video>'
+                      '<button class="vid-toggle" id="vidToggle" type="button" aria-label="배경 영상 일시정지">일시정지</button></div>')
+    else:
+        hero_media = ('<div class="hero-bg hero-slides" aria-hidden="true">'
+                      '<img src="assets/img/n-hero.jpg" alt="" width="1600" height="914" fetchpriority="high">'
+                      '<img src="assets/img/n-clinic.jpg" alt="" width="1600" height="914" loading="lazy">'
+                      '<img src="assets/img/n-ultrasound.jpg" alt="" width="1600" height="1244" loading="lazy"></div>')
     rail_cards = "".join(f"""<a class="rcard t-{k}" href="{pr['slug']}"><img src="assets/img/{pr.get('poster') or pr['img']}" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">{pr['tag']}</span><b>{pr['name']}</b><small>{pr['tagline']}</small></span></a>""" for k, pr in PRODUCTS.items())
     rail_cards += """<a class="rcard t-gong" href="gongjindan.html"><img src="assets/img/p-gong.jpg" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">공진단</span><b>활력 · 해울 공진단</b><small>기운을 뿌리부터 채우는 활력공진단</small></span></a>"""
     body = f"""
 <section class="hero hero-a">
-  <img class="hero-bg" src="assets/img/n-hero.jpg" alt="구파발경희한의원 접수 공간 예시 이미지" width="1600" height="914" fetchpriority="high">
+  {hero_media}
   <div class="hero-main">
     <div class="hero-copy">
       <p class="kicker"><span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>구파발역 인근 · 은평구 진관4로</p>
