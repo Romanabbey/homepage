@@ -1094,9 +1094,44 @@ def build_notice():
          body, current="notice.html", crumbs=[("홈", ""), ("공지사항", "notice.html")])
 
 
+def weather_html():
+    """data/weather.json 의 최근 14일을 스레드 형태로 보여 줍니다 (없으면 표시 안 함)."""
+    path = os.path.join(ROOT, "data", "weather.json")
+    if not os.path.exists(path):
+        return ""
+    rows = sorted(json.load(open(path, encoding="utf-8")), key=lambda r: r["date"], reverse=True)[:14]
+    if not rows:
+        return ""
+    wd = "월화수목금토일"
+
+    def chips(r):
+        out = [r["sky"], f"{r['tmn']}° ~ {r['tmx']}°", f"강수 {r['pop']}%"]
+        if r.get("pm10"):
+            out.append("미세먼지 " + r["pm10"])
+        if r.get("pm25"):
+            out.append("초미세먼지 " + r["pm25"])
+        return "".join(f"<span>{esc(c)}</span>" for c in out)
+
+    def dlabel(r):
+        d = datetime.date.fromisoformat(r["date"])
+        return f"{d.month}.{d.day} ({wd[d.weekday()]})"
+
+    today, rest = rows[0], rows[1:]
+    thread = "".join(f"<li><span class='wx-d'>{dlabel(r)}</span><div><p class='wx-chips'>{chips(r)}</p><p class='wx-line'>{esc(r['phrase'])}</p></div></li>" for r in rest)
+    older = f"<ol class='wx-thread'>{thread}</ol>" if rest else ""
+    return f"""<section class="sec wx"><div class="container narrow">
+  <div class="sec-head left"><span class="tag">TODAY</span><h2>오늘의 생활 날씨</h2><p>진관동 기준, 매일 아침 7시에 갱신합니다. 기상청 단기예보와 에어코리아(은평구 측정소) 정보를 바탕으로 합니다.</p></div>
+  <div class="wx-today"><span class="wx-d">{dlabel(today)}</span><p class="wx-chips">{chips(today)}</p><p class="wx-line">{esc(today['phrase'])}</p></div>
+  {older}
+  <p class="muted wx-src">예보는 달라질 수 있습니다. 일반적인 생활 안내이며 진단이나 치료를 대신하지 않습니다. 출처: 기상청, 에어코리아(한국환경공단).</p>
+</div></section>
+"""
+
+
 def build_lifeguide():
     body = f"""
 <section class="phero phero-plain"><div class="container">{crumb_html("생활안내")}<h1>생활안내</h1><p class="lead">처음 오시는 분을 위해 방문 전에 알아 두시면 좋은 내용을 모았습니다.</p></div></section>
+{weather_html()}
 <section class="sec"><div class="container narrow prose">
   <h2>오시는 길과 주차</h2>
   <p>{CLINIC['address']}에 있습니다. 구파발역 인근이며, 708동 지하주차장에서 무료로 주차하실 수 있습니다. 지도와 자세한 위치는 <a href="hours-location.html#map">오시는 길</a>에서 확인해 주세요.</p>

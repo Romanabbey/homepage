@@ -457,3 +457,17 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .ni-body{padding:0 4px 26px 112px;color:var(--ink2)}
 .ni-body p{margin:6px 0}
 @media (max-width:600px){.notice-item summary{flex-direction:column;gap:4px}.ni-body{padding-left:4px}}
+
+/* 오늘의 생활 날씨 (스레드) */
+.wx{padding-bottom:24px}
+.wx-today{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 28px}
+.wx-d{font-weight:800;font-size:14px;color:var(--c);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.wx-chips{display:flex;flex-wrap:wrap;gap:6px 8px;margin:8px 0 0}
+.wx-chips span{font-size:13px;font-weight:700;background:var(--tint);color:var(--ink);padding:4px 10px;border-radius:999px}
+.wx-line{font-size:clamp(18px,2vw,22px);font-weight:700;letter-spacing:-.03em;line-height:1.5;margin-top:12px;color:var(--ink)}
+.wx-thread{margin-top:22px;position:relative;padding-left:0}
+.wx-thread li{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+.wx-thread .wx-line{font-size:16px;font-weight:600;margin-top:6px}
+.wx-thread .wx-chips span{font-size:12.5px;padding:3px 9px}
+.wx-src{margin-top:18px}
+@media (max-width:600px){.wx-thread li{grid-template-columns:1fr;gap:4px}.wx-today{padding:20px}}
