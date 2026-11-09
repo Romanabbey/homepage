@@ -602,7 +602,7 @@ PRODUCTS = {
     "bujong": dict(
         poster="poster-bujong.jpg",
         slug="bujong.html", name="부종환 엔오", theme="bujong", img="poster-bujong.jpg", tag="붓기 · 순환",
-        tagline="붓기와 순환을 위한 처방",
+        tagline="가벼운 하루를 위한 처방",
         lead="붓기와 다리의 당김·뭉침 같은 불편감을 관리하기 위한 한약 처방입니다. 전통 처방인 당귀작약산을 기본으로 하되 약재 비율을 달리하고 산화질소(NO)를 함께 구성했습니다.",
         extra="'서근이수(舒筋利水)', 즉 근육과 인대를 풀고 수분 배출을 돕는다는 한의학적 치료 원칙에 기반한 처방입니다.",
         facts=["10일 체험분 30포", "1개월분 90포", "저녁 늦은 복용 주의"],
