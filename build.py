@@ -304,6 +304,18 @@ def footer_html():
 <script src="js/main.js" defer></script>"""
 
 
+GA_ID = "G-8ZTVRW8MTR"
+
+
+def ga_snippet():
+    # 미리보기(preview/)에서는 방문 통계를 수집하지 않음
+    if OUT != ROOT:
+        return ""
+    return (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>\n'
+            "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+            f"gtag('js',new Date());gtag('config','{GA_ID}',{{allow_google_signals:false,allow_ad_personalization_signals:false}});</script>\n")
+
+
 def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-og.jpg", home=False, theme=None, extra_head=""):
     graph = [website_schema(), clinic_schema(), doctor_schema()] if home else [clinic_schema(), doctor_schema()]
     if crumbs:
@@ -320,6 +332,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="google-site-verification" content="0WJRUcRq2db2Q2VVxxIYOsuU9rB9CT01z4pxZ5DoDhI" />
+{ga_snippet()}
 <meta name="naver-site-verification" content="aa77e98bd2a46fc62fb05d2a746f7d0d25014f06" />
 <link rel="canonical" href="{url}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
