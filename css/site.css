@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-serif-kr@5.2.9/index.css");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 :root{
@@ -446,3 +447,94 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 @media (max-width:920px){.lineup img,.lineup img.poster{grid-row:auto}}
 @media (min-width:921px){.lineup{grid-template-columns:1fr 50%;min-height:340px}}
 @media (min-width:601px){.lineup .lu-go,.lineup.has-poster .lu-go{left:0;right:auto;top:auto;bottom:30px}}
+
+
+/* ═════════ 럭셔리 레이어 (리뉴얼): 짙은 녹색 면, 아이보리 바탕, 가는 금색 선, 명조 제목 ═════════ */
+:root{
+  --bg:#f5f2ea; --card:#fffdf8; --ink:#13201a; --ink2:#58625b; --line:#dcd6c6; --tint:#ece7da;
+  --c:#12372b; --deep:#0e2a20; --soft:#e4ebe3; --gold:#a8864a; --r:6px;
+  --serif:"Noto Serif KR Variable","Noto Serif KR","Nanum Myeongjo","Apple SD Gothic Neo",serif;
+}
+.site-header{background:var(--bg);border-bottom:1px solid var(--line)}
+.gnb>li>a,.gnb .navbtn{font-size:14.5px;letter-spacing:.005em}
+.brand b{font-family:var(--serif);font-weight:700;letter-spacing:-.03em}
+.sub{border-radius:6px;box-shadow:0 14px 34px rgba(14,42,32,.10)}
+.sub a{border-radius:4px}
+.btn{border-radius:4px;letter-spacing:.005em}
+.btn-ink{background:var(--deep)}
+.btn-ink:hover{background:#000}
+.btn-line{border-color:var(--deep);color:var(--deep)}
+.btn-line:hover{background:var(--deep);color:#f5f2ea}
+
+/* hero */
+.hero{background:var(--deep);color:#f3eee0;padding:92px 0 104px}
+.hero .kicker{color:#b9c6bd}
+.hero .kicker .sep{background:rgba(255,255,255,.25)}
+.hero .status{color:#f3eee0}
+.hero h1{font-family:var(--serif);font-weight:300;font-size:clamp(34px,4.3vw,60px);line-height:1.25;letter-spacing:-.035em;word-break:keep-all;text-wrap:balance}
+.hero h1 b{font-weight:700;color:#e3cd96}
+.hero .btn-ink{background:#f3eee0;color:var(--deep)}
+.hero .btn-ink:hover{background:#fff}
+.hero .btn-line{border-color:rgba(243,238,224,.5);color:#f3eee0}
+.hero .btn-line:hover{background:#f3eee0;color:var(--deep)}
+.hero-img{isolation:isolate}
+.hero-img::before{content:"";position:absolute;inset:-16px 16px 16px -16px;border:1px solid var(--gold);z-index:-1}
+.hero-img img{border-radius:2px;aspect-ratio:4/5}
+.hero-card{background:var(--bg);color:var(--ink);border-radius:2px;box-shadow:0 14px 34px rgba(0,0,0,.28);left:-32px}
+.hero-card span,.hero-card small{color:var(--ink2)}
+
+.facts{background:var(--card);border-color:var(--line)}
+.facts .ic{color:var(--gold)}
+
+/* sections */
+.sec{padding:112px 0}
+.sec-head h2,.prose h2,.doc-grid h2,.phero h1,.pphero h1{font-family:var(--serif);font-weight:600;letter-spacing:-.035em}
+.sec-head h2{font-size:clamp(28px,3.6vw,42px)}
+.tag{color:var(--gold);font-size:12px;letter-spacing:.24em}
+.sec-head .tag::after{content:"";display:block;width:34px;height:1px;background:var(--gold);margin-top:12px}
+.sec-head:not(.left) .tag::after{margin-left:auto;margin-right:auto}
+
+.lineup{border-radius:6px;border:1px solid rgba(14,42,32,.08);transition:border-color .2s}
+.lineup:hover{transform:none;box-shadow:none;border-color:var(--gold)}
+.lineup h3{font-family:var(--serif);font-weight:700}
+.lineup img,.lineup img.poster{border-radius:3px}
+.lu-go{box-shadow:none;border:1px solid rgba(14,42,32,.15)}
+.lu-price{border-radius:2px}
+
+.srows{border-top:1px solid var(--ink)}
+.srow:hover{background:var(--card)}
+.sr-n{color:var(--gold);letter-spacing:.08em}
+.sr-t b{font-family:var(--serif);font-weight:600}
+.srow img{border-radius:3px}
+
+.trio>div{border-top:1px solid var(--gold)}
+.trio h3{font-family:var(--serif);font-weight:600}
+.num{color:var(--gold)}
+.doc-photo img{border-radius:3px}
+.panel,.fcard,.choose>div,.pcardp,.notice{border-radius:6px;background:var(--card)}
+.gcard{border-radius:8px;background:var(--card)}
+.phero-img img,.split figure img,.pp-visual img{border-radius:4px}
+.pphero{background:var(--deep)}
+.pp-emb{box-shadow:none}
+.cta-band{background:var(--deep);border-top:1px solid var(--gold)}
+.cta-band h2{font-family:var(--serif);font-weight:600}
+.site-footer{background:#0a1a13;color:#9aa8a0}
+.foot-brand{font-family:var(--serif);font-weight:700}
+.foot-grid{border-bottom-color:#1c2e25}
+.fab-rsv{background:var(--deep)}
+.faq summary{font-weight:600}
+.steps .n{background:var(--deep)}
+@media (max-width:920px){
+  .sec{padding:76px 0}
+  .hero{padding:44px 0 56px}
+  .hero-img::before{inset:-10px 10px 10px -10px}
+  .hero-card{left:12px}
+}
+@media (min-width:601px){.lineup{padding-bottom:92px}.lineup h3{font-size:clamp(22px,2.2vw,28px);word-break:keep-all}}
+@media (min-width:601px) and (max-width:1060px){.lineup{padding-bottom:88px}}
+/* 굵은 옆줄 장식 제거: 가는 선과 금색 포인트로 */
+.choose>div,.notice{border:1px solid var(--line);border-left-width:1px}
+.choose>div b,.notice b{color:var(--c)}
+.pcardp{border-top-width:1px;border-top-color:var(--line)}
+.story .quote{border-left:0;padding-left:0;font-family:var(--serif);font-weight:400}
+.timeline{border-left-width:1px}
