@@ -644,3 +644,14 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 @media (min-width:921px){
   body.home .hero-main,body.home .rail-in{padding-right:calc(clamp(20px,4vw,64px) + 76px)}
 }
+
+/* 공지사항 */
+.notice-list{border-top:1px solid var(--ink)}
+.notice-item{border-bottom:1px solid var(--line)}
+.notice-item summary{display:flex;gap:22px;align-items:baseline;padding:22px 4px;cursor:pointer;list-style:none}
+.notice-item summary::-webkit-details-marker{display:none}
+.ni-date{flex:none;font-size:14px;font-weight:800;color:var(--gold);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.ni-title{font-family:var(--serif);font-size:clamp(18px,2vw,22px);font-weight:600;letter-spacing:-.03em}
+.ni-body{padding:0 4px 26px 112px;color:var(--ink2)}
+.ni-body p{margin:6px 0}
+@media (max-width:600px){.notice-item summary{flex-direction:column;gap:4px}.ni-body{padding-left:4px}}
