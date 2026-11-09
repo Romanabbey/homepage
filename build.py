@@ -1070,27 +1070,41 @@ def build_reservation():
          body, current="reservation.html", crumbs=[("홈", ""), ("예약 · 문의", "reservation.html")])
 
 
-# 공지사항: 새 공지는 이 목록 맨 위에 추가합니다 (날짜는 YYYY-MM-DD). 문단은 줄바꿈 단위로 목록에 넣습니다.
+# 공지사항(휴진 일정): 새 공지는 이 목록에 추가합니다.
+#  - "last": 휴진 또는 변경일 중 마지막 날짜 (이 날이 지나면 '지난 공지'로 자동 이동)
+#  - "label": 목록에 보일 날짜 표시, "title": 제목, "body": 문단 목록
 NOTICES = [
-    {"date": "2026-11-09", "title": "진료시간 안내",
-     "body": ["월·화·수·금 09:30–20:00 (점심시간 12:30–14:00), 목요일 14:00–20:00, 토요일 09:30–13:00에 진료합니다.",
-              "일요일과 공휴일은 휴진합니다. 공휴일과 임시 휴진은 달라질 수 있어 전화로 확인해 주세요."]},
-    {"date": "2026-11-09", "title": "주차 안내",
-     "body": ["708동 지하주차장에서 무료로 주차하실 수 있습니다."]},
+    {"last": "2026-12-26", "label": "12.25 (금) · 12.26 (토)", "title": "12월 25일 진료 · 26일 휴진 안내",
+     "body": ["12월 25일(금)은 토요일 진료시간(09:30–13:00)으로 진료합니다.",
+              "12월 26일(토)은 휴진합니다.",
+              "원래 25일 휴진, 26일 진료였으나 두 날을 서로 바꾸었습니다."]},
+    {"last": "2027-01-02", "label": "1.1 (금) · 1.2 (토)", "title": "1월 1일 진료 · 2일 휴진 안내",
+     "body": ["1월 1일(금)은 토요일 진료시간(09:30–13:00)으로 진료합니다.",
+              "1월 2일(토)은 휴진합니다.",
+              "원래 1일 휴진, 2일 진료였으나 두 날을 서로 바꾸었습니다."]},
 ]
 
 
 def build_notice():
-    items = "".join(f"""<details class="notice-item"{' open' if i == 0 else ''}><summary><span class="ni-date">{n['date'].replace('-', '.')}</span><span class="ni-title">{esc(n['title'])}</span></summary>
-<div class="ni-body">{''.join(f'<p>{esc(t)}</p>' for t in n['body'])}</div></details>""" for i, n in enumerate(NOTICES))
+    notices = sorted(NOTICES, key=lambda n: n["last"])  # 가까운 일정부터 (지난 공지는 화면에서 접힘)
+
+    def item(i, n):
+        return (f"""<details class="notice-item" data-last="{n['last']}"{' open' if i == 0 else ''}>"""
+                f"""<summary><span class="ni-date">{esc(n['label'])}</span><span class="ni-title">{esc(n['title'])}</span></summary>"""
+                f"""<div class="ni-body">{''.join(f'<p>{esc(t)}</p>' for t in n['body'])}</div></details>""")
+
+    items = "".join(item(i, n) for i, n in enumerate(notices))
     empty = "<p class='muted'>등록된 공지사항이 없습니다.</p>" if not NOTICES else ""
     body = f"""
-<section class="phero phero-plain"><div class="container">{crumb_html("공지사항")}<h1>공지사항</h1><p class="lead">진료시간, 휴진, 이용 안내를 알려 드립니다.</p></div></section>
-<section class="sec"><div class="container narrow"><div class="notice-list">{items}{empty}</div>
-<p class="muted" style="margin-top:22px">문의는 전화 {CLINIC['phone']}로 해 주세요.</p></div></section>
+<section class="phero phero-plain"><div class="container">{crumb_html("공지사항")}<h1>공지사항</h1><p class="lead">휴진 일정과 진료일 변경을 알려 드립니다.</p></div></section>
+<section class="sec"><div class="container narrow">
+  <div class="notice-next" id="noticeNext" hidden><span class="nn-tag">다가오는 일정</span><b id="nnTitle"></b><span id="nnDate"></span></div>
+  <div class="notice-list" id="noticeList">{items}{empty}</div>
+  <details class="notice-past" id="noticePast" hidden><summary>지난 공지</summary><div class="notice-list" id="noticePastList"></div></details>
+  <p class="muted" style="margin-top:22px">문의는 전화 {CLINIC['phone']}로 해 주세요.</p></div></section>
 {cta_band()}"""
     page("notice.html", "공지사항 | 구파발경희한의원",
-         "구파발경희한의원 공지사항. 진료시간, 휴진, 주차 등 이용 안내를 알려 드립니다.",
+         "구파발경희한의원 공지사항. 휴진 일정과 진료일 변경을 안내합니다.",
          body, current="notice.html", crumbs=[("홈", ""), ("공지사항", "notice.html")])
 
 

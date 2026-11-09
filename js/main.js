@@ -44,6 +44,31 @@
     });
   } catch (e) { /* 지원하지 않는 브라우저에서는 생략 */ }
 
+  // 공지사항: 지난 공지는 접고, 가장 가까운 일정을 위에 강조 (한국 시간 기준)
+  var nl = document.getElementById("noticeList");
+  if (nl) {
+    try {
+      var kst = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+      var ymd = kst.getFullYear() + "-" + ("0" + (kst.getMonth() + 1)).slice(-2) + "-" + ("0" + kst.getDate()).slice(-2);
+      var all = Array.prototype.slice.call(nl.querySelectorAll(".notice-item"));
+      var past = all.filter(function (el) { return el.getAttribute("data-last") < ymd; });
+      var next = all.filter(function (el) { return el.getAttribute("data-last") >= ymd; });
+      var pl = document.getElementById("noticePastList"), pw = document.getElementById("noticePast");
+      if (past.length && pl && pw) {
+        past.reverse().forEach(function (el) { el.removeAttribute("open"); pl.appendChild(el); });
+        pw.hidden = false;
+      }
+      var box = document.getElementById("noticeNext");
+      if (next.length && box) {
+        var f = next[0];
+        document.getElementById("nnTitle").textContent = f.querySelector(".ni-title").textContent;
+        document.getElementById("nnDate").textContent = f.querySelector(".ni-date").textContent;
+        box.hidden = false;
+        next.forEach(function (el, i) { if (i) el.removeAttribute("open"); });
+      }
+    } catch (e) { /* 날짜 계산이 안 되면 목록을 그대로 보여 줌 */ }
+  }
+
   // 맨 위로
   var top = document.getElementById("toTop");
   if (top) {
