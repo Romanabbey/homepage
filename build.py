@@ -1482,7 +1482,7 @@ def build_column_article(a, preview=False):
   <aside class="notice col-lead"><b>먼저 결론</b><p>{md_inline(a['summary'])}</p></aside>
   <div class="prose col-body">{a['html']}</div>
   <aside class="col-author"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="160" height="160" loading="lazy">
-    <div><b>최솔 원장</b>
+    <div><b>최&nbsp;&nbsp;솔 원장</b>
     <p>경희대학교 한의과대학 졸업 · 경희대학교 침구경락센터 협력 한의사</p>
     <p class="ca-say">구파발경희한의원은 정직하게 진료합니다.</p>
     <a href="about.html">원장이력 보기 {ico('arrow')}</a></div></aside>
