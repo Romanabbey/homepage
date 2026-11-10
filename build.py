@@ -206,9 +206,11 @@ def clinic_schema():
             "@type": "PostalAddress",
             "streetAddress": CLINIC["street"],
             "addressLocality": "은평구",
+            "postalCode": "03303",
             "addressRegion": "서울특별시",
             "addressCountry": "KR",
         },
+        "geo": {"@type": "GeoCoordinates", "latitude": 37.64581, "longitude": 126.92706},  # 구글 플러스코드 JWWG+8R(8Q98JWWG+8R) 변환값
         "hasMap": [CLINIC["naver"], CLINIC["kakao"]],
         "amenityFeature": {"@type": "LocationFeatureSpecification", "name": "무료 주차 (708동 지하주차장)", "value": True},
         "areaServed": ["서울특별시 은평구", "구파발", "진관동"],
