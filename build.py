@@ -520,23 +520,23 @@ def build_home():
   <span class="lu-go">{ico('arrow')}</span>
 </a>"""
     services = [
-        ("01", "교통사고 후유증", "침 · 부항 · 물리치료 · 추나 · 약침 · 맞춤 한약", "accident.html", "n-accident.jpg"),
-        ("02", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약", "diet.html", "n-diet.jpg"),
-        ("03", "바른성장 · 초음파 성장 검사", "요골·척골·대퇴골 연골을 분석하는 초음파 검사, 나이·성별 맞춤 상담", "growth.html", "n-growth2.jpg"),
-        ("04", "산후보약", "출산 후 기력·붓기·관절·수면까지 진찰 후 개인별로 상담", "postpartum.html", "pp-a.jpg"),
-        ("05", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "n-ultrasound.jpg"),
+        ("01", "교통사고 후유증", "침 · 부항 · 물리치료 · 추나 · 약침 · 맞춤 한약", "accident.html", "care-accident.jpg"),
+        ("02", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약", "diet.html", "care-diet.jpg"),
+        ("03", "바른성장 · 초음파 성장 검사", "요골·척골·대퇴골 연골을 분석하는 초음파 검사, 나이·성별 맞춤 상담", "growth.html", "care-growth.jpg"),
+        ("04", "산후보약", "출산 후 기력·붓기·관절·수면까지 진찰 후 개인별로 상담", "postpartum.html", "care-postpartum.jpg"),
+        ("05", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "care-yakchim.jpg"),
     ]
     rows = "".join(f"""<a class="srow reveal" href="{h}"><span class="sr-n">{n}</span><span class="sr-t"><b>{esc(ti)}</b><small>{esc(d)}</small></span><img src="assets/img/{im}" alt="" loading="lazy" width="1600" height="1244"><span class="sr-go">{ico('arrow')}</span></a>""" for n, ti, d, h, im in services)
     care_cards = [
         ("목·어깨통증", "뒷목·어깨 결림과 팔 저림을 살핍니다", "neck.html", PAIN["neck"]["img"]),
         ("허리통증", "앉고 서고 숙일 때의 허리 불편을 살핍니다", "back.html", PAIN["back"]["img"]),
         ("무릎연골", "계단과 앉고 일어설 때의 무릎 통증을 살핍니다", "knee.html", PAIN["knee"]["img"]),
-        ("교통사고", "사고 후 목·허리 통증과 두통을 살핍니다", "accident.html", "n-accident.jpg"),
-        ("엔오처방", "보폐고 · 안심환 · 부종환 · 공진단", "index.html#products", "p-gong.jpg"),
-        ("다이어트", "저칼로리 식단과 원내에서 달이는 맞춤 한약", "diet.html", "n-diet.jpg"),
-        ("바른성장", "방사선 없는 초음파로 뼈나이를 확인합니다", "growth.html", "n-growth2.jpg"),
-        ("산후보약", "출산 후 기력·붓기·관절·수면을 살핍니다", "postpartum.html", "pp-a.jpg"),
-        ("N약침", "초음파로 위치를 확인하며 진행하는 약침", "yakchim.html", "n-ultrasound.jpg"),
+        ("교통사고", "사고 후 목·허리 통증과 두통을 살핍니다", "accident.html", "care-accident.jpg"),
+        ("엔오처방", "보폐고 · 안심환 · 부종환 · 공진단", "index.html#products", "care-no.jpg"),
+        ("다이어트", "저칼로리 식단과 원내에서 달이는 맞춤 한약", "diet.html", "care-diet.jpg"),
+        ("바른성장", "방사선 없는 초음파로 뼈나이를 확인합니다", "growth.html", "care-growth.jpg"),
+        ("산후보약", "출산 후 기력·붓기·관절·수면을 살핍니다", "postpartum.html", "care-postpartum.jpg"),
+        ("N약침", "초음파로 위치를 확인하며 진행하는 약침", "yakchim.html", "care-yakchim.jpg"),
     ]
     care = "".join(f"""<a class="care reveal" href="{h}"><img src="assets/img/{im}" alt="" loading="lazy" width="800" height="600"><span class="care-t"><em>{i:02d}</em><b>{esc(t)}</b><small>{esc(d)}</small></span></a>""" for i, (t, d, h, im) in enumerate(care_cards, 1))
     # 첫 화면 슬라이드 3장 (자동으로 번갈아 나옴). assets/video/slide1.mp4 처럼 동영상을 넣으면 그 장은 동영상 배경이 됩니다.
@@ -1074,7 +1074,7 @@ def build_postpartum():
 # ------------------------------------------------------------------ 통증 진료 (목·어깨, 허리, 무릎연골, 발목, 팔꿈치)
 # 사진은 임시(기존 사진). 실제 사진이 생기면 img만 바꾸면 됩니다.
 PAIN = {
-    "neck": dict(slug="neck.html", name="목·어깨통증", img="n-clinic.jpg",
+    "neck": dict(slug="neck.html", name="목·어깨통증", img="care-neck.jpg",
                  h1="목·어깨통증,<br>뭉친 곳부터 저린 곳까지 살핍니다",
                  lead="뒷목과 어깨가 뻐근하고 결리는 불편을 진찰한 뒤, 침·부항·물리치료, 추나요법, 약침, 맞춤 한약 중 필요한 치료를 조합합니다.",
                  sym=["뒷목이 뻐근하고 어깨가 늘 무겁고 뭉쳐 있다", "고개를 돌리거나 젖힐 때 불편하다", "어깨에서 팔까지 저리거나 당긴다", "목이 굳으면서 두통이 함께 온다"],
@@ -1082,7 +1082,7 @@ PAIN = {
                  chuna="목과 어깨, 등의 정렬과 움직임을 살피는 수기 치료입니다.",
                  seo="목·어깨통증 한의원 | 은평구 구파발경희한의원",
                  desc="구파발경희한의원 목·어깨통증 진료. 뒷목 뻐근함, 어깨 결림, 팔 저림을 진찰한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 상태에 맞게 조합합니다."),
-    "back": dict(slug="back.html", name="허리통증", img="n-hero.jpg",
+    "back": dict(slug="back.html", name="허리통증", img="care-back.jpg",
                  h1="허리통증,<br>앉고 서고 숙일 때를 살핍니다",
                  lead="오래 앉거나 서 있을 때, 일어나거나 숙일 때의 허리 불편을 진찰한 뒤 필요한 치료를 조합합니다.",
                  sym=["앉았다 일어날 때 허리가 뻣뻣하고 아프다", "오래 서 있거나 앉아 있으면 허리가 무겁다", "엉덩이나 다리까지 저리거나 당긴다", "허리를 숙이거나 돌리기가 불편하다"],
@@ -1090,7 +1090,7 @@ PAIN = {
                  chuna="허리와 골반의 정렬과 움직임을 살피는 수기 치료입니다.",
                  seo="허리통증 한의원 | 은평구 구파발경희한의원",
                  desc="구파발경희한의원 허리통증 진료. 앉았다 일어날 때 통증, 오래 앉거나 설 때의 불편, 다리 저림을 진찰한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
-    "knee": dict(slug="knee.html", name="무릎연골", img="n-nyakchim.jpg",
+    "knee": dict(slug="knee.html", name="무릎연골", img="care-knee.jpg",
                  h1="무릎 통증과 연골,<br>계단과 앉고 일어설 때를 살핍니다",
                  lead="계단을 오르내리거나 앉았다 일어날 때의 무릎 불편을 진찰하고, 필요하면 초음파로 무릎 주변을 확인한 뒤 치료를 조합합니다.",
                  sym=["계단을 오르내릴 때 무릎이 아프다", "앉았다 일어날 때 무릎이 시큰하다", "무릎이 붓거나 뻣뻣하다", "오래 걷고 나면 무릎이 무겁고 아프다"],
@@ -1099,7 +1099,7 @@ PAIN = {
                  note="닳은 연골이 치료로 다시 생긴다고 말씀드리지 않습니다. 영상 검사가 필요해 보이면 병원 검사를 함께 권해 드립니다.",
                  seo="무릎 통증·무릎연골 한의원 | 은평구 구파발경희한의원",
                  desc="구파발경희한의원 무릎 통증·무릎연골 진료. 계단, 앉았다 일어날 때의 무릎 통증과 붓기를 진찰하고 필요하면 초음파로 확인한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
-    "ankle": dict(slug="ankle.html", name="발목통증", img="n-ultrasound.jpg",
+    "ankle": dict(slug="ankle.html", name="발목통증", img="care-ankle.jpg",
                   h1="발목통증,<br>삐끗한 뒤부터 자주 접질리는 발목까지",
                   lead="발목을 삐끗한 뒤의 통증과 붓기, 자주 접질리는 발목의 불편을 진찰한 뒤 필요한 치료를 조합합니다.",
                   sym=["발목을 삐끗한 뒤 붓고 아프다", "발목을 자주 접질린다", "오래 걸으면 발목이 시큰하다", "발목을 위아래로 움직이기 불편하다"],
@@ -1107,7 +1107,7 @@ PAIN = {
                   chuna="발목과 발, 무릎으로 이어지는 관절의 움직임을 살피는 수기 치료입니다.",
                   seo="발목통증 한의원 | 은평구 구파발경희한의원",
                   desc="구파발경희한의원 발목통증 진료. 발목 삠, 붓기, 자주 접질리는 발목을 진찰하고 필요하면 초음파로 확인한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
-    "elbow": dict(slug="elbow.html", name="팔꿈치통증", img="n-accident.jpg",
+    "elbow": dict(slug="elbow.html", name="팔꿈치통증", img="care-elbow.jpg",
                   h1="팔꿈치통증,<br>물건을 들고 비틀 때를 살핍니다",
                   lead="물건을 들거나 손목을 비틀 때 팔꿈치 바깥쪽·안쪽이 아픈 불편을 진찰하고, 필요하면 초음파로 힘줄 주변을 확인한 뒤 치료를 조합합니다.",
                   sym=["물건을 들 때 팔꿈치 바깥쪽이나 안쪽이 아프다", "손목을 비틀거나 행주를 짤 때 아프다", "팔꿈치를 펴고 굽히기가 불편하다", "같은 동작을 반복하고 나면 더 아프다"],
