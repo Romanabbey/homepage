@@ -499,3 +499,5 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .brand small .jus i.sp{width:.4em}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .brand small{font-size:12.5px}
+.brand b{font-size:20px}
+.brand small{font-size:13.5px}
