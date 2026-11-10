@@ -390,7 +390,7 @@ def ga_snippet():
             f"gtag('js',new Date());gtag('config','{GA_ID}',{{allow_google_signals:false,allow_ad_personalization_signals:false}});</script>\n")
 
 
-def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-og.jpg", home=False, theme=None, extra_head=""):
+def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="slide-1.jpg", home=False, theme=None, extra_head=""):
     graph = [website_schema(), clinic_schema(), doctor_schema()] if home else [clinic_schema(), doctor_schema()]
     if crumbs:
         graph.append(breadcrumb(crumbs))
@@ -667,7 +667,7 @@ def build_home():
 
 def build_diet():
     body = hero_sub("저칼로리 다이어트", "저칼로리 다이어트,<br>개별 맞춤 한약으로 진행합니다",
-                    "저칼로리 식단과 함께, 진찰 후 개인별로 구성한 한약을 구파발경희한의원에서 직접 달여 드립니다.", "n-diet.jpg") + f"""
+                    "저칼로리 식단과 함께, 진찰 후 개인별로 구성한 한약을 구파발경희한의원에서 직접 달여 드립니다.", "care-diet.jpg") + f"""
 <section class="sec"><div class="container narrow prose">
   <h2>어떤 프로그램인가요?</h2>
   <p>저칼로리 다이어트는 섭취 열량을 줄이는 식단을 기본으로 합니다. 열량을 줄이는 동안 허기와 기운 저하가 부담될 수 있어, 진찰 후 <b>개인별로 약재를 구성한 맞춤 한약</b>을 함께 처방합니다. 한약은 <b>한의원 안에서 직접 달여</b> 조제합니다.</p>
@@ -690,7 +690,7 @@ def build_diet():
     page("diet.html", "저칼로리 다이어트 한약 | 구파발경희한의원 (은평구)",
          "구파발경희한의원의 저칼로리 다이어트. 저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약으로 진행합니다. 진료 전 상담 필수.",
          body, current="diet.html", crumbs=[("홈", ""), ("저칼로리 다이어트", "diet.html")],
-         schema=[faq_schema([F["diet"], F["inhouse"]])], og="n-diet.jpg")
+         schema=[faq_schema([F["diet"], F["inhouse"]])], og="care-diet.jpg")
 
 
 PRODUCTS = {
@@ -940,7 +940,7 @@ def build_patch():
 
 def build_yakchim():
     body = hero_sub("N약침 · 초음파 가이드 약침", "N약침(엔오약침)과<br>초음파 가이드 약침",
-                    "산화질소(NO) 관련 성분을 함유한 약침과, 초음파 영상으로 위치를 확인하며 진행하는 약침 시술을 상담하실 수 있습니다.", "n-nyakchim.jpg") + f"""
+                    "산화질소(NO) 관련 성분을 함유한 약침과, 초음파 영상으로 위치를 확인하며 진행하는 약침 시술을 상담하실 수 있습니다.", "care-yakchim.jpg") + f"""
 <section class="sec" id="n"><div class="container narrow">
   <div class="prose">
     <span class="tag">N-YAKCHIM</span>
@@ -955,7 +955,7 @@ def build_yakchim():
   </div>
 </div></section>
 <section class="sec sec-sand" id="us"><div class="container split rev">
-  <figure><img src="assets/img/n-ultrasound.jpg" alt="" loading="lazy" width="1600" height="1244"></figure>
+  <figure><img src="assets/img/slide-3.jpg" alt="" loading="lazy" width="1600" height="1244"></figure>
   <div class="prose">
     <span class="tag">ULTRASOUND GUIDED</span>
     <h2>초음파 가이드 약침</h2>
@@ -973,7 +973,7 @@ def build_yakchim():
     page("yakchim.html", "N약침(엔오약침) · 초음파 가이드 약침 | 은평구 구파발경희한의원",
          "서울 은평구 구파발경희한의원의 N약침(엔오약침)과 초음파 가이드 약침. 초음파 영상으로 위치를 확인하며 진행하는 약침 시술을 상담합니다.",
          body, current="yakchim.html", crumbs=[("홈", ""), ("N약침 · 초음파 가이드 약침", "yakchim.html")],
-         schema=[faq_schema([F["nyak"], F["nyak_diff"], F["us"], F["yak_pain"], F["yak_freq"]])], og="n-ultrasound.jpg")
+         schema=[faq_schema([F["nyak"], F["nyak_diff"], F["us"], F["yak_pain"], F["yak_freq"]])], og="slide-3.jpg")
 
 
 def build_growth():
@@ -1033,7 +1033,7 @@ def build_postpartum():
     cc = "".join(f"<div class='fcard reveal'><h3>{esc(a)}</h3><p>{esc(b)}</p></div>" for a, b in care)
     faqs = [F["pp_when"], F["pp_nursing"], F["pp_cs"], F["pp_late"]]
     body = hero_sub("산후보약", "산후보약,<br>출산 후 회복을 맞춤으로 살핍니다",
-                    "출산 후 기력과 붓기, 관절·골반 불편, 수면과 컨디션까지 진찰하고, 산모의 상태에 맞춰 산후보약과 치료를 상담합니다.", "pp-a.jpg") + f"""
+                    "출산 후 기력과 붓기, 관절·골반 불편, 수면과 컨디션까지 진찰하고, 산모의 상태에 맞춰 산후보약과 치료를 상담합니다.", "care-postpartum.jpg") + f"""
 <section class="sec"><div class="container">
   <div class="sec-head"><span class="tag">AFTER BIRTH</span><h2>출산 후, 몸은 이렇게 달라집니다</h2><p>출산은 몸 전체가 큰 변화를 겪는 시기입니다. 특히 출산 후 6~8주의 산욕기에는 기력과 붓기, 호르몬 변화가 함께 일어나 불편이 여러 곳에서 나타나기도 합니다.</p></div>
   <div class="fgrid">{kc}</div>
@@ -1068,7 +1068,7 @@ def build_postpartum():
     page("postpartum.html", "산후보약 · 산후 회복 한의원 | 은평구 구파발경희한의원",
          "구파발경희한의원 산후보약. 출산 후 기력, 붓기, 관절·골반 불편, 수면까지 진찰하고 산모의 체질과 수유 여부에 맞춰 맞춤 한약과 침·추나·약침 치료를 상담합니다.",
          body, current="postpartum.html", crumbs=[("홈", ""), ("산후보약", "postpartum.html")],
-         schema=[faq_schema(faqs)], og="pp-a.jpg")
+         schema=[faq_schema(faqs)], og="care-postpartum.jpg")
 
 
 # ------------------------------------------------------------------ 통증 진료 (목·어깨, 허리, 무릎연골, 발목, 팔꿈치)
@@ -1165,7 +1165,7 @@ def build_accident():
     sc = "".join(f"<div class='fcard reveal'><h3>{esc(t)}</h3><p>{esc(d)}</p></div>" for t, d in six)
     faqs = [F["acc_late"], F["acc_imaging"], F["acc_period"], F["worse"]]
     body = hero_sub("교통사고 후유증", "교통사고 후유증,<br>상태에 맞는 치료를 조합합니다",
-                    "침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약을 진찰 후 상태에 맞게 조합해 진행합니다.", "n-accident.jpg") + f"""
+                    "침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약을 진찰 후 상태에 맞게 조합해 진행합니다.", "care-accident.jpg") + f"""
 <section class="sec"><div class="container">
   <div class="sec-head"><span class="tag">SYMPTOMS</span><h2>교통사고 후유증, 이렇게 나타납니다</h2><p>사고 직후에는 괜찮다가 며칠 뒤부터 불편이 나타나기도 합니다. 영상 검사에서 이상이 없다는 말을 들었더라도 결림과 통증, 두통, 어지럼이 이어질 수 있어, 증상이 있다면 진찰을 받아 보시길 권합니다.</p></div>
   <div class="fgrid">{kc}</div>
@@ -1198,7 +1198,7 @@ def build_accident():
     page("accident.html", "교통사고 후유증 한의원 | 은평구 구파발경희한의원",
          "구파발경희한의원 교통사고 후유증 진료. 근골격계·신경계·소화기 증상과 어혈, 편타성 손상을 살피고 침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약을 조합합니다. 자동차보험 진료 안내.",
          body, current="accident.html", crumbs=[("홈", ""), ("교통사고 후유증", "accident.html")],
-         schema=[faq_schema(faqs)], og="n-accident.jpg")
+         schema=[faq_schema(faqs)], og="care-accident.jpg")
 
 
 def build_about():
@@ -1219,7 +1219,7 @@ def build_about():
     <div><span class="num">03</span><h3>꾸준한 관리</h3><p>치료 이후에도 생활 관리법을 안내해 드립니다.</p></div>
   </div>
 </div></section>
-<section class="sec sec-sand"><div class="container split"><figure><img src="assets/img/n-clinic.jpg" alt="상담실 예시 이미지" loading="lazy" width="1600" height="1244"><figcaption>상담실 예시 이미지 (AI 생성)</figcaption></figure>
+<section class="sec sec-sand"><div class="container split"><figure><img src="assets/img/slide-1.jpg" alt="상담실 예시 이미지" loading="lazy" width="1600" height="1244"><figcaption>상담실 예시 이미지 (AI 생성)</figcaption></figure>
   <div class="prose"><h2>구파발경희한의원</h2><p>{CLINIC['address']}에 있습니다. 지하철 3호선 구파발역 인근이며, 저칼로리 다이어트, N약침·초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 하고 있습니다.</p><p><a class="btn btn-line" href="hours-location.html">진료시간 · 오시는 길</a></p></div></div></section>
 {cta_band()}"""
     page("about.html", "원장이력 | 구파발경희한의원 원장 최솔",
