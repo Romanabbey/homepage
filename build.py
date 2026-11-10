@@ -17,6 +17,7 @@ CLINIC = dict(
     street="진관4로 47 은평뉴타운 상림마을 708동 상가 115호",
     phone="02-355-4517",
     phone_intl="+82-2-355-4517",
+    phone_naver_intl="+82-507-1305-4517",   # 네이버 플레이스에 표시되는 안심번호(화면에는 노출하지 않고 구조화 데이터에만 기재)
     biz="218-90-15783",
     naver="https://map.naver.com/p/entry/place/13116400",   # 네이버지도: 구파발경희한의원 장소
     kakao="https://place.map.kakao.com/1052835355",          # 카카오맵: 구파발경희한의원 장소
@@ -201,7 +202,7 @@ def clinic_schema():
         "alternateName": "구파발 한의원",
         "url": DOMAIN + "/",
         "image": DOMAIN + "/assets/img/slide-1.jpg",
-        "telephone": CLINIC["phone_intl"],
+        "telephone": [CLINIC["phone_intl"], CLINIC["phone_naver_intl"]],  # 대표번호 + 네이버 플레이스 안심번호
         "address": {
             "@type": "PostalAddress",
             "streetAddress": CLINIC["street"],
@@ -229,7 +230,7 @@ def doctor_schema():
         "@type": "Physician",
         "@id": DOMAIN + "/#doctor",
         "name": CLINIC["doctor"],
-        "jobTitle": "원장 (한의사)",
+        "jobTitle": "원장 / 한의사",
         "worksFor": {"@id": DOMAIN + "/#clinic"},
         "alumniOf": {"@type": "CollegeOrUniversity", "name": "경희대학교 한의과대학"},
         "image": DOMAIN + "/assets/img/doctor.jpg",
