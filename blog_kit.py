@@ -89,7 +89,7 @@ out = render(body)
 
 page = ['<!doctype html><meta charset="utf-8"><title>네이버 블로그 복사용</title>',
  '<style>body{font-family:-apple-system,"Apple SD Gothic Neo",sans-serif;max-width:640px;margin:30px auto;padding:0 18px;line-height:1.85;color:#111;font-size:16px}p{margin:12px 0}hr{margin:34px 0;border:0;border-top:1px dashed #bbb}.cp{margin-left:10px;padding:6px 12px;border:1px solid #1d6a4a;background:#fff;color:#1d6a4a;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer}.cp.ok{background:#1d6a4a;color:#fff}.imgbar{background:#eef6f1;border-radius:10px;padding:12px 14px;font-size:14px;margin:10px 0}.ib{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.ib .cp{margin:0;display:inline-flex;align-items:center;gap:8px}.ib .cp img{border-radius:4px}.box{background:#fff7e0;border-radius:10px;padding:14px 16px;font-size:14px}a{color:#1d6a4a}</style>',
- '<div class="box"><b>사용법</b><br>(각 칸의 <b>복사 버튼</b>을 누르면 바로 복사됩니다) ① 제목 복사 → 블로그 제목 칸 ② 본문 영역 전체 복사 → 본문에 붙여넣기 ③ 이미지는 붙여넣기가 안 되면 <b>다운로드 폴더</b>의 이미지를 사진 버튼으로 올려 표시된 위치에 넣기 ④ 태그 입력 ⑤ <b>장소 첨부</b>(구파발경희한의원) ⑥ 모바일 미리보기 확인 후 예약 발행</div>',
+ '<div class="box"><b>사용법</b><br>① <b>제목 복사</b> → 블로그 제목 칸에 붙여넣기 ② <b>본문 복사</b> → 본문에 붙여넣기 ③ 본문의 <b>[이미지 n 자리]</b> 줄을 세 번 클릭해 선택 → 아래 <b>이미지 n 복사</b> 버튼 → Cmd+V ④ <b>태그 복사</b> → 발행 설정 태그 칸 ⑤ <b>장소 첨부</b>(구파발경희한의원) ⑥ 모바일 미리보기 확인 후 예약 발행</div>',
  f'<hr><h3>제목 <button class="cp" onclick="cp(\'ttl\')">제목 복사</button></h3><p id="ttl"><b>{html.escape(title)}</b></p><hr><h3>본문 <button class="cp" onclick="cp(\'body\')">본문 복사(서식 포함)</button></h3>@@IMGBAR@@<div id="body">']
 page += out
 if refs:
