@@ -501,3 +501,27 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .brand small{font-size:12.5px}
 .brand b{font-size:20px}
 .brand small{font-size:13.5px}
+
+/* ═════════ 건강칼럼 읽기 화면 개선 ═════════ */
+.phero-plain h1{word-break:keep-all;text-wrap:balance}
+.col-lead{background:var(--soft);border:0;border-radius:14px;padding:22px 26px;margin-bottom:34px}
+.col-lead>b{display:block;font-size:13px;letter-spacing:.12em;color:var(--c);margin-bottom:6px}
+.col-lead p{font-size:18px!important;line-height:1.7;color:var(--ink)!important;margin:0!important}
+.col-body{margin-top:8px}
+.col-body p{font-size:18px;line-height:1.95;margin:16px 0}
+.col-body>p:first-child{font-size:19.5px;line-height:1.85}
+.col-body h2{margin:64px 0 12px;font-size:clamp(23px,3vw,30px);line-height:1.35;word-break:keep-all}
+.col-body h2::before{content:"";display:block;width:30px;height:3px;background:var(--c);margin-bottom:16px}
+.col-body ol{list-style:none;counter-reset:st;padding:0;margin:18px 0}
+.col-body ol li{counter-increment:st;position:relative;padding:18px 20px 18px 70px;background:#fff;border:1px solid var(--line);border-radius:14px;margin:12px 0;font-size:17.5px;line-height:1.75}
+.col-body ol li::before{content:counter(st);position:absolute;left:20px;top:17px;width:34px;height:34px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px}
+.col-body ol li b{color:var(--ink)}
+.col-body .notice{background:#fbf4e6;border:1px solid #efdcb4;border-radius:14px;padding:20px 24px;margin:26px 0}
+.col-body .notice p{font-size:17.5px!important;margin:0!important;color:var(--ink)!important}
+.col-body h3{font-size:19px;margin:30px 0 8px}
+@media (max-width:600px){.col-body p{font-size:17px}.col-body>p:first-child{font-size:18px}.col-body ol li{padding:16px 16px 16px 60px}.col-body ol li::before{left:16px;width:30px;height:30px}}
+.col-src>summary{cursor:pointer;font-weight:700;font-size:15px;color:var(--ink2);list-style:none;padding:4px 0}
+.col-src>summary::-webkit-details-marker{display:none}
+.col-src>summary::before{content:"+ ";font-weight:800}
+.col-src[open]>summary::before{content:"− "}
+.col-src ol{margin-top:10px}

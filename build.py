@@ -1467,7 +1467,7 @@ def build_column_article(a, preview=False):
     byline = f"작성 {CLINIC['name']} 의료진 · 감수 {reviewed} 원장"
     src_html = ""
     if a["sources"]:
-        src_html = "<div class='col-src'><h2>참고 문헌</h2><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></div>"
+        src_html = f"<details class='col-src'><summary>참고 문헌 {len(a['sources'])}건 보기</summary><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></details>"
     related = []
     for r in (a.get("related") or cat_link).split(","):
         r = r.strip()
@@ -1479,7 +1479,7 @@ def build_column_article(a, preview=False):
 <section class="phero phero-plain"><div class="container narrow">{crumb_html_multi([("건강칼럼", "column/"), (a['title'], None)])}
   <span class="tag">{esc(cat_name)}</span><h1>{esc(a['title'])}</h1><p class="col-meta">{esc(meta_line)}</p></div></section>
 <section class="sec" style="padding-top:20px"><div class="container narrow">
-  <aside class="notice"><b>핵심 요약</b><p>{md_inline(a['summary'])}</p></aside>
+  <aside class="notice col-lead"><b>먼저 결론</b><p>{md_inline(a['summary'])}</p></aside>
   <div class="prose col-body">{a['html']}</div>
   {src_html}
   <p class="col-by">{esc(byline)}</p>

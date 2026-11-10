@@ -111,6 +111,19 @@ def render(text):
         m = re.fullmatch(r"\{\{img:(.+?)\}\}", t.strip())
         if m:
             used.append(m.group(1)); out.append(img(m.group(1))); prev_heading = False; i += 1; continue
+        if t.startswith("## "):                                      # 소제목(번호 없이)
+            while out and out[-1] == line(""): out.pop()
+            out += [line(""), line("")]
+            out.append(f'<p style="{PH}">{html.escape(t[3:])}</p>')
+            prev_heading = True; i += 1; continue
+        if t.startswith("> "):                                       # 요약 박스: 첫 줄은 굵은 제목
+            box = []; first = True
+            while i < len(lines) and lines[i].startswith("> "):
+                txt = lines[i][2:]
+                box.append(f'<p style="{P}"><b>{html.escape(txt)}</b></p>' if first else f'<p style="{P}">{inline(txt)}</p>')
+                first = False; i += 1
+            out.append(f'<div style="{Q}">' + "".join(box) + "</div>")
+            prev_heading = False; continue
         if re.match(r"\d+\. ", t):                                   # 소제목: 위 빈 줄 2개, 아래 빈 줄 없음
             while out and out[-1] == line(""): out.pop()
             out += [line(""), line("")]
