@@ -816,3 +816,4 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 @media (min-width:1361px){.gnb>li>a,.gnb .navbtn{font-size:18px;font-weight:700;padding:0 15px;letter-spacing:-.01em}.nav-right .tel{font-size:16px}}
 @media (min-width:1101px) and (max-width:1360px){.gnb>li>a,.gnb .navbtn{font-size:16px;font-weight:700;padding:0 10px}.nav-right .tel{font-size:15px}.tel span{display:inline}}
 @media (min-width:921px) and (max-width:1100px){.gnb>li>a,.gnb .navbtn{font-size:15px;font-weight:700;padding:0 8px}}
+.sec-white{background:#fff}

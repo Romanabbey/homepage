@@ -628,7 +628,7 @@ def build_home():
 </section>
 
 
-<section class="sec sec-tint">
+<section class="sec sec-white">
   <div class="container doc-grid">
     <figure class="doc-photo reveal"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="1024" height="1024" loading="lazy"></figure>
     <div class="reveal">
@@ -1207,7 +1207,7 @@ def build_accident():
 def build_about():
     career = CAREER
     body = f"""
-<section class="phero"><div class="container phero-grid">
+<section class="phero sec-white"><div class="container phero-grid">
   <div>{crumb_html("원장이력")}<h1>원장&nbsp;&nbsp;최&nbsp;&nbsp;솔</h1>
   <p class="lead">환자 한 분 한 분의 이야기를 듣고, 직접 진찰하고, 쉽게 설명드립니다.</p></div>
   <figure class="phero-img round"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="1024" height="1024"></figure>
