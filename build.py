@@ -218,7 +218,6 @@ def clinic_schema():
         "openingHoursSpecification": spec,
         "availableService": [{"@type": "MedicalTherapy", "name": s} for s in services],
         "founder": {"@id": DOMAIN + "/#doctor"},
-        "medicalSpecialty": "TraditionalChineseMedicine",
         "potentialAction": {"@type": "ReserveAction", "name": "네이버 예약",
                             "target": {"@type": "EntryPoint", "urlTemplate": BOOKING, "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]},
                             "result": {"@type": "Reservation", "name": "구파발경희한의원 진료 예약"}},
