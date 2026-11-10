@@ -539,32 +539,52 @@ def build_home():
         ("N약침", "초음파로 위치를 확인하며 진행하는 약침", "yakchim.html", "n-ultrasound.jpg"),
     ]
     care = "".join(f"""<a class="care reveal" href="{h}"><img src="assets/img/{im}" alt="" loading="lazy" width="800" height="600"><span class="care-t"><em>{i:02d}</em><b>{esc(t)}</b><small>{esc(d)}</small></span></a>""" for i, (t, d, h, im) in enumerate(care_cards, 1))
-    # 배경: assets/video/hero.mp4 가 있으면 동영상, 없으면 사진 3장이 천천히 바뀌는 배경
-    if os.path.exists(os.path.join(ROOT, "assets", "video", "hero.mp4")):
-        webm = '<source src="assets/video/hero.webm" type="video/webm">' if os.path.exists(os.path.join(ROOT, "assets", "video", "hero.webm")) else ""
-        hero_media = ('<div class="hero-bg hero-video"><video id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/img/n-hero.jpg" aria-hidden="true">'
-                      + webm + '<source src="assets/video/hero.mp4" type="video/mp4"></video>'
-                      '<button class="vid-toggle" id="vidToggle" type="button" aria-label="배경 영상 일시정지">일시정지</button></div>')
-    else:
-        hero_media = ('<div class="hero-bg hero-slides" aria-hidden="true">'
-                      '<img src="assets/img/n-hero.jpg" alt="" width="1600" height="914" fetchpriority="high">'
-                      '<img src="assets/img/n-clinic.jpg" alt="" width="1600" height="914" loading="lazy">'
-                      '<img src="assets/img/n-ultrasound.jpg" alt="" width="1600" height="1244" loading="lazy"></div>')
+    # 첫 화면 슬라이드 3장 (자동으로 번갈아 나옴). assets/video/slide1.mp4 처럼 동영상을 넣으면 그 장은 동영상 배경이 됩니다.
+    slides = [
+        dict(img="n-hero.jpg", eyebrow="GUPABAL KYUNGHEE KOREAN MEDICINE", sub="은평뉴타운 · 구파발역 인근",
+             h1="진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.",
+             lead="충분히 듣고 원장이 직접 진찰한 뒤, 지금 상태와 치료 방향을 설명해 드립니다.",
+             btns=[("네이버 예약", BOOKING, True), (CLINIC["phone"], TEL, False)]),
+        dict(img="n-clinic.jpg", eyebrow="PAIN CARE", sub="목 · 어깨 · 허리 · 무릎 · 발목 · 팔꿈치",
+             h1="아픈 곳을 직접 살피고,<br><b>치료를 조합</b>합니다.",
+             lead="침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약 중 필요한 치료를 진찰 후 안내합니다.",
+             btns=[("통증 진료 보기", "neck.html", False), ("교통사고 진료", "accident.html", False)]),
+        dict(img="n-ultrasound.jpg", eyebrow="GROWTH CHECK", sub="초등학생 ~ 중학생",
+             h1="방사선 없는 초음파로<br><b>아이의 뼈나이</b>를 확인합니다.",
+             lead="성장판 측정은 약 2분이면 끝납니다. 성장은 시기가 중요하니 걱정되면 일찍 확인해 보세요.",
+             btns=[("바른성장 보기", "growth.html", False), ("네이버 예약", BOOKING, True)]),
+    ]
+    bgs, copies = [], []
+    for i, sl in enumerate(slides):
+        vid = os.path.join(ROOT, "assets", "video", f"slide{i+1}.mp4")
+        lazy = 'fetchpriority="high"' if i == 0 else 'loading="lazy"'
+        if os.path.exists(vid):
+            bg = (f'<video autoplay muted loop playsinline preload="{"auto" if i == 0 else "none"}" poster="assets/img/{sl["img"]}" aria-hidden="true">'
+                  f'<source src="assets/video/slide{i+1}.mp4" type="video/mp4"></video>')
+        else:
+            bg = f'<img src="assets/img/{sl["img"]}" alt="" {lazy}>'
+        bgs.append(f'<div class="hs-bg{" on" if i == 0 else ""}">{bg}</div>')
+        btn = "".join(f'<a class="btn {"btn-fill" if j == 0 else "btn-ghost"} btn-lg" href="{h}"{" " + EXT if ext else ""}>{esc(t)}{" " + ico("ext") if ext else ""}</a>'
+                      for j, (t, h, ext) in enumerate(sl["btns"]))
+        status = '<span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>' if i == 0 else ""
+        copies.append(f'<div class="hs-copy{" on" if i == 0 else ""}" aria-hidden="{"false" if i == 0 else "true"}">'
+                      f'<p class="hs-eyebrow">{sl["eyebrow"]}</p><p class="kicker">{status}{sl["sub"]}</p>'
+                      f'<h{"1" if i == 0 else "2"} class="hs-h">{sl["h1"]}</h{"1" if i == 0 else "2"}><p class="hs-lead">{sl["lead"]}</p>'
+                      f'<div class="btn-row">{btn}</div></div>')
+    hero_media = '<div class="hero-bg hs-bgs" aria-hidden="true">' + "".join(bgs) + '</div>'
+    hero_copy = "".join(copies)
+    hero_ctrl = ('<div class="hs-ctrl"><button type="button" class="hs-prev" aria-label="이전 화면">‹</button>'
+                 + "".join(f'<button type="button" class="hs-dot{" on" if i == 0 else ""}" aria-label="{i+1}번째 화면"><i></i></button>' for i in range(len(slides)))
+                 + '<button type="button" class="hs-next" aria-label="다음 화면">›</button>'
+                 '<button type="button" class="hs-pause" aria-label="자동 넘김 멈춤">일시정지</button></div>')
     rail_cards = "".join(f"""<a class="rcard t-{k}" href="{pr['slug']}"><img src="assets/img/{pr.get('poster') or pr['img']}" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">{pr['tag']}</span><b>{pr['name']}</b><small>{pr['tagline']}</small></span></a>""" for k, pr in PRODUCTS.items())
     rail_cards += """<a class="rcard t-gong" href="gongjindan.html"><img src="assets/img/p-gong.jpg" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">공진단</span><b>활력 · 해울 공진단</b><small>기운을 뿌리부터 채우는 활력공진단</small></span></a>"""
     body = f"""
 <section class="hero hero-a">
   {hero_media}
-  <div class="hero-main">
-    <div class="hero-copy">
-      <p class="kicker"><span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>구파발역 인근 · 은평구 진관4로</p>
-      <h1>진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.</h1>
-      <div class="btn-row">
-        <a class="btn btn-fill btn-lg" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
-        <a class="btn btn-ghost btn-lg" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
-      </div>
-    </div>
-    <ul class="hero-list">{"".join(f'<li><a href="{h}"><em>{n}</em><span>{esc(ti)}<small>{esc(d)}</small></span>{ico("arrow")}</a></li>' for n, ti, d, h, im in services)}</ul>
+  <div class="hero-main hs-main" id="heroSlides">
+    <div class="hs-copies">{hero_copy}</div>
+    {hero_ctrl}
   </div>
   <div class="rail"><div class="rail-in">
     <div class="rail-head"><div><b>엔오처방</b><small>N.O PRESCRIPTIONS</small></div><a href="#products">처방 전체 보기 {ico('arrow')}</a></div>

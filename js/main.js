@@ -62,6 +62,8 @@
       if (hv.paused) { hv.play(); vt.textContent = "일시정지"; vt.setAttribute("aria-label", "배경 영상 일시정지"); }
       else { hv.pause(); vt.textContent = "재생"; vt.setAttribute("aria-label", "배경 영상 재생"); }
     });
+  }
+
   // 공지사항: 지난 공지는 접고, 가장 가까운 일정을 위에 강조 (한국 시간 기준)
   var nl = document.getElementById("noticeList");
   if (nl) {
@@ -99,6 +101,34 @@
         });
       });
     });
+  }
+
+  // 첫 화면 슬라이드: 6.5초마다 자동 전환, 일시정지 버튼으로 멈춤
+  var hs = document.getElementById("heroSlides");
+  if (hs) {
+    var bgs = document.querySelectorAll(".hs-bgs .hs-bg"), cps = hs.querySelectorAll(".hs-copy"),
+        dots = hs.querySelectorAll(".hs-dot"), ctrl = hs.querySelector(".hs-ctrl"), pb = hs.querySelector(".hs-pause");
+    var cur = 0, timer = null, DUR = 6500, user = false, hover = false;
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function show(n) {
+      cur = (n + cps.length) % cps.length;
+      [bgs, cps, dots].forEach(function (list) { list.forEach(function (el, i) { el.classList.toggle("on", i === cur); }); });
+      cps.forEach(function (el, i) { el.setAttribute("aria-hidden", i === cur ? "false" : "true"); });
+      bgs.forEach(function (el, i) { var v = el.querySelector("video"); if (v) { if (i === cur) { try { v.play(); } catch (e) {} } else { v.pause(); } } });
+      restart();
+    }
+    function restart() {
+      clearTimeout(timer);
+      if (user || hover || reduce) return;
+      timer = setTimeout(function () { show(cur + 1); }, DUR);
+    }
+    function setPaused(p) { user = p; ctrl.classList.toggle("paused", p || reduce); pb.textContent = p ? "재생" : "일시정지"; pb.setAttribute("aria-label", p ? "자동 넘김 재생" : "자동 넘김 멈춤"); restart(); }
+    hs.querySelector(".hs-prev").addEventListener("click", function () { show(cur - 1); });
+    hs.querySelector(".hs-next").addEventListener("click", function () { show(cur + 1); });
+    dots.forEach(function (d, i) { d.addEventListener("click", function () { show(i); }); });
+    pb.addEventListener("click", function () { setPaused(!user); });
+    if (reduce) { ctrl.classList.add("paused"); pb.textContent = "재생"; }
+    restart();
   }
 
   // 맨 위로
