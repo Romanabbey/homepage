@@ -491,3 +491,10 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .timeline li::before{content:"·";position:absolute;left:6px;top:6px;width:auto;height:auto;border-radius:0;background:none;color:var(--ink);font-weight:800}
 .plain.career li{font-size:clamp(17px,1.5vw,19px);line-height:1.6;padding-left:22px;margin:3px 0}
 .plain.career li::before{content:"·";top:0;width:auto;height:auto;border-radius:0;background:none;color:var(--ink);font-weight:800;left:6px}
+
+/* 로고 문구를 상호 너비에 맞춰 펼침 */
+.brand>span{display:inline-flex;flex-direction:column}
+.brand small .jus{display:flex;justify-content:space-between;width:100%}
+.brand small .jus i{font-style:normal}
+.brand small .jus i.sp{width:.4em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

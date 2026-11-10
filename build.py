@@ -236,6 +236,12 @@ def faq_schema(faqs):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}
 
 
+def brand_tag(text="은평뉴타운 평생주치의"):
+    """로고 문구를 상호(구파발경희한의원) 글자 너비에 맞춰 양쪽 끝으로 펼쳐 보이게 합니다."""
+    chars = "".join("<i class='sp'></i>" if c == " " else f"<i>{esc(c)}</i>" for c in text)
+    return f"<small><span class='sr'>{esc(text)}</span><span class='jus' aria-hidden='true'>{chars}</span></small>"
+
+
 def header_html(current):
     items = []
     for label, href, subs in NAV:
@@ -255,7 +261,7 @@ def header_html(current):
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
       <img class="brand-mark" src="assets/img/logo-mark.png" alt="" width="44" height="44">
-      <span><b>{CLINIC['name']}</b><small>은평뉴타운 평생주치의</small></span>
+      <span><b>{CLINIC['name']}</b>{brand_tag()}</span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
       <ul class="gnb">{nav}</ul>
