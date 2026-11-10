@@ -33,6 +33,9 @@ HOURS = [
     ("일 · 공휴일", "휴진", ""),
 ]
 
+MAP_EMBED = ('<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m5!3m3!1m2!1s0x357c970079609b21%3A0xf224f4ed784cac16!2z6rWs7YyM67Cc6rK97Z2s7ZWc7J2Y7JuQ!5e0!3m2!1sko!2skr!4v1794314697913!5m2!1sko!2skr" '
+             'title="구파발경희한의원 위치 (구글 지도)" style="border:0" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>')
+
 TRANSIT = "지하철 3호선 구파발역 1번과 2번 출구 사이에서 704번, 708번, 7211번, 7723번 버스를 타고 상림마을 아이파크 701동 앞 정류장에서 내리시면 건너편에 있습니다."
 
 DISCLAIMER = "치료 효과와 경과는 개인에 따라 다를 수 있습니다. 이 페이지는 일반적인 안내이며, 실제 치료는 진찰 후 개인별로 안내드립니다."
@@ -657,6 +660,7 @@ def build_home():
         <h4 class="way">대중교통</h4>
         <p class="muted">{TRANSIT}</p></div>
     </div>
+    {MAP_EMBED}
   </div>
 </section>
 {cta_band()}
@@ -1244,6 +1248,7 @@ def build_visit():
     <h4 class="way">주차</h4>
     <p class="parking">708동 지하주차장 <b>무료 주차</b> 가능</p></div>
 </div></section>
+<section class="sec" style="padding-top:0"><div class="container">{MAP_EMBED}</div></section>
 {cta_band()}"""
     page("hours-location.html", "진료시간 · 오시는 길 | 구파발경희한의원 (은평구 진관4로 47)",
          "구파발경희한의원 진료시간과 오시는 길. 서울 은평구 진관4로 47, 은평뉴타운 상림마을 708동 상가 115호, 구파발역 인근, 708동 지하주차장 무료 주차. 월·화·수·금 09:30–20:00, 목 14:00–20:00, 토 09:30–13:00.",
@@ -1389,6 +1394,7 @@ def build_privacy():
     <li>홈페이지를 제공하는 호스팅 서비스(GitHub Pages)와 글꼴 제공 서비스(jsDelivr)에서 서비스 운영을 위해 접속 정보(IP 주소, 브라우저 정보 등)가 처리될 수 있습니다.</li>
     <li>한의원은 홈페이지 이용 현황을 파악하기 위해 <b>방문자 통계 분석 도구(Google Analytics 4)</b>를 사용합니다. 자세한 내용은 아래 '방문자 통계 분석 및 쿠키'를 확인해 주세요. 광고 목적으로 이용자를 추적하거나 맞춤형 광고를 하지 않습니다.</li>
     <li>네이버 예약, 지도 등 외부 서비스로 이동하면 해당 서비스가 쿠키를 사용할 수 있으며, 이는 각 서비스의 개인정보처리방침이 적용됩니다.</li>
+    <li>오시는 길의 지도는 <b>구글 지도(Google Maps)</b>를 불러와 보여 줍니다. 지도가 표시될 때 구글이 접속 정보와 쿠키를 처리할 수 있으며, 이에는 구글의 개인정보처리방침이 적용됩니다. 한의원은 지도를 통해 이용자의 개인정보를 수집하지 않습니다.</li>
   </ul>
 
   <h3>방문자 통계 분석 및 쿠키 (Google Analytics 4)</h3>
@@ -1480,7 +1486,7 @@ def build_privacy():
 
   <h2>12. 개인정보 처리방침의 변경</h2>
   <p>이 방침은 {PRIVACY_DATE}부터 적용됩니다. 내용이 바뀌는 경우 변경 사항을 이 페이지를 통해 알려 드립니다.</p>
-  <p class="muted"><b>변경 이력</b><br>2026년 11월 9일: 방문자 통계 분석 도구(Google Analytics 4) 사용에 관한 내용 추가</p>
+  <p class="muted"><b>변경 이력</b><br>2026년 11월 9일: 방문자 통계 분석 도구(Google Analytics 4) 사용에 관한 내용 추가<br>2026년 11월 10일: 오시는 길 구글 지도 표시에 관한 내용 추가</p>
 </div></section>"""
     page("privacy.html", "개인정보처리방침 | 구파발경희한의원", f"{c['name']} 개인정보처리방침. 개인정보의 처리 목적·항목·보유기간, 정보주체의 권리, 개인정보 보호책임자 등을 안내합니다.",
          body, crumbs=[("홈", ""), ("개인정보처리방침", "privacy.html")])
