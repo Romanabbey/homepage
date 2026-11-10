@@ -534,7 +534,6 @@ def build_home():
         ("허리통증", "앉고 서고 숙일 때의 허리 불편을 살핍니다", "back.html", PAIN["back"]["img"]),
         ("무릎통증 (연골검사)", "계단과 앉고 일어설 때의 무릎 통증을 살핍니다", "knee.html", PAIN["knee"]["img"]),
         ("교통사고", "사고 후 목·허리 통증과 두통을 살핍니다", "accident.html", "care-accident.jpg"),
-        ("엔오처방", "보폐고 · 안심환 · 부종환 · 공진단", "index.html#products", "care-no.jpg"),
         ("다이어트", "저칼로리 식단과 원내에서 달이는 맞춤 한약", "diet.html", "care-diet.jpg"),
         ("바른성장", "방사선 없는 초음파로 뼈나이를 확인합니다", "growth.html", "care-growth.jpg"),
         ("산후보약", "출산 후 기력·붓기·관절·수면을 살핍니다", "postpartum.html", "care-postpartum.jpg"),
