@@ -21,7 +21,9 @@ title = title.strip()
 REGIONS = ["구파발", "진관동", "은평뉴타운", "불광동", "연신내", "응암동", "갈현동", "역촌동", "녹번동",
            "삼송", "지축", "원흥", "원당", "덕양구 효자동", "지축동", "신원동",
            "구파발역", "연신내역", "불광역", "녹번역", "지축역", "삼송역", "원흥역", "원당역"]
-GREETING = "안녕하세요, {region} 인근 분들께 은평뉴타운 평생주치의 최솔 원장이 인사드립니다."
+LOCAL = {"구파발", "진관동", "은평뉴타운", "구파발역"}   # 한의원이 있는 동네
+GREETING_LOCAL = "안녕하세요, {region} 인근 분들께 은평뉴타운 평생주치의 최솔 원장입니다."
+GREETING_OTHER = "안녕하세요, {region} 인근 분들께 구파발경희한의원 최솔 원장입니다."
 
 def pick_region():
     import random
@@ -40,7 +42,7 @@ def pick_region():
 
 if "{{greeting}}" in body:
     region = pick_region()
-    body = body.replace("{{greeting}}", GREETING.format(region=region))
+    body = body.replace("{{greeting}}", (GREETING_LOCAL if region in LOCAL else GREETING_OTHER).format(region=region))
     print("첫 줄 인사 지역:", region)
 
 def link(t):
