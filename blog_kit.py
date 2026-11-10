@@ -151,13 +151,14 @@ page = ['<!doctype html><meta charset="utf-8"><title>네이버 블로그 복사�
  '<style>body{font-family:-apple-system,"Apple SD Gothic Neo",sans-serif;max-width:640px;margin:30px auto;padding:0 18px;line-height:1.85;color:#111;font-size:16px}p{margin:12px 0}hr{margin:34px 0;border:0;border-top:1px dashed #bbb}.cp{margin-left:10px;padding:6px 12px;border:1px solid #1d6a4a;background:#fff;color:#1d6a4a;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer}.cp.ok{background:#1d6a4a;color:#fff}.imgbar{background:#eef6f1;border-radius:10px;padding:12px 14px;font-size:14px;margin:10px 0}.ib{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.ib .cp{margin:0;display:inline-flex;align-items:center;gap:8px}.ib .cp img{border-radius:4px}.box{background:#fff7e0;border-radius:10px;padding:14px 16px;font-size:14px}a{color:#1d6a4a}</style>',
  '<div class="box"><b>사용법</b><br>① <b>제목 복사</b> → 블로그 제목 칸에 붙여넣기 ② <b>본문 복사</b> → 본문에 붙여넣기 ③ 본문의 <b>[이미지 n 자리]</b> 줄을 세 번 클릭해 선택 → 아래 <b>이미지 n 복사</b> 버튼 → Cmd+V ④ <b>태그 복사</b> → 발행 설정 태그 칸 ⑤ <b>장소 첨부</b>(구파발경희한의원) ⑥ 모바일 미리보기 확인 후 예약 발행</div>',
  f'<hr><h3>제목 <button class="cp" onclick="cp(\'ttl\')">제목 복사</button></h3><p id="ttl"><b>{html.escape(title)}</b></p><hr><h3>본문 <button class="cp" onclick="cp(\'body\')">본문 복사(서식 포함)</button></h3>@@IMGBAR@@<div id="body">']
-page += out
+body_parts = list(out)
 if refs:
-    page.append(line("")); page.append(f'<p style="{PH}">참고 문헌</p>')
-    page += [line(l) for l in refs.split("\n") if l.strip()]
+    body_parts.append(line("")); body_parts.append(f'<p style="{PH}">참고 문헌</p>')
+    body_parts += [line(l) for l in refs.split("\n") if l.strip()]
 if end:
-    page.append(line(""))
-    page += render(end)
+    body_parts.append(line(""))
+    body_parts += render(end)
+page += body_parts
 page.append('</div><hr><h3>태그 <button class="cp" onclick="cp(\'tags\')">태그 복사</button></h3><p id="tags"><b>' + html.escape(tags.strip()) + '</b></p>')
 page.append('<p style="color:#888;font-size:13px">블로그 편집기에서 소제목 크기·인용구는 붙여넣기 후 일부 사라질 수 있습니다. 사라지면 소제목은 19~24pt+굵게, 박스 부분은 인용구 서식으로 다시 지정하세요.</p>')
 page.append('<script>function cp(id){var el=document.getElementById(id);var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);var ok=false;try{ok=document.execCommand("copy")}catch(e){}s.removeAllRanges();var b=event.target;var t=b.textContent;b.textContent=ok?"복사됨 ✓":"복사 실패 – 드래그해서 복사하세요";b.classList.toggle("ok",ok);setTimeout(function(){b.textContent=t;b.classList.remove("ok")},1800)}</script>')
@@ -166,6 +167,23 @@ page = [x.replace("@@IMGBAR@@", bar) for x in page]
 page.append('<script>var IMGS=' + json.dumps([b64 for _, b64 in IMGS]) + ';function cpimg(i){var b=event.currentTarget;var bin=atob(IMGS[i]),u=new Uint8Array(bin.length);for(var k=0;k<bin.length;k++)u[k]=bin.charCodeAt(k);var blob=new Blob([u],{type:"image/png"});var done=function(ok){var t=b.lastChild.textContent;b.classList.toggle("ok",ok);b.lastChild.textContent=ok?" 복사됨 ✓ 이제 Cmd+V":" 복사 실패";setTimeout(function(){b.classList.remove("ok");b.lastChild.textContent=t},2200)};try{navigator.clipboard.write([new ClipboardItem({"image/png":blob})]).then(function(){done(true)},function(){done(false)})}catch(e){done(false)}}</script>')
 res = os.path.join(os.path.dirname(src_path) or ".", base + "-copy.html")
 open(res, "w", encoding="utf-8").write("\n".join(page))
+
+# ---- 자동 입력용 데이터: ~/naver-blog 에서 node post.mjs --kit=<이 파일> ----
+# 본문을 [이미지 n 자리] 줄에서 잘라 조각(segments)으로 두고, 그 자리에 올릴 사진(images)을 순서대로 적습니다.
+segments, images, cur = [""], [], []
+for part in body_parts:
+    m = re.search(r"\[이미지 (\d+) 자리\]", part)
+    if m:
+        segments[-1] = "".join(cur); cur = []; segments.append("")
+        images.append(os.path.abspath(os.path.join(img_dir, IMGS[int(m.group(1)) - 1][0])))
+    else:
+        cur.append(part)
+segments[-1] = "".join(cur)
+kit = os.path.join(os.path.dirname(src_path) or ".", base + "-naver.json")
+json.dump({"title": title, "tags": [t.lstrip("#") for t in tags.split() if t.strip("#")],
+           "segments": segments, "images": images},
+          open(kit, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+print("자동 입력용:", os.path.abspath(kit))
 
 # 이미지 → 다운로드 폴더
 dl = os.path.expanduser(f"~/Downloads/블로그이미지/{base}")
