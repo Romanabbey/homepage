@@ -42,7 +42,6 @@ NAV = [
         ("예약 · 문의", "reservation.html"),
         ("공지사항", "notice.html"),
         ("생활안내", "lifeguide.html"),
-        ("건강칼럼", "column/"),
         ("자주 묻는 질문", "faq.html"),
     ]),
     ("교통사고", "accident.html", []),
@@ -57,6 +56,7 @@ NAV = [
     ("바른성장", "growth.html", []),
     ("산후보약", "postpartum.html", []),
     ("N약침", "yakchim.html", []),
+    ("원장 칼럼", "column/", []),
 ]
 
 ICON_PATHS = {
@@ -242,9 +242,70 @@ def brand_tag(text="은평뉴타운 평생주치의"):
     return f"<small><span class='sr'>{esc(text)}</span><span class='jus' aria-hidden='true'>{chars}</span></small>"
 
 
+# ------------------------------------------------------------------ 네이버 블로그 (원장님이 고른 글만)
+# data/blog_posts.json 에는 원장님이 "가져와"라고 한 새 블로그 글만 넣습니다 (scripts/add_blog_post.py 사용).
+# pages: 이 글을 아래에 보여 줄 진료 페이지 키 (accident, diet, growth, postpartum, yakchim, gongjindan, bopae, anshim, bujong, patch)
+def load_blog_posts():
+    p = os.path.join(ROOT, "data", "blog_posts.json")
+    if not os.path.exists(p):
+        return []
+    posts = json.load(open(p, encoding="utf-8"))
+    return sorted(posts, key=lambda x: x.get("date", ""), reverse=True)
+
+
+BLOG_POSTS = load_blog_posts()
+
+
+def blog_card(b):
+    img = (f"<img src='{esc(b['thumb'])}' alt='' loading='lazy' referrerpolicy='no-referrer' onerror=\"this.remove()\">"
+           if b.get("thumb") else "")
+    d = b.get("date", "").replace("-", ".")
+    return (f"<a class='bcard' href='{esc(b['url'])}' target='_blank' rel='noopener'><span class='bc-img'>{img}</span>"
+            f"<span class='bc-t'><small>네이버 블로그 · {esc(d)}</small><b>{esc(b['title'])}</b></span></a>")
+
+
+def blog_section(posts, title, tag="BLOG", note=""):
+    if not posts:
+        return ""
+    cards = "".join(blog_card(b) for b in posts[:3])
+    note_html = f"<p>{note}</p>" if note else ""
+    return f"""<section class="sec blog-sec"><div class="container">
+  <div class="sec-head left"><span class="tag">{tag}</span><h2>{title}</h2>{note_html}</div>
+  <div class="bcards">{cards}</div>
+  <p style="margin-top:20px"><a class="btn btn-line" href="https://blog.naver.com/365khsol" target="_blank" rel="noopener">블로그 더 보기 {ico('ext')}</a></p>
+</div></section>"""
+
+
+def blog_related_html(page_key):
+    """진료 페이지 하단: 이 페이지에 붙이기로 고른 블로그 글만 (없으면 표시 안 함)."""
+    return blog_section([b for b in BLOG_POSTS if page_key in b.get("pages", [])], "블로그에서 더 읽기")
+
+
+# 빠른 연결 (휴대폰 하단 바 · 데스크톱 오른쪽). 유튜브·인스타그램은 주소가 생기면 여기에 한 줄 추가합니다.
+#   예) ("youtube", "유튜브", "https://www.youtube.com/@...", True),  (아이콘은 ICON_PATHS에 추가 필요)
+QUICK_LINKS = [
+    ("phone", "전화", TEL, False),
+    ("cal", "네이버 예약", BOOKING, True),
+    ("pin", "길찾기", CLINIC["naver"], True),
+]
+RAIL_LABEL = {"네이버 예약": "예약", "길찾기": "지도"}
+
+
+def quick_links_html():
+    def a(icon, label, href, ext):
+        t = " target='_blank' rel='noopener'" if ext else ""
+        return f"<a href='{href}'{t}>{ico(icon)}<span>{label}</span></a>"
+    fab = "".join(a(i, l, h, e) for i, l, h, e in QUICK_LINKS)
+    rail = "".join(a(i, RAIL_LABEL.get(l, l), h, e) for i, l, h, e in QUICK_LINKS)
+    return f"""<div class="fab" aria-label="빠른 메뉴">{fab}</div>
+<nav class="side-rail" aria-label="빠른 연결">{rail}</nav>"""
+
+
 def header_html(current):
     items = []
     for label, href, subs in NAV:
+        if href == "column/" and not ARTICLES:
+            continue
         if not ARTICLES:
             subs = [s for s in subs if s[1] != "column/"]
         is_active = current and (href == current or any(u == current for _, u in subs))
@@ -283,7 +344,7 @@ def footer_html():
     groups = [
         ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
         ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
-        ("병원소개", [("원장이력", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("공지사항", "notice.html"), ("생활안내", "lifeguide.html"), ("건강칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
+        ("병원소개", [("원장이력", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("공지사항", "notice.html"), ("생활안내", "lifeguide.html"), ("원장 칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
     cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls if ARTICLES or u not in ("column/", "editorial-policy.html")) + "</div>" for g, ls in groups)
     return f"""<footer class="site-footer">
@@ -304,15 +365,7 @@ def footer_html():
     <p class="foot-note">© {datetime.date.today().year} {CLINIC['name']}. All rights reserved.</p>
   </div>
 </footer>
-<div class="fab" aria-label="빠른 메뉴">
-  <a class="fab-call" href="{TEL}">{ico('phone')} 전화 상담</a>
-  <a class="fab-rsv" href="{BOOKING}" {EXT}>{ico('cal')} 네이버 예약</a>
-</div>
-<nav class="side-rail" aria-label="빠른 연결">
-  <a href="{BOOKING}" {EXT}>{ico('cal')}<span>예약</span></a>
-  <a href="{TEL}">{ico('phone')}<span>전화</span></a>
-  <a href="{CLINIC['naver']}" target="_blank" rel="noopener">{ico('pin')}<span>지도</span></a>
-</nav>
+{quick_links_html()}
 <button class="to-top" id="toTop" aria-label="맨 위로">{ico('arrow')}</button>
 <script src="js/main.js" defer></script>"""
 
@@ -358,7 +411,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="n-
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{DOMAIN}/assets/img/{og}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="alternate" type="application/rss+xml" title="구파발경희한의원 건강칼럼" href="{DOMAIN}/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="구파발경희한의원 원장 칼럼" href="{DOMAIN}/feed.xml">
 <link rel="stylesheet" href="css/site.css">
 <script type="application/ld+json">{ld}</script>
 {extra_head}</head>
@@ -438,6 +491,9 @@ def disclaimer():
 
 
 # ------------------------------------------------------------------ pages
+HOME_FAQ = [F["hours"], F["where"], F["booking"], F["change"], F["first_visit"], F["insurance"]]
+
+
 def build_home():
     prods = "".join(f"""<a class="lineup t-{k} reveal{' has-poster' if pr.get('poster') else ''}" href="{pr['slug']}">
   <span class="lu-emb">{emblem(k)}</span>
@@ -513,16 +569,19 @@ def build_home():
   </div>
 </section>
 
-<section class="sec">
+<section class="sec proc-sec">
   <div class="container">
-    <div class="sec-head left"><span class="tag">PRINCIPLES</span><h2>진료 원칙</h2></div>
-    <div class="trio">
-      <div class="reveal"><span class="num">01</span><h3>충분히 듣고, 직접 진찰합니다</h3><p>증상뿐 아니라 생활 습관과 걱정까지 듣고, 원장이 직접 진찰합니다.</p></div>
-      <div class="reveal"><span class="num">02</span><h3>개인별로 구성해 원내에서 달입니다</h3><p>진찰 결과에 맞춰 약재를 구성하고, 한의원 안에서 직접 달여 조제합니다.</p></div>
-      <div class="reveal"><span class="num">03</span><h3>영상으로 확인하고 설명드립니다</h3><p>초음파로 부위를 확인하고, 치료 방향과 기간, 관리법을 알기 쉽게 설명드립니다.</p></div>
-    </div>
+    <div class="sec-head left"><span class="tag">PROCESS</span><h2>진료는 이렇게 진행됩니다</h2></div>
+    <ol class="proc">
+      <li class="reveal"><span class="pn">01</span><b>듣기</b><p>증상과 생활 습관, 걱정되는 점을 먼저 듣습니다.</p></li>
+      <li class="reveal"><span class="pn">02</span><b>진찰</b><p>원장이 직접 진찰하고, 필요하면 초음파로 확인합니다.</p></li>
+      <li class="reveal"><span class="pn">03</span><b>설명</b><p>지금 상태와 치료 방향, 예상 기간을 설명드립니다.</p></li>
+      <li class="reveal"><span class="pn">04</span><b>치료</b><p>상태에 맞는 치료를 진행합니다. 한약은 원내에서 직접 달입니다.</p></li>
+      <li class="reveal"><span class="pn">05</span><b>경과 확인</b><p>다음 방문 때 변화를 확인하고 치료를 조정합니다.</p></li>
+    </ol>
   </div>
 </section>
+
 
 <section class="sec sec-tint">
   <div class="container doc-grid">
@@ -537,7 +596,8 @@ def build_home():
 </section>
 
 {col_home_html()}
-{faq_block([F["hours"], F["where"], F["booking"]])}
+{blog_section(BLOG_POSTS, "네이버 블로그", note="블로그에 새로 올린 글 가운데 일부를 모았습니다.")}
+{faq_block(HOME_FAQ)}
 <div class="container narrow more-faq"><a class="btn btn-line" href="faq.html">질문 더 보기 {ico('arrow')}</a></div>
 
 <section class="sec sec-tint" id="visit">
@@ -559,7 +619,7 @@ def build_home():
     page("index.html",
          "구파발 한의원 | 구파발경희한의원 – 보폐고·안심환·부종환 엔오, 공진단, 초음파 가이드 약침",
          "서울 은평구 구파발역 인근 구파발경희한의원. 보폐고 엔오·안심환 엔오·부종환 엔오·활력해울공진단 처방, 저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료. 원장 최솔.",
-         body, current="index.html", home=True)
+         body, current="index.html", home=True, schema=[faq_schema(HOME_FAQ)])
 
 
 def build_diet():
@@ -582,6 +642,7 @@ def build_diet():
   {disclaimer()}
 </div></section>
 {faq_block([F["diet"], F["inhouse"]], "다이어트 관련 질문")}
+{blog_related_html('diet')}
 {cta_band()}"""
     page("diet.html", "저칼로리 다이어트 한약 | 구파발경희한의원 (은평구)",
          "구파발경희한의원의 저칼로리 다이어트. 저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약으로 진행합니다. 진료 전 상담 필수.",
@@ -699,6 +760,7 @@ def build_product(key):
     {disclaimer()}
   </div>
 </section>
+{blog_related_html(key)}
 {cta_band()}"""
     page(pr["slug"], f"{pr['name']} 복용법 | 구파발경희한의원",
          f"구파발경희한의원의 {pr['name']}. {pr['desc']}. 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다.",
@@ -806,6 +868,7 @@ def build_gongjindan():
     {disclaimer()}
   </div>
 </section>
+{blog_related_html('gongjindan')}
 {cta_band()}"""
     page("gongjindan.html", "활력공진단 · 해울공진단 | 구파발경희한의원",
          "구파발경희한의원의 활력공진단. 녹용 등 12가지 약재와 엔오를 더해 5일 숙성하는 공진단과, 스트레스가 많고 예민한 분을 위한 해울공진단, 사향 프리미엄 라인의 구성을 안내합니다. 비용은 진찰 후 안내해 드립니다.",
@@ -824,6 +887,7 @@ def build_patch():
   {checks(["사용 부위와 연령 제한은 제품 사용설명서를 확인해 주세요.", "가려움, 화끈거림 등 자극이 느껴지면 바로 떼어 주세요. 하이드로콜로이드 소재에도 알레르기나 자극이 생길 수 있고, 밀폐와 땀 때문에 피부가 불편해질 수 있습니다.", "멘톨이 함유되어 있어 임신 중에는 사용을 권하지 않습니다.", "상처가 있거나 예민한 피부에는 사용을 피해 주세요.", "사용감과 반응에는 개인차가 있습니다."])}
   {notice("몸에 불편한 증상이 있으시면 먼저 진찰을 받아 보세요. 패치 사용 여부와 부위는 상담 시 안내해 드립니다.")}
 </div></section>
+{blog_related_html('patch')}
 {cta_band()}"""
     page("patch.html", "엔오 리커버리 패치 | 구파발경희한의원",
          "구파발경희한의원의 엔오 리커버리 패치(엔오패치). 하이드로콜로이드 소재, 멘톨 함유 패치 1팩 16장. 사용 전 주의사항을 확인해 주세요.",
@@ -861,6 +925,7 @@ def build_yakchim():
 </div></section>
 <section class="sec"><div class="container narrow">{notice("출혈 경향이 있거나 항응고제를 복용 중이시거나 약물 알레르기가 있으시면 시술 전 꼭 알려 주세요.")}{disclaimer()}</div></section>
 {faq_block([F["nyak"], F["nyak_diff"], F["us"], F["yak_pain"], F["yak_freq"]], "약침 관련 질문")}
+{blog_related_html('yakchim')}
 {cta_band()}"""
     page("yakchim.html", "N약침(엔오약침) · 초음파 가이드 약침 | 은평구 구파발경희한의원",
          "서울 은평구 구파발경희한의원의 N약침(엔오약침)과 초음파 가이드 약침. 초음파 영상으로 위치를 확인하며 진행하는 약침 시술을 상담합니다.",
@@ -904,6 +969,7 @@ def build_growth():
   {disclaimer()}
 </div></section>
 {faq_block([F["growth_us"], F["puberty"]], "성장 관련 질문")}
+{blog_related_html('growth')}
 {cta_band()}"""
     page("growth.html", "바른성장 · 초음파 성장 검사 (성장클리닉) | 구파발경희한의원",
          "구파발경희한의원 바른성장(성장클리닉). 방사선 없는 RUF 방식 초음파 성장 검사로 요골·척골·대퇴골의 연골과 골화 비율을 분석해 현재 성장 상태와 예상키를 확인합니다. 성조숙증 지연, 맞춤한약, 성장침, 성장추나 상담.",
@@ -954,6 +1020,7 @@ def build_postpartum():
   {disclaimer()}
 </div></section>
 {faq_block(faqs, "산후보약 관련 질문")}
+{blog_related_html('postpartum')}
 {cta_band()}"""
     page("postpartum.html", "산후보약 · 산후 회복 한의원 | 은평구 구파발경희한의원",
          "구파발경희한의원 산후보약. 출산 후 기력, 붓기, 관절·골반 불편, 수면까지 진찰하고 산모의 체질과 수유 여부에 맞춰 맞춤 한약과 침·추나·약침 치료를 상담합니다.",
@@ -1004,6 +1071,7 @@ def build_accident():
   {disclaimer()}
 </div></section>
 {faq_block(faqs, "교통사고 관련 질문")}
+{blog_related_html('accident')}
 {cta_band()}"""
     page("accident.html", "교통사고 후유증 한의원 | 은평구 구파발경희한의원",
          "구파발경희한의원 교통사고 후유증 진료. 근골격계·신경계·소화기 증상과 어혈, 편타성 손상을 살피고 침, 부항, 물리치료, 추나요법, 약침, 맞춤 한약을 조합합니다. 자동차보험 진료 안내.",
@@ -1440,7 +1508,7 @@ def col_url(a):
 
 def col_item(a):
     cat = COL_CATS[a["category"]][0]
-    return (f"<a class='col-item reveal' href='{col_url(a)}'><span class='ci-date'>{a['date'].replace('-', '.')}<small>{esc(cat)}</small></span>"
+    return (f"<a class='col-item reveal' data-cat='{a['category']}' href='{col_url(a)}'><span class='ci-date'>{a['date'].replace('-', '.')}<small>{esc(cat)}</small></span>"
             f"<span class='ci-t'><b>{esc(a['title'])}</b><small>{esc(a['summary'].replace('**', ''))}</small></span><span class='ci-go'>{ico('arrow')}</span></a>")
 
 
@@ -1450,23 +1518,33 @@ def col_home_html():
     items = "".join(col_item(a) for a in ARTICLES[:3])
     return f"""<section class="sec">
   <div class="container">
-    <div class="sec-head left"><span class="tag">COLUMN</span><h2>건강 칼럼</h2><p>진료실에서 자주 받는 질문을 정리했습니다.</p></div>
+    <div class="sec-head left"><span class="tag">COLUMN</span><h2>원장 칼럼</h2><p>진료실에서 자주 받는 질문을 정리했습니다.</p></div>
     <div class="col-list">{items}</div>
     <p style="margin-top:22px"><a class="btn btn-line" href="column/">칼럼 전체 보기 {ico('arrow')}</a></p>
   </div>
 </section>"""
 
 
+def col_tabs(arts):
+    """원장 칼럼 분야 탭 (글이 있는 분야만). JS가 없으면 전체 목록이 그대로 보입니다."""
+    cats = [k for k in COL_CATS if any(a["category"] == k for a in arts)]
+    if len(cats) < 2:
+        return ""
+    btn = "<button type='button' class='ct on' data-cat='all'>전체</button>" + "".join(
+        f"<button type='button' class='ct' data-cat='{k}'>{esc(COL_CATS[k][0])}</button>" for k in cats)
+    return f"<div class='col-tabs' role='tablist' aria-label='칼럼 분야'>{btn}</div>"
+
+
 def build_column_index(arts, preview=False):
     items = "".join(col_item(a) for a in arts) or "<p class='muted'>아직 등록된 칼럼이 없습니다.</p>"
     body = f"""
-<section class="phero phero-plain"><div class="container">{crumb_html("건강칼럼")}<h1>건강 칼럼</h1><p class="lead">진료실에서 자주 받는 질문을 근거와 함께 정리합니다.</p></div></section>
-<section class="sec" style="padding-top:20px"><div class="container"><div class="col-list">{items}</div>
+<section class="phero phero-plain"><div class="container">{crumb_html("원장 칼럼")}<h1>원장 칼럼</h1><p class="lead">진료실에서 자주 받는 질문을 근거와 함께 정리합니다.</p></div></section>
+<section class="sec" style="padding-top:20px"><div class="container">{col_tabs(arts)}<div class="col-list" id="colList">{items}</div>
   <p class="disc">※ 칼럼은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다.</p></div></section>
 {cta_band()}"""
-    page("column/index.html", "건강 칼럼 | 구파발경희한의원",
-         "구파발경희한의원 건강 칼럼. 교통사고 후유증, 엔오처방, 다이어트, 바른성장, 산후보약, N약침에 대해 자주 받는 질문을 근거와 함께 정리합니다.",
-         body, current="about.html", crumbs=[("홈", ""), ("건강칼럼", "column/")],
+    page("column/index.html", "원장 칼럼 | 구파발경희한의원",
+         "구파발경희한의원 최솔 원장 칼럼. 교통사고 후유증, 엔오처방, 다이어트, 바른성장, 산후보약, N약침에 대해 자주 받는 질문을 근거와 함께 정리합니다.",
+         body, current="column/", crumbs=[("홈", ""), ("원장 칼럼", "column/")],
          extra_head='<meta name="robots" content="noindex">\n' if preview else "")
 
 
@@ -1474,7 +1552,7 @@ def build_column_article(a, preview=False):
     cat_name, cat_link = COL_CATS[a["category"]]
     reviewed = a.get("reviewer") or CLINIC["doctor"]   # 공개되는 글은 모두 원장 감수 완료 글
     meta_line = a['date'].replace('-', '.')   # 맨 위에는 날짜만 표시 (수정일은 표시하지 않음)
-    byline = f"작성 {CLINIC['name']} 의료진 · 감수 {reviewed} 원장"
+    byline = f"작성·감수 {reviewed} 원장"
     src_html = ""
     if a["sources"]:
         src_html = f"<details class='col-src'><summary>참고 문헌 {len(a['sources'])}건 보기</summary><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></details>"
@@ -1486,7 +1564,7 @@ def build_column_article(a, preview=False):
     rel_html = "".join(f"<a class='btn btn-line' href='{r}'>{esc(cat_name)} 진료 안내 {ico('arrow')}</a> " for r in related[:1])
     faq_html = faq_block(a["faq"], "자주 묻는 질문") if a["faq"] else ""
     body = f"""
-<section class="phero phero-plain"><div class="container narrow">{crumb_html_multi([("건강칼럼", "column/"), (a['title'], None)])}
+<section class="phero phero-plain"><div class="container narrow">{crumb_html_multi([("원장 칼럼", "column/"), (a['title'], None)])}
   <span class="tag">{esc(cat_name)}</span><h1>{esc(a['title'])}</h1><p class="col-meta">{esc(meta_line)}</p></div></section>
 <section class="sec" style="padding-top:20px"><div class="container narrow">
   <aside class="notice col-lead"><b>먼저 결론</b><p>{md_inline(a['summary'])}</p></aside>
@@ -1508,14 +1586,14 @@ def build_column_article(a, preview=False):
     art_schema = {"@type": ["Article", "MedicalWebPage"], "@id": url + "#article", "headline": a["title"],
                   "description": a["description"], "datePublished": a["date"], "dateModified": a["updated"],
                   "inLanguage": "ko-KR", "mainEntityOfPage": url, "image": DOMAIN + "/assets/img/" + a.get("image", "n-og.jpg"),
-                  "author": {"@id": DOMAIN + "/#clinic"}, "publisher": {"@id": DOMAIN + "/#clinic"}}
+                  "author": {"@id": DOMAIN + "/#doctor"}, "publisher": {"@id": DOMAIN + "/#clinic"}}
     if reviewed:
         art_schema["reviewedBy"] = doc
     if a["sources"]:
         art_schema["citation"] = [re.sub(r"\*\*|\[([^\]]+)\]\([^)]*\)", lambda m: m.group(1) or "", s) for s in a["sources"]]
     schema = [art_schema] + ([faq_schema(a["faq"])] if a["faq"] else [])
-    page(col_url(a), a.get("seo_title") or f"{a['title']} | 구파발경희한의원 건강칼럼", a["description"], body, current="about.html",
-         crumbs=[("홈", ""), ("건강칼럼", "column/"), (a["title"], col_url(a))], schema=schema,
+    page(col_url(a), a.get("seo_title") or f"{a['title']} | 구파발경희한의원 원장 칼럼", a["description"], body, current="column/",
+         crumbs=[("홈", ""), ("원장 칼럼", "column/"), (a["title"], col_url(a))], schema=schema,
          og=a.get("image", "n-og.jpg"), extra_head='<meta name="robots" content="noindex">\n' if preview else "")
 
 
@@ -1559,7 +1637,7 @@ def build_feed_only():
                   f"<pubDate>{format_datetime(d)}</pubDate><description>{esc(a['description'])}</description></item>\n")
     now = format_datetime(datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))))
     open(os.path.join(ROOT, "feed.xml"), "w", encoding="utf-8").write(
-        f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>구파발경희한의원 건강칼럼</title><link>{DOMAIN}/column/</link>'
+        f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>구파발경희한의원 원장 칼럼</title><link>{DOMAIN}/column/</link>'
         f'<description>진료실에서 자주 받는 질문을 근거와 함께 정리합니다.</description><language>ko-KR</language><lastBuildDate>{now}</lastBuildDate>\n{items}</channel></rss>\n')
 
 
@@ -1567,22 +1645,22 @@ def build_editorial(preview=False):
     c = CLINIC
     body = f"""
 <section class="phero phero-plain"><div class="container">{crumb_html("작성·감수 원칙")}<h1>작성·감수 원칙</h1>
-<p class="lead">{c['name']} 건강칼럼은 진료실에서 자주 받는 질문을 바탕으로, 아래 원칙에 따라 작성합니다.</p></div></section>
+<p class="lead">{c['name']} 원장 칼럼은 진료실에서 자주 받는 질문을 바탕으로, 아래 원칙에 따라 작성합니다.</p></div></section>
 <section class="sec" style="padding-top:20px"><div class="container narrow prose">
   {steps([
     ("확인할 수 있는 근거를 바탕으로 씁니다", "학회 진료지침, 논문 등 확인 가능한 자료를 바탕으로 쓰고, 글 아래에 참고 문헌을 밝힙니다. 자료로 확인되지 않은 내용은 단정해서 쓰지 않습니다."),
-    ("원장이 확인한 글만 올립니다", "사실과 표현을 원장이 확인한 뒤에 공개하며, 모든 글 아래에 “작성 구파발경희한의원 의료진 · 감수 최솔 원장”을 표시합니다."),
+    ("원장이 확인한 글만 올립니다", "사실과 표현을 원장이 확인한 뒤에 공개하며, 모든 글 아래에 “작성·감수 최솔 원장”을 표시합니다."),
     ("쓰지 않는 것이 있습니다", "치료 경험담과 후기, 치료 전후 사진, “최고”·“완치”·“즉시 효과” 같은 효과 단정 표현, 다른 의료기관과의 비교는 쓰지 않습니다."),
     ("진단과 치료를 대신하지 않습니다", "칼럼은 일반적인 건강 정보입니다. 증상이 있으시면 진찰을 받아 보세요. 응급 증상이 있으면 먼저 가까운 응급실을 이용해 주세요."),
     ("자료 정리에 도구를 활용할 수 있습니다", "자료를 정리하는 과정에서 인공지능 도구를 활용할 수 있으며, 공개되는 내용은 모두 원장이 확인한 것입니다."),
     ("잘못된 내용은 확인 후 고칩니다", f"틀린 내용이나 오해를 부를 수 있는 표현을 알려 주시면 확인해서 고칩니다. 전화 {c['phone']} 로 알려 주세요."),
   ])}
   {notice("칼럼의 모든 내용은 일반적인 정보이며, 개인의 증상과 상태에 따른 진단과 치료는 진찰 후 안내해 드립니다. 치료 효과와 경과는 개인에 따라 다를 수 있습니다.", "안내")}
-  <p><a class="btn btn-line" href="column/">건강 칼럼 보기 {ico('arrow')}</a></p>
+  <p><a class="btn btn-line" href="column/">원장 칼럼 보기 {ico('arrow')}</a></p>
 </div></section>
 {cta_band()}"""
-    page("editorial-policy.html", "작성·감수 원칙 | 구파발경희한의원 건강칼럼",
-         "구파발경희한의원 건강칼럼의 작성·감수 원칙. 확인 가능한 근거를 바탕으로 쓰고, 원장이 확인한 글만 공개하며, 경험담·효과 단정·비교 표현은 쓰지 않습니다.",
+    page("editorial-policy.html", "작성·감수 원칙 | 구파발경희한의원 원장 칼럼",
+         "구파발경희한의원 원장 칼럼의 작성·감수 원칙. 확인 가능한 근거를 바탕으로 쓰고, 원장이 확인한 글만 공개하며, 경험담·효과 단정·비교 표현은 쓰지 않습니다.",
          body, current="about.html", crumbs=[("홈", ""), ("작성·감수 원칙", "editorial-policy.html")],
          extra_head='<meta name="robots" content="noindex">\n' if preview else "")
 

@@ -28,12 +28,12 @@
 - [x] 개인정보처리방침 작성 완료 (실제 운영과 맞는지 확인, 위탁·CCTV 등이 생기면 갱신)
 - [ ] AI 생성 이미지를 실제 사진으로 교체
 
-## 칼럼 쓰는 법 (건강칼럼)
+## 칼럼 쓰는 법 (원장 칼럼)
 글은 **마크다운 파일 하나**가 곧 페이지 하나입니다.
 
 1. **초안 작성**: `columns/drafts/` 폴더에 `주제-영문-이름.md` 파일을 만듭니다. 이 폴더는 GitHub에 올라가지 않아 공개되지 않습니다.
 2. **미리보기**: `python3 build.py --preview` 실행 → `python3 -m http.server 8000` → 브라우저에서 `http://localhost:8000/preview/column/` 를 엽니다. (공개·색인되지 않음)
-3. **공개**: **원장 검수가 끝난 글만** 파일을 `columns/` 로 옮기고 맨 위 `status: draft` 를 `status: published` 로 바꿉니다. 공개된 글은 맨 위에 **날짜만** 표시되고(수정일은 표시하지 않음), 맨 아래 면책 문구 바로 위에 `작성 구파발경희한의원 의료진 · 감수 최솔 원장` 이 표시됩니다. 글 데이터(구조화 데이터)에도 감수자가 들어갑니다. 그래서 **검수 전 글은 절대 공개하지 않습니다.**
+3. **공개**: **원장 검수가 끝난 글만** 파일을 `columns/` 로 옮기고 맨 위 `status: draft` 를 `status: published` 로 바꿉니다. 공개된 글은 맨 위에 **날짜만** 표시되고(수정일은 표시하지 않음), 맨 아래 면책 문구 바로 위에 `작성·감수 최솔 원장` 이 표시됩니다. 글 데이터(구조화 데이터)에도 감수자가 들어갑니다. 그래서 **검수 전 글은 절대 공개하지 않습니다.**
 4. **올리기**: `python3 build.py` → `git add -A && git commit -m "칼럼: 제목" && git push`
 5. 공개되면 홈·`/column/`·사이트맵(`sitemap.xml`)·RSS(`feed.xml`)·`llms.txt` 가 자동으로 갱신됩니다. 공개 후 네이버 서치어드바이저 **요청 → RSS 제출**에 `https://gupabalhani.org/feed.xml` 을 한 번 등록하세요.
 6. **네이버 블로그**: 빌드하면 `blog_out/글이름.txt` 에 블로그에 붙여 넣을 본문이 생깁니다. 끝에 원문 링크가 들어 있습니다. (이 폴더도 GitHub에 올라가지 않습니다.)
@@ -81,3 +81,11 @@ gupabalhani.org (GitHub Pages, CNAME 파일). DNS A 레코드 185.199.108–111.
 - 인증키는 저장소 **Settings → Secrets and variables → Actions** 의 `DATA_GO_KR_KEY` 에만 넣습니다. 코드·파일에는 절대 넣지 않습니다.
 - 한 줄 멘트는 `data/weather_phrases.json` 의 확정된 문구에서만 고르며, 14일 안에 쓴 문구는 제외합니다. 문구를 바꿀 때는 이 파일을 고칩니다.
 - 수동 실행: GitHub → Actions → "오늘의 생활 날씨 갱신" → Run workflow. 로컬 시험: `DATA_GO_KR_KEY=... python3 scripts/update_weather.py`
+
+## 원장 칼럼과 네이버 블로그는 따로 운영합니다
+- **원장 칼럼**: 홈페이지에 직접 올리는 글(`columns/*.md`). 대메뉴 '원장 칼럼'과 홈의 원장 칼럼 섹션에만 나옵니다. 분야가 2개 이상이면 목록에 분야 탭이 생깁니다.
+- **네이버 블로그 글**: 기존 글은 가져오지 않고, 새로 쓴 글 중 원장님이 고른 글만 `data/blog_posts.json`에 추가합니다. 홈에는 최신 3편, 진료 페이지 하단에는 그 페이지로 지정한 글만 나옵니다. 목록이 비면 섹션이 숨겨집니다.
+  - 추가: `python3 scripts/add_blog_post.py <블로그 글 주소> --pages accident,diet`
+  - 삭제: `python3 scripts/add_blog_post.py --remove <블로그 글 주소>`
+  - 페이지 키: accident, diet, growth, postpartum, yakchim, gongjindan, bopae, anshim, bujong, patch
+- **빠른 연결(휴대폰 하단 바·데스크톱 오른쪽)**: `build.py`의 `QUICK_LINKS` 목록 하나로 관리합니다. 유튜브·인스타그램 주소가 생기면 이 목록에 추가하세요.

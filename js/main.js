@@ -87,6 +87,20 @@
     } catch (e) { /* 날짜 계산이 안 되면 목록을 그대로 보여 줌 */ }
   }
 
+  // 원장 칼럼 분야 탭
+  var tabs = document.querySelectorAll(".col-tabs .ct");
+  if (tabs.length) {
+    tabs.forEach(function (t) {
+      t.addEventListener("click", function () {
+        var c = t.getAttribute("data-cat");
+        tabs.forEach(function (x) { x.classList.toggle("on", x === t); x.setAttribute("aria-selected", x === t ? "true" : "false"); });
+        document.querySelectorAll("#colList .col-item").forEach(function (it) {
+          it.style.display = (c === "all" || it.getAttribute("data-cat") === c) ? "" : "none";
+        });
+      });
+    });
+  }
+
   // 맨 위로
   var top = document.getElementById("toTop");
   if (top) {
