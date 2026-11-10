@@ -255,7 +255,7 @@ def header_html(current):
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
       <img class="brand-mark" src="assets/img/logo-mark.png" alt="" width="44" height="44">
-      <span><b>{CLINIC['name']}</b><small>우리 가족 평생주치의</small></span>
+      <span><b>{CLINIC['name']}</b><small>은평뉴타운 평생주치의</small></span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
       <ul class="gnb">{nav}</ul>
