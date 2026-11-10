@@ -31,43 +31,56 @@ def img(name):
     b = base64.b64encode(open(p, "rb").read()).decode()
     return f'<p style="text-align:center"><img src="data:image/png;base64,{b}" width="540" alt=""></p>'
 
-H = 'font-size:22px;font-weight:700;margin:40px 0 2px'
-Q = 'background:#f3f6f4;border-left:4px solid #1d6a4a;padding:12px 16px;margin:20px 0;border-radius:6px'
+P = 'margin:0;font-size:15px;line-height:1.8;color:#000'
+PH = 'margin:0;font-size:21px;line-height:1.6;font-weight:700;color:#000'
+Q = 'background:#f3f6f4;border-left:4px solid #1d6a4a;padding:14px 18px;margin:0;border-radius:6px'
 used = []
-def blk(b):
-    mm = re.fullmatch(r"\{\{img:(.+?)\}\}", b.strip())
-    if mm:
-        used.append(mm.group(1)); return img(mm.group(1))
-    return para(b)
-out = []
-for s in re.split(r"\n\s*\n\s*\n", body.strip("\n")):
-    blocks = [b for b in re.split(r"\n\s*\n", s.strip()) if b.strip()]
-    if not blocks:
-        continue
-    first = blocks[0].split("\n")[0]
-    m = re.fullmatch(r"\{\{img:(.+?)\}\}", blocks[0].strip())
+
+def inline(t):
+    """'이름: 주소' 줄은 이름 글자에만 링크를 걸고 주소 글자는 보이지 않게 합니다."""
+    m = re.fullmatch(r"(.*?)\s*:\s*(https?://\S+)", t)
     if m:
-        used.append(m.group(1)); out.append(img(m.group(1))); continue
-    if re.match(r"\d+\. ", first):
-        out.append(f'<p style="{H}"><b>{html.escape(first)}</b></p>')
-        rest = blocks[0].split("\n")[1:]
-        if rest: out.append(para("\n".join(rest)))
-        for b in blocks[1:]:
-            mm = re.fullmatch(r"\{\{img:(.+?)\}\}", b.strip())
-            if mm: used.append(mm.group(1)); out.append(img(mm.group(1)))
-            else: out.append(para(b))
-    elif first.startswith("▶"):
-        inner = f'<b>{html.escape(first)}</b>'
-        if len(blocks) > 1:
-            inner += "<br><br>" + "<br>".join(link(l) for l in blocks[1].split("\n"))
-        out.append(f'<div style="{Q}">{inner}</div>')
-        for b in blocks[2:]:
-            out.append(blk(b))
-    else:
-        for b in blocks:
-            mm = re.fullmatch(r"\{\{img:(.+?)\}\}", b.strip())
-            if mm: used.append(mm.group(1)); out.append(img(mm.group(1)))
-            else: out.append(para(b))
+        return f'<a href="{m.group(2)}">{html.escape(m.group(1))}</a>'
+    return link(t)
+
+def line(t):
+    if not t.strip():
+        return f'<p style="{P}"><br></p>'
+    return f'<p style="{P}">{inline(t)}</p>'
+
+def render(text):
+    """줄 단위로 네이버 에디터 문단 구조(한 줄 = 한 문단, 빈 줄 = 빈 문단)에 맞춰 만듭니다."""
+    lines = text.strip("\n").split("\n")
+    out = []
+    i = 0
+    prev_heading = False
+    while i < len(lines):
+        t = lines[i]
+        m = re.fullmatch(r"\{\{img:(.+?)\}\}", t.strip())
+        if m:
+            used.append(m.group(1)); out.append(img(m.group(1))); prev_heading = False; i += 1; continue
+        if re.match(r"\d+\. ", t):                                   # 소제목: 위 빈 줄 2개, 아래 빈 줄 없음
+            while out and out[-1] == line(""): out.pop()
+            out += [line(""), line("")]
+            out.append(f'<p style="{PH}">{html.escape(t)}</p>')
+            prev_heading = True; i += 1; continue
+        if re.match(r"▶ (한눈에 보기|마무리)\s*$", t):                 # 안내 박스(인용구 모양)
+            box = [f'<p style="{P}"><b>{html.escape(t)}</b></p>', line("")]
+            i += 1
+            while i < len(lines) and lines[i].strip() == "": i += 1
+            while i < len(lines) and lines[i].strip() != "":
+                if lines[i].startswith("▶ ") or re.fullmatch(r"\{\{img:.+?\}\}", lines[i].strip()): break
+                box.append(f'<p style="{P}">{inline(lines[i])}</p>'); i += 1
+            out.append(f'<div style="{Q}">' + "".join(box) + "</div>")
+            prev_heading = False; continue
+        if not t.strip():
+            if prev_heading: i += 1; continue                        # 소제목 바로 아래 빈 줄 제거
+            if out and out[-1] == line("") and len(out) >= 2 and out[-2] == line(""):
+                i += 1; continue                                     # 빈 줄은 최대 2개까지
+        out.append(line(t)); prev_heading = False; i += 1
+    return out
+
+out = render(body)
 
 page = ['<!doctype html><meta charset="utf-8"><title>네이버 블로그 복사용</title>',
  '<style>body{font-family:-apple-system,"Apple SD Gothic Neo",sans-serif;max-width:640px;margin:30px auto;padding:0 18px;line-height:1.85;color:#111;font-size:16px}p{margin:12px 0}hr{margin:34px 0;border:0;border-top:1px dashed #bbb}.cp{margin-left:10px;padding:6px 12px;border:1px solid #1d6a4a;background:#fff;color:#1d6a4a;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer}.cp.ok{background:#1d6a4a;color:#fff}.box{background:#fff7e0;border-radius:10px;padding:14px 16px;font-size:14px}a{color:#1d6a4a}</style>',
@@ -75,10 +88,11 @@ page = ['<!doctype html><meta charset="utf-8"><title>네이버 블로그 복사�
  f'<hr><h3>제목 <button class="cp" onclick="cp(\'ttl\')">제목 복사</button></h3><p id="ttl"><b>{html.escape(title)}</b></p><hr><h3>본문 <button class="cp" onclick="cp(\'body\')">본문 복사(서식 포함)</button></h3><div id="body">']
 page += out
 if refs:
-    page.append("<p style='font-size:13px;color:#555'><b>[참고 문헌]</b><br>" + "<br>".join(link(l) for l in refs.split("\n") if l.strip()) + "</p>")
+    page.append(line("")); page.append(f'<p style="{PH}">참고 문헌</p>')
+    page += [line(l) for l in refs.split("\n") if l.strip()]
 if end:
-    for b in re.split(r"\n\s*\n", end.strip()):
-        page.append(blk(b))
+    page.append(line(""))
+    page += render(end)
 page.append('</div><hr><h3>태그 <button class="cp" onclick="cp(\'tags\')">태그 복사</button></h3><p id="tags"><b>' + html.escape(tags.strip()) + '</b></p>')
 page.append('<p style="color:#888;font-size:13px">블로그 편집기에서 소제목 크기·인용구는 붙여넣기 후 일부 사라질 수 있습니다. 사라지면 소제목은 19~24pt+굵게, 박스 부분은 인용구 서식으로 다시 지정하세요.</p>')
 page.append('<script>function cp(id){var el=document.getElementById(id);var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);var ok=false;try{ok=document.execCommand("copy")}catch(e){}s.removeAllRanges();var b=event.target;var t=b.textContent;b.textContent=ok?"복사됨 ✓":"복사 실패 – 드래그해서 복사하세요";b.classList.toggle("ok",ok);setTimeout(function(){b.textContent=t;b.classList.remove("ok")},1800)}</script>')
