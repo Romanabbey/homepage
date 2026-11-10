@@ -2,7 +2,7 @@
 """원장님이 고른 네이버 블로그 글 하나를 사이트에 올릴 목록(data/blog_posts.json)에 추가합니다.
 사용: python3 scripts/add_blog_post.py <블로그 글 주소> --pages accident,diet
       python3 scripts/add_blog_post.py --remove <블로그 글 주소>
-pages 키: accident, diet, growth, postpartum, yakchim, gongjindan, bopae, anshim, bujong, patch (홈에는 항상 최신 3편이 나옵니다)
+pages 키: neck, back, knee, ankle, elbow, accident, diet, growth, postpartum, yakchim, gongjindan, bopae, anshim, bujong, patch (홈에는 항상 최신 3편이 나옵니다)
 제목·날짜·첫 이미지는 블로그 RSS(rss.blog.naver.com/365khsol.xml)에서 가져옵니다. RSS에 없으면 --title 로 직접 넣습니다.
 """
 import argparse, json, os, re, sys, urllib.request, html
@@ -11,7 +11,7 @@ from email.utils import parsedate_to_datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data", "blog_posts.json")
 RSS = "https://rss.blog.naver.com/365khsol.xml"
-PAGES = {"accident", "diet", "growth", "postpartum", "yakchim", "gongjindan", "bopae", "anshim", "bujong", "patch"}
+PAGES = {"neck", "back", "knee", "ankle", "elbow", "accident", "diet", "growth", "postpartum", "yakchim", "gongjindan", "bopae", "anshim", "bujong", "patch"}
 
 
 def post_id(url):

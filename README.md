@@ -87,5 +87,5 @@ gupabalhani.org (GitHub Pages, CNAME 파일). DNS A 레코드 185.199.108–111.
 - **네이버 블로그 글**: 기존 글은 가져오지 않고, 새로 쓴 글 중 원장님이 고른 글만 `data/blog_posts.json`에 추가합니다. 홈에는 최신 3편, 진료 페이지 하단에는 그 페이지로 지정한 글만 나옵니다. 목록이 비면 섹션이 숨겨집니다.
   - 추가: `python3 scripts/add_blog_post.py <블로그 글 주소> --pages accident,diet`
   - 삭제: `python3 scripts/add_blog_post.py --remove <블로그 글 주소>`
-  - 페이지 키: accident, diet, growth, postpartum, yakchim, gongjindan, bopae, anshim, bujong, patch
+  - 페이지 키: neck, back, knee, ankle, elbow, accident, diet, growth, postpartum, yakchim, gongjindan, bopae, anshim, bujong, patch
 - **빠른 연결(휴대폰 하단 바·데스크톱 오른쪽)**: `build.py`의 `QUICK_LINKS` 목록 하나로 관리합니다. 유튜브·인스타그램 주소가 생기면 이 목록에 추가하세요.

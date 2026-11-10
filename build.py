@@ -44,6 +44,13 @@ NAV = [
         ("생활안내", "lifeguide.html"),
         ("자주 묻는 질문", "faq.html"),
     ]),
+    ("통증", "#", [
+        ("목·어깨통증", "neck.html"),
+        ("허리통증", "back.html"),
+        ("무릎연골", "knee.html"),
+        ("발목통증", "ankle.html"),
+        ("팔꿈치통증", "elbow.html"),
+    ]),
     ("교통사고", "accident.html", []),
     ("엔오처방", "index.html#products", [
         ("보폐고 엔오", "bopae.html"),
@@ -343,6 +350,7 @@ def header_html(current):
 def footer_html():
     groups = [
         ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
+        ("통증", [("목·어깨통증", "neck.html"), ("허리통증", "back.html"), ("무릎연골", "knee.html"), ("발목통증", "ankle.html"), ("팔꿈치통증", "elbow.html")]),
         ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
         ("병원소개", [("원장이력", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("공지사항", "notice.html"), ("생활안내", "lifeguide.html"), ("원장 칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
@@ -519,6 +527,18 @@ def build_home():
         ("05", "N약침 · 초음파 가이드 약침", "영상으로 위치를 확인하며 진행하는 약침 시술", "yakchim.html", "n-ultrasound.jpg"),
     ]
     rows = "".join(f"""<a class="srow reveal" href="{h}"><span class="sr-n">{n}</span><span class="sr-t"><b>{esc(ti)}</b><small>{esc(d)}</small></span><img src="assets/img/{im}" alt="" loading="lazy" width="1600" height="1244"><span class="sr-go">{ico('arrow')}</span></a>""" for n, ti, d, h, im in services)
+    care_cards = [
+        ("목·어깨통증", "뒷목·어깨 결림과 팔 저림을 살핍니다", "neck.html", PAIN["neck"]["img"]),
+        ("허리통증", "앉고 서고 숙일 때의 허리 불편을 살핍니다", "back.html", PAIN["back"]["img"]),
+        ("무릎연골", "계단과 앉고 일어설 때의 무릎 통증을 살핍니다", "knee.html", PAIN["knee"]["img"]),
+        ("교통사고", "사고 후 목·허리 통증과 두통을 살핍니다", "accident.html", "n-accident.jpg"),
+        ("엔오처방", "보폐고 · 안심환 · 부종환 · 공진단", "index.html#products", "p-gong.jpg"),
+        ("다이어트", "저칼로리 식단과 원내에서 달이는 맞춤 한약", "diet.html", "n-diet.jpg"),
+        ("바른성장", "방사선 없는 초음파로 뼈나이를 확인합니다", "growth.html", "n-growth2.jpg"),
+        ("산후보약", "출산 후 기력·붓기·관절·수면을 살핍니다", "postpartum.html", "pp-a.jpg"),
+        ("N약침", "초음파로 위치를 확인하며 진행하는 약침", "yakchim.html", "n-ultrasound.jpg"),
+    ]
+    care = "".join(f"""<a class="care reveal" href="{h}"><img src="assets/img/{im}" alt="" loading="lazy" width="800" height="600"><span class="care-t"><em>{i:02d}</em><b>{esc(t)}</b><small>{esc(d)}</small></span></a>""" for i, (t, d, h, im) in enumerate(care_cards, 1))
     # 배경: assets/video/hero.mp4 가 있으면 동영상, 없으면 사진 3장이 천천히 바뀌는 배경
     if os.path.exists(os.path.join(ROOT, "assets", "video", "hero.mp4")):
         webm = '<source src="assets/video/hero.webm" type="video/webm">' if os.path.exists(os.path.join(ROOT, "assets", "video", "hero.webm")) else ""
@@ -553,6 +573,13 @@ def build_home():
   </div></div>
 </section>
 
+<section class="sec" id="services">
+  <div class="container">
+    <div class="sec-head left"><span class="tag">CARE</span><h2>구파발경희한의원 진료 안내</h2><p>증상과 목적에 맞는 진료를 진찰 후 안내해 드립니다.</p></div>
+    <div class="care-grid">{care}</div>
+  </div>
+</section>
+
 <section class="sec" id="products">
   <div class="container">
     <div class="sec-head left"><span class="tag">N.O PRESCRIPTIONS</span><h2>엔오처방</h2><p>각각의 처방은 구성과 복용 방법이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
@@ -562,12 +589,7 @@ def build_home():
   </div>
 </section>
 
-<section class="sec sec-tint" id="services">
-  <div class="container">
-    <div class="sec-head left"><span class="tag">CARE</span><h2>진료</h2></div>
-    <div class="srows">{rows}</div>
-  </div>
-</section>
+
 
 <section class="sec proc-sec">
   <div class="container">
@@ -1026,6 +1048,85 @@ def build_postpartum():
          "구파발경희한의원 산후보약. 출산 후 기력, 붓기, 관절·골반 불편, 수면까지 진찰하고 산모의 체질과 수유 여부에 맞춰 맞춤 한약과 침·추나·약침 치료를 상담합니다.",
          body, current="postpartum.html", crumbs=[("홈", ""), ("산후보약", "postpartum.html")],
          schema=[faq_schema(faqs)], og="pp-a.jpg")
+
+
+# ------------------------------------------------------------------ 통증 진료 (목·어깨, 허리, 무릎연골, 발목, 팔꿈치)
+# 사진은 임시(기존 사진). 실제 사진이 생기면 img만 바꾸면 됩니다.
+PAIN = {
+    "neck": dict(slug="neck.html", name="목·어깨통증", img="n-clinic.jpg",
+                 h1="목·어깨통증,<br>뭉친 곳부터 저린 곳까지 살핍니다",
+                 lead="뒷목과 어깨가 뻐근하고 결리는 불편을 진찰한 뒤, 침·부항·물리치료, 추나요법, 약침, 맞춤 한약 중 필요한 치료를 조합합니다.",
+                 sym=["뒷목이 뻐근하고 어깨가 늘 무겁고 뭉쳐 있다", "고개를 돌리거나 젖힐 때 불편하다", "어깨에서 팔까지 저리거나 당긴다", "목이 굳으면서 두통이 함께 온다"],
+                 red=["팔이나 손에 힘이 빠지거나, 저림이 점점 심해진다", "넘어지거나 부딪친 뒤 통증이 시작됐다", "열이 나거나 이유 없이 체중이 줄면서 아프다"],
+                 chuna="목과 어깨, 등의 정렬과 움직임을 살피는 수기 치료입니다.",
+                 seo="목·어깨통증 한의원 | 은평구 구파발경희한의원",
+                 desc="구파발경희한의원 목·어깨통증 진료. 뒷목 뻐근함, 어깨 결림, 팔 저림을 진찰한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 상태에 맞게 조합합니다."),
+    "back": dict(slug="back.html", name="허리통증", img="n-hero.jpg",
+                 h1="허리통증,<br>앉고 서고 숙일 때를 살핍니다",
+                 lead="오래 앉거나 서 있을 때, 일어나거나 숙일 때의 허리 불편을 진찰한 뒤 필요한 치료를 조합합니다.",
+                 sym=["앉았다 일어날 때 허리가 뻣뻣하고 아프다", "오래 서 있거나 앉아 있으면 허리가 무겁다", "엉덩이나 다리까지 저리거나 당긴다", "허리를 숙이거나 돌리기가 불편하다"],
+                 red=["다리에 힘이 빠지거나 감각이 둔해진다", "대소변 보기가 갑자기 어려워졌다", "넘어지거나 다친 뒤 심하게 아프다", "열이 나면서 허리가 아프다"],
+                 chuna="허리와 골반의 정렬과 움직임을 살피는 수기 치료입니다.",
+                 seo="허리통증 한의원 | 은평구 구파발경희한의원",
+                 desc="구파발경희한의원 허리통증 진료. 앉았다 일어날 때 통증, 오래 앉거나 설 때의 불편, 다리 저림을 진찰한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
+    "knee": dict(slug="knee.html", name="무릎연골", img="n-nyakchim.jpg",
+                 h1="무릎 통증과 연골,<br>계단과 앉고 일어설 때를 살핍니다",
+                 lead="계단을 오르내리거나 앉았다 일어날 때의 무릎 불편을 진찰하고, 필요하면 초음파로 무릎 주변을 확인한 뒤 치료를 조합합니다.",
+                 sym=["계단을 오르내릴 때 무릎이 아프다", "앉았다 일어날 때 무릎이 시큰하다", "무릎이 붓거나 뻣뻣하다", "오래 걷고 나면 무릎이 무겁고 아프다"],
+                 red=["무릎이 갑자기 크게 붓고 열이 난다", "다친 뒤 체중을 싣고 걷기 어렵다", "무릎이 걸린 듯 펴지거나 굽혀지지 않는다"],
+                 chuna="무릎과 주변 관절의 정렬과 움직임을 살피는 수기 치료입니다.",
+                 note="닳은 연골이 치료로 다시 생긴다고 말씀드리지 않습니다. 영상 검사가 필요해 보이면 병원 검사를 함께 권해 드립니다.",
+                 seo="무릎 통증·무릎연골 한의원 | 은평구 구파발경희한의원",
+                 desc="구파발경희한의원 무릎 통증·무릎연골 진료. 계단, 앉았다 일어날 때의 무릎 통증과 붓기를 진찰하고 필요하면 초음파로 확인한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
+    "ankle": dict(slug="ankle.html", name="발목통증", img="n-ultrasound.jpg",
+                  h1="발목통증,<br>삐끗한 뒤부터 자주 접질리는 발목까지",
+                  lead="발목을 삐끗한 뒤의 통증과 붓기, 자주 접질리는 발목의 불편을 진찰한 뒤 필요한 치료를 조합합니다.",
+                  sym=["발목을 삐끗한 뒤 붓고 아프다", "발목을 자주 접질린다", "오래 걸으면 발목이 시큰하다", "발목을 위아래로 움직이기 불편하다"],
+                  red=["발을 딛고 걷기가 어렵다", "복숭아뼈 주변을 누르면 심하게 아프다", "크게 붓고 멍이 들었다(골절 확인을 위해 X-ray가 먼저입니다)"],
+                  chuna="발목과 발, 무릎으로 이어지는 관절의 움직임을 살피는 수기 치료입니다.",
+                  seo="발목통증 한의원 | 은평구 구파발경희한의원",
+                  desc="구파발경희한의원 발목통증 진료. 발목 삠, 붓기, 자주 접질리는 발목을 진찰하고 필요하면 초음파로 확인한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
+    "elbow": dict(slug="elbow.html", name="팔꿈치통증", img="n-accident.jpg",
+                  h1="팔꿈치통증,<br>물건을 들고 비틀 때를 살핍니다",
+                  lead="물건을 들거나 손목을 비틀 때 팔꿈치 바깥쪽·안쪽이 아픈 불편을 진찰하고, 필요하면 초음파로 힘줄 주변을 확인한 뒤 치료를 조합합니다.",
+                  sym=["물건을 들 때 팔꿈치 바깥쪽이나 안쪽이 아프다", "손목을 비틀거나 행주를 짤 때 아프다", "팔꿈치를 펴고 굽히기가 불편하다", "같은 동작을 반복하고 나면 더 아프다"],
+                  red=["넘어진 뒤 붓고 팔을 움직이기 어렵다", "손가락 저림이 계속되거나 힘이 빠진다"],
+                  chuna="팔꿈치와 손목, 어깨로 이어지는 관절의 움직임을 살피는 수기 치료입니다.",
+                  seo="팔꿈치통증 한의원 | 은평구 구파발경희한의원",
+                  desc="구파발경희한의원 팔꿈치통증 진료. 물건을 들거나 손목을 비틀 때의 팔꿈치 통증을 진찰하고 필요하면 초음파로 확인한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
+}
+
+
+def build_pain(key):
+    d = PAIN[key]
+    sym = checks(d["sym"])
+    treat = [("침 · 부항 · 물리치료", "아픈 부위와 주변의 긴장을 살피며 침을 놓고, 부항과 온열·전기 등 물리치료로 관리합니다."),
+             ("추나요법", d["chuna"]),
+             ("N약침 · 초음파 가이드 약침", "치료 부위에 약침액을 주입합니다. 필요하면 초음파로 위치를 확인하며 진행합니다."),
+             ("맞춤 한약", "통증이 오래되었거나 회복이 더딜 때, 체질과 소화 상태에 맞춰 한약을 구성합니다. 한약은 원내에서 직접 달입니다.")]
+    tc = "".join(f"<div class='fcard reveal'><h3>{esc(t)}</h3><p>{esc(x)}</p></div>" for t, x in treat)
+    red = "".join(f"<li>{esc(r)}</li>" for r in d["red"])
+    note = f"<p class='muted' style='margin-top:14px'>{esc(d['note'])}</p>" if d.get("note") else ""
+    faqs = [F["insurance"], F["us"], F["yak_pain"], F["worse"]]
+    body = hero_sub(d["name"], d["h1"], d["lead"], d["img"]) + f"""
+<section class="sec"><div class="container narrow prose">
+  <h2>이런 불편으로 오십니다</h2>
+  {sym}
+  <h2>진찰은 이렇게 합니다</h2>
+  <p>어디가, 언제부터, 어떤 동작에서 아픈지 먼저 여쭙고, 움직임과 아픈 부위를 직접 확인합니다. 필요하면 초음파로 근육·힘줄·인대 주변을 함께 봅니다. 그다음 지금 상태와 치료 방향, 예상 기간을 설명드립니다.</p>
+  <aside class="notice pain-red"><b>이럴 때는 병원 검사가 먼저입니다</b><ul class="plain">{red}</ul><p>위와 같은 경우에는 먼저 응급실이나 정형외과 등에서 영상 검사로 확인하세요. 같은 날 한의원 진료를 함께 받으셔도 됩니다.</p></aside>
+  {note}
+</div></section>
+<section class="sec sec-sand"><div class="container">
+  <div class="sec-head"><span class="tag">TREATMENT</span><h2>치료 방법</h2><p>진찰 결과에 따라 아래 치료 중 필요한 것을 조합합니다.</p></div>
+  <div class="fgrid">{tc}</div>
+  <div class="container narrow" style="padding:0">{disclaimer()}</div>
+</div></section>
+{faq_block(faqs, d['name'] + " 관련 질문")}
+{blog_related_html(key)}
+{cta_band()}"""
+    page(d["slug"], d["seo"], d["desc"], body, current=d["slug"],
+         crumbs=[("홈", ""), ("통증", d["slug"]), (d["name"], d["slug"])], schema=[faq_schema(faqs)], og=d["img"])
 
 
 def build_accident():
@@ -1680,7 +1781,7 @@ def build_column_preview():
 
 
 
-PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "postpartum.html", "accident.html",
+PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "postpartum.html", "accident.html", "neck.html", "back.html", "knee.html", "ankle.html", "elbow.html",
          "about.html", "hours-location.html", "faq.html", "reservation.html", "notice.html", "lifeguide.html", "privacy.html"]
 
 
@@ -1743,7 +1844,7 @@ def build_meta():
 
 if __name__ == "__main__":
     for fn in (build_home, build_diet, lambda: build_product("bopae"), lambda: build_product("anshim"), lambda: build_product("bujong"), build_herbal_redirect, build_gongjindan, build_patch, build_yakchim, build_growth, build_postpartum, build_accident,
-               build_about, build_visit, build_faq, build_reservation, build_notice, build_lifeguide, build_privacy, build_404, build_columns, build_meta):
+               *[ (lambda k=k: build_pain(k)) for k in PAIN ], build_about, build_visit, build_faq, build_reservation, build_notice, build_lifeguide, build_privacy, build_404, build_columns, build_meta):
         fn()
     print("built", len(PAGES) + 1, "pages +", len(ARTICLES), "columns")
     if "--preview" in sys.argv:
