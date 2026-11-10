@@ -551,7 +551,7 @@ def build_home():
              h1="아픈 곳을 직접 살피고,<br><b>치료를 조합</b>합니다.",
              lead="침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약 중 필요한 치료를 진찰 후 안내합니다.",
              btns=[("통증 진료 보기", "neck.html", False), ("교통사고 진료", "accident.html", False)]),
-        dict(img="slide-3.jpg", eyebrow="GROWTH CHECK", sub="초등학생 ~ 중학생",
+        dict(img="slide-3.jpg", eyebrow="GROWTH CHECK", sub="유치원생부터 고등학생까지",
              h1="방사선 없는 초음파로<br><b>아이의 뼈나이</b>를 확인합니다.",
              lead="성장판 측정은 약 2분이면 끝납니다. 성장은 시기가 중요하니 걱정되면 일찍 확인해 보세요.",
              btns=[("바른성장 보기", "growth.html", False), ("네이버 예약", BOOKING, True)]),
