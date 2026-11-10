@@ -3,12 +3,12 @@
   "date": "2026-11-10",
   "sky": "맑음",
   "precip": false,
-  "tmn": -1,
+  "tmn": 6,
   "tmx": 12,
   "pop": 20,
   "pm10": "보통",
   "pm25": "보통",
-  "category": "diurnal",
-  "phrase": "입고 벗기 편한 옷을 입으세요."
+  "category": "default",
+  "phrase": "무리하지 말고 몸의 신호를 살펴 보세요."
  }
 ]
