@@ -347,7 +347,7 @@ def header_html(current):
       <a class="tel" href="{TEL}">{ico('phone')}<span>{CLINIC['phone']}</span></a>
       <a class="btn btn-ink" href="{BOOKING}" {EXT}>네이버 예약</a>
     </div>
-    <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mainnav"><span></span><span></span></button>
+    <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mainnav"><span class="bars"><span></span><span></span><span></span></span><b class="bt">메뉴</b></button>
   </div>
 </header>"""
 
