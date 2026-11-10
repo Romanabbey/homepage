@@ -32,7 +32,7 @@ def img(name):
     return f'<p style="text-align:center"><img src="data:image/png;base64,{b}" width="540" alt=""></p>'
 
 P = 'margin:0;font-size:15px;line-height:1.8;color:#000'
-PH = 'margin:0;font-size:21px;line-height:1.6;font-weight:700;color:#000'
+PH = 'margin:0;font-size:24px;line-height:1.6;font-weight:700;color:#000'
 Q = 'background:#f3f6f4;border-left:4px solid #1d6a4a;padding:14px 18px;margin:0;border-radius:6px'
 used = []
 
