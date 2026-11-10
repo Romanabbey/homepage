@@ -75,3 +75,9 @@ status: draft           # 공개할 때 published
 
 ## 도메인
 gupabalhani.org (GitHub Pages, CNAME 파일). DNS A 레코드 185.199.108–111.153.
+
+## 오늘의 생활 날씨 (생활안내 페이지)
+- 매일 한국 시간 아침 7시 무렵 GitHub Actions(`.github/workflows/weather.yml`)가 `scripts/update_weather.py`를 실행해 `data/weather.json`에 하루치(날씨, 기온, 강수확률, 미세먼지, 한 줄 멘트)를 추가하고 생활안내 페이지를 다시 만듭니다.
+- 인증키는 저장소 **Settings → Secrets and variables → Actions** 의 `DATA_GO_KR_KEY` 에만 넣습니다. 코드·파일에는 절대 넣지 않습니다.
+- 한 줄 멘트는 `data/weather_phrases.json` 의 확정된 문구에서만 고르며, 14일 안에 쓴 문구는 제외합니다. 문구를 바꿀 때는 이 파일을 고칩니다.
+- 수동 실행: GitHub → Actions → "오늘의 생활 날씨 갱신" → Run workflow. 로컬 시험: `DATA_GO_KR_KEY=... python3 scripts/update_weather.py`

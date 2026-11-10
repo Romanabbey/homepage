@@ -37,9 +37,11 @@ DISCLAIMER = "치료 효과와 경과는 개인에 따라 다를 수 있습니�
 
 NAV = [
     ("병원소개", "about.html", [
-        ("원장소개", "about.html"),
+        ("원장이력", "about.html"),
         ("진료시간 · 오시는 길", "hours-location.html"),
         ("예약 · 문의", "reservation.html"),
+        ("공지사항", "notice.html"),
+        ("생활안내", "lifeguide.html"),
         ("건강칼럼", "column/"),
         ("자주 묻는 질문", "faq.html"),
     ]),
@@ -234,6 +236,12 @@ def faq_schema(faqs):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}
 
 
+def brand_tag(text="은평뉴타운 평생주치의"):
+    """로고 문구를 상호(구파발경희한의원) 글자 너비에 맞춰 양쪽 끝으로 펼쳐 보이게 합니다."""
+    chars = "".join("<i class='sp'></i>" if c == " " else f"<i>{esc(c)}</i>" for c in text)
+    return f"<small><span class='sr'>{esc(text)}</span><span class='jus' aria-hidden='true'>{chars}</span></small>"
+
+
 def header_html(current):
     items = []
     for label, href, subs in NAV:
@@ -252,8 +260,8 @@ def header_html(current):
 <header class="site-header">
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
-      <img class="brand-mark" src="assets/img/logo-mark.png" alt="" width="44" height="44">
-      <span><b>{CLINIC['name']}</b><small>우리 가족 평생주치의</small></span>
+      <img class="brand-mark" src="assets/img/logo-full-green.png" alt="" width="44" height="44">
+      <span><b>{CLINIC['name']}</b>{brand_tag()}</span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
       <ul class="gnb">{nav}</ul>
@@ -275,7 +283,7 @@ def footer_html():
     groups = [
         ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
         ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
-        ("병원소개", [("원장소개", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("건강칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
+        ("병원소개", [("원장이력", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("공지사항", "notice.html"), ("생활안내", "lifeguide.html"), ("건강칼럼", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
     cols = "".join(f"<div><h4>{g}</h4>" + "".join(f"<a href='{u}'>{esc(n)}</a>" for n, u in ls if ARTICLES or u not in ("column/", "editorial-policy.html")) + "</div>" for g, ls in groups)
     return f"""<footer class="site-footer">
@@ -523,7 +531,7 @@ def build_home():
       <span class="tag">DOCTOR</span>
       <h2>원장&nbsp;&nbsp;최&nbsp;&nbsp;솔</h2>
       <ul class="plain career">{"".join(f"<li>{esc(c)}</li>" for c in CAREER)}</ul>
-      <p><a class="btn btn-line" href="about.html">원장 소개 보기 {ico('arrow')}</a></p>
+      <p><a class="btn btn-line" href="about.html">원장이력 보기 {ico('arrow')}</a></p>
     </div>
   </div>
 </section>
@@ -1007,7 +1015,7 @@ def build_about():
     career = CAREER
     body = f"""
 <section class="phero"><div class="container phero-grid">
-  <div>{crumb_html("원장소개")}<h1>원장&nbsp;&nbsp;최&nbsp;&nbsp;솔</h1>
+  <div>{crumb_html("원장이력")}<h1>원장&nbsp;&nbsp;최&nbsp;&nbsp;솔</h1>
   <p class="lead">환자 한 분 한 분의 이야기를 듣고, 직접 진찰하고, 쉽게 설명드립니다.</p></div>
   <figure class="phero-img round"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="1024" height="1024"></figure>
 </div></section>
@@ -1024,9 +1032,9 @@ def build_about():
 <section class="sec sec-sand"><div class="container split"><figure><img src="assets/img/n-clinic.jpg" alt="상담실 예시 이미지" loading="lazy" width="1600" height="1244"><figcaption>상담실 예시 이미지 (AI 생성)</figcaption></figure>
   <div class="prose"><h2>구파발경희한의원</h2><p>{CLINIC['address']}에 있습니다. 지하철 3호선 구파발역 인근이며, 저칼로리 다이어트, N약침·초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료를 하고 있습니다.</p><p><a class="btn btn-line" href="hours-location.html">진료시간 · 오시는 길</a></p></div></div></section>
 {cta_band()}"""
-    page("about.html", "원장 소개 | 구파발경희한의원 원장 최솔",
+    page("about.html", "원장이력 | 구파발경희한의원 원장 최솔",
          "구파발경희한의원 원장 최솔 약력 – 경희대학교 한의과대학 졸업, 횡성군보건소 한방진료과장, 한국한의학연구원 임상연구협력 한의사.",
-         body, current="about.html", crumbs=[("홈", ""), ("원장소개", "about.html")], schema=[doctor_schema()], og="doctor.jpg")
+         body, current="about.html", crumbs=[("홈", ""), ("원장이력", "about.html")], schema=[doctor_schema()], og="doctor.jpg")
 
 
 def build_visit():
@@ -1076,6 +1084,88 @@ def build_reservation():
     page("reservation.html", "예약 · 문의 | 구파발경희한의원 (네이버 예약)",
          "구파발경희한의원 예약·문의. 네이버 예약 또는 전화 02-355-4517. 초음파 가이드 약침·성장 검사는 사전 예약 권장.",
          body, current="reservation.html", crumbs=[("홈", ""), ("예약 · 문의", "reservation.html")])
+
+
+# 공지사항(휴진 일정): 새 공지는 이 목록에 추가합니다.
+#  - "last": 휴진 또는 변경일 중 마지막 날짜 (이 날이 지나면 '지난 공지'로 자동 이동)
+#  - "label": 목록에 보일 날짜 표시, "title": 제목, "body": 문단 목록
+NOTICES = [
+    {"last": "2026-12-26", "label": "12.25 (금) · 12.26 (토)", "title": "12월 25일 진료 · 26일 휴진 안내",
+     "body": ["12월 25일(금)은 토요일 진료시간(09:30–13:00)으로 진료합니다.",
+              "12월 26일(토)은 휴진합니다.",
+              "원래 25일 휴진, 26일 진료였으나 두 날을 서로 바꾸었습니다."]},
+    {"last": "2027-01-02", "label": "1.1 (금) · 1.2 (토)", "title": "1월 1일 진료 · 2일 휴진 안내",
+     "body": ["1월 1일(금)은 토요일 진료시간(09:30–13:00)으로 진료합니다.",
+              "1월 2일(토)은 휴진합니다.",
+              "원래 1일 휴진, 2일 진료였으나 두 날을 서로 바꾸었습니다."]},
+]
+
+
+def build_notice():
+    notices = sorted(NOTICES, key=lambda n: n["last"])  # 가까운 일정부터 (지난 공지는 화면에서 접힘)
+
+    def item(i, n):
+        return (f"""<details class="notice-item" data-last="{n['last']}"{' open' if i == 0 else ''}>"""
+                f"""<summary><span class="ni-date">{esc(n['label'])}</span><span class="ni-title">{esc(n['title'])}</span></summary>"""
+                f"""<div class="ni-body">{''.join(f'<p>{esc(t)}</p>' for t in n['body'])}</div></details>""")
+
+    items = "".join(item(i, n) for i, n in enumerate(notices))
+    empty = "<p class='muted'>등록된 공지사항이 없습니다.</p>" if not NOTICES else ""
+    body = f"""
+<section class="phero phero-plain"><div class="container">{crumb_html("공지사항")}<h1>공지사항</h1><p class="lead">휴진 일정과 진료일 변경을 알려 드립니다.</p></div></section>
+<section class="sec"><div class="container narrow">
+  <div class="notice-next" id="noticeNext" hidden><span class="nn-tag">다가오는 일정</span><b id="nnTitle"></b><span id="nnDate"></span></div>
+  <div class="notice-list" id="noticeList">{items}{empty}</div>
+  <details class="notice-past" id="noticePast" hidden><summary>지난 공지</summary><div class="notice-list" id="noticePastList"></div></details>
+  <p class="muted" style="margin-top:22px">문의는 전화 {CLINIC['phone']}로 해 주세요.</p></div></section>
+{cta_band()}"""
+    page("notice.html", "공지사항 | 구파발경희한의원",
+         "구파발경희한의원 공지사항. 휴진 일정과 진료일 변경을 안내합니다.",
+         body, current="notice.html", crumbs=[("홈", ""), ("공지사항", "notice.html")])
+
+
+def weather_html():
+    """data/weather.json 의 최근 14일을 스레드 형태로 보여 줍니다 (없으면 표시 안 함)."""
+    path = os.path.join(ROOT, "data", "weather.json")
+    if not os.path.exists(path):
+        return ""
+    rows = sorted(json.load(open(path, encoding="utf-8")), key=lambda r: r["date"], reverse=True)[:14]
+    if not rows:
+        return ""
+    wd = "월화수목금토일"
+
+    def chips(r):
+        out = [r["sky"], f"{r['tmn']}° ~ {r['tmx']}°", f"강수 {r['pop']}%"]
+        if r.get("pm10"):
+            out.append("미세먼지 " + r["pm10"])
+        if r.get("pm25"):
+            out.append("초미세먼지 " + r["pm25"])
+        return "".join(f"<span>{esc(c)}</span>" for c in out)
+
+    def dlabel(r):
+        d = datetime.date.fromisoformat(r["date"])
+        return f"{d.month}.{d.day} ({wd[d.weekday()]})"
+
+    today, rest = rows[0], rows[1:]
+    thread = "".join(f"<li><span class='wx-d'>{dlabel(r)}</span><div><p class='wx-chips'>{chips(r)}</p><p class='wx-line'>{esc(r['phrase'])}</p></div></li>" for r in rest)
+    older = f"<ol class='wx-thread'>{thread}</ol>" if rest else ""
+    return f"""<section class="sec wx"><div class="container narrow">
+  <div class="sec-head left"><span class="tag">TODAY</span><h2>오늘의 생활 날씨</h2><p>진관동 기준, 매일 아침 7시에 갱신합니다. 기상청 단기예보와 에어코리아(은평구 측정소) 정보를 바탕으로 합니다.</p></div>
+  <div class="wx-today"><span class="wx-d">{dlabel(today)}</span><p class="wx-chips">{chips(today)}</p><p class="wx-line">{esc(today['phrase'])}</p></div>
+  {older}
+  <p class="muted wx-src">예보는 달라질 수 있습니다. 일반적인 생활 안내이며 진단이나 치료를 대신하지 않습니다. 출처: 기상청, 에어코리아(한국환경공단).</p>
+</div></section>
+"""
+
+
+def build_lifeguide():
+    body = f"""
+<section class="phero phero-plain"><div class="container">{crumb_html("생활안내")}<h1>생활안내</h1><p class="lead">매일 아침, 은평구 진관동의 날씨와 생활 한 줄을 알려 드립니다.</p></div></section>
+{weather_html()}
+{cta_band()}"""
+    page("lifeguide.html", "생활안내 | 구파발경희한의원",
+         "구파발경희한의원 생활안내. 매일 아침 은평구 진관동의 날씨, 미세먼지와 함께 생활 한 줄을 알려 드립니다.",
+         body, current="lifeguide.html", crumbs=[("홈", ""), ("생활안내", "lifeguide.html")])
 
 
 PRIVACY_DATE = "2026년 11월 9일"
@@ -1387,7 +1477,7 @@ def build_column_article(a, preview=False):
     byline = f"작성 {CLINIC['name']} 의료진 · 감수 {reviewed} 원장"
     src_html = ""
     if a["sources"]:
-        src_html = "<div class='col-src'><h2>참고 문헌</h2><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></div>"
+        src_html = f"<details class='col-src'><summary>참고 문헌 {len(a['sources'])}건 보기</summary><ol>" + "".join(f"<li>{md_inline(s)}</li>" for s in a["sources"]) + "</ol></details>"
     related = []
     for r in (a.get("related") or cat_link).split(","):
         r = r.strip()
@@ -1399,8 +1489,13 @@ def build_column_article(a, preview=False):
 <section class="phero phero-plain"><div class="container narrow">{crumb_html_multi([("건강칼럼", "column/"), (a['title'], None)])}
   <span class="tag">{esc(cat_name)}</span><h1>{esc(a['title'])}</h1><p class="col-meta">{esc(meta_line)}</p></div></section>
 <section class="sec" style="padding-top:20px"><div class="container narrow">
-  <aside class="notice"><b>핵심 요약</b><p>{md_inline(a['summary'])}</p></aside>
+  <aside class="notice col-lead"><b>먼저 결론</b><p>{md_inline(a['summary'])}</p></aside>
   <div class="prose col-body">{a['html']}</div>
+  <aside class="col-author"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="160" height="160" loading="lazy">
+    <div><b>최&nbsp;&nbsp;솔 <span class="ca-title">원장</span></b>
+    <p>경희대학교 한의과대학 졸업 · 경희대학교 침구경락센터 협력 한의사</p>
+    <p class="ca-say">구파발경희한의원은 정직하게 진료합니다.</p>
+    <a href="about.html">원장이력 보기 {ico('arrow')}</a></div></aside>
   {src_html}
   <p class="col-by">{esc(byline)}</p>
   <p class="disc" style="margin-top:6px">※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. 증상이 있으시면 진찰을 받아 보세요. 치료 효과와 경과는 개인에 따라 다를 수 있습니다. <a href="editorial-policy.html" style="text-decoration:underline">작성·감수 원칙</a></p>
@@ -1508,7 +1603,7 @@ def build_column_preview():
 
 
 PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", "gongjindan.html", "patch.html", "yakchim.html", "growth.html", "postpartum.html", "accident.html",
-         "about.html", "hours-location.html", "faq.html", "reservation.html", "privacy.html"]
+         "about.html", "hours-location.html", "faq.html", "reservation.html", "notice.html", "lifeguide.html", "privacy.html"]
 
 
 def build_meta():
@@ -1559,7 +1654,7 @@ def build_meta():
 ## 건강칼럼
 {col_llms}
 ## 기타
-- [원장 소개]({DOMAIN}/about.html)
+- [원장이력 (원장 최솔)]({DOMAIN}/about.html)
 - [진료시간 · 오시는 길]({DOMAIN}/hours-location.html)
 - [자주 묻는 질문]({DOMAIN}/faq.html)
 
@@ -1570,7 +1665,7 @@ def build_meta():
 
 if __name__ == "__main__":
     for fn in (build_home, build_diet, lambda: build_product("bopae"), lambda: build_product("anshim"), lambda: build_product("bujong"), build_herbal_redirect, build_gongjindan, build_patch, build_yakchim, build_growth, build_postpartum, build_accident,
-               build_about, build_visit, build_faq, build_reservation, build_privacy, build_404, build_columns, build_meta):
+               build_about, build_visit, build_faq, build_reservation, build_notice, build_lifeguide, build_privacy, build_404, build_columns, build_meta):
         fn()
     print("built", len(PAGES) + 1, "pages +", len(ARTICLES), "columns")
     if "--preview" in sys.argv:

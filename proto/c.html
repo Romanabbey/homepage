@@ -1,0 +1,28 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C 좌측 고정 패널</title>
+<link rel="stylesheet" href="common.css"><style>
+.shell{display:grid;grid-template-columns:clamp(250px,22vw,340px) 1fr;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;background:var(--deep);color:#f3eee0;padding:34px 30px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:44px;height:44px;border-radius:50%;background:#f3eee0;padding:2px}.brand b{font-family:var(--serif);font-size:19px;letter-spacing:-.03em;display:block;line-height:1.15}.brand small{font-size:11.5px;opacity:.65}
+aside nav{margin-top:48px;display:flex;flex-direction:column}aside nav a{padding:12px 0;font-size:17px;font-weight:600;border-bottom:1px solid rgba(243,238,224,.14);display:flex;justify-content:space-between}
+aside nav a:hover{color:#e6cf98}
+.side-foot{margin-top:auto;display:grid;gap:12px}.side-foot .btn{justify-content:center}.side-foot p{font-size:12.5px;opacity:.7;line-height:1.7}
+main{min-width:0}
+.cover{position:relative;height:min(78vh,760px);min-height:460px;display:flex;align-items:flex-end}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.cover:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,26,19,0) 35%,rgba(8,26,19,.82))}
+.cover div{position:relative;z-index:2;color:#f3eee0;padding:clamp(24px,4vw,64px)}
+.cover small{font-size:13px;letter-spacing:.22em;color:#e6cf98;font-weight:700}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(38px,5.6vw,92px);line-height:1.12;letter-spacing:-.04em;word-break:keep-all;margin-top:12px}h1 b{font-weight:700;color:#e6cf98}
+.row{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #d9d2c0}
+.row a{padding:30px clamp(18px,2.4vw,40px);border-right:1px solid #d9d2c0;transition:.2s}.row a:last-child{border:0}.row a:hover{background:#fffdf7}
+.row em{font-style:normal;font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--gold)}.row b{display:block;font-family:var(--serif);font-size:clamp(20px,1.9vw,28px);margin:8px 0 4px;letter-spacing:-.03em}.row small{color:#58625b;font-size:14px}
+.m-top{display:none}
+@media(max-width:900px){.shell{grid-template-columns:1fr}aside{display:none}.m-top{display:flex;align-items:center;justify-content:space-between;background:var(--deep);color:#f3eee0;padding:14px 20px}.row{grid-template-columns:1fr}.row a{border-right:0;border-bottom:1px solid #d9d2c0}}
+</style>
+<div class="shell"><aside><a class="brand" href="#"><img src="../assets/img/logo-mark.png" alt=""><span><b>구파발경희한의원</b><small>우리 가족 평생주치의</small></span></a>
+<nav><a href="#">병원소개 <i>→</i></a><a href="#">교통사고 <i>→</i></a><a href="#">엔오처방 <i>→</i></a><a href="#">다이어트 <i>→</i></a><a href="#">바른성장 <i>→</i></a><a href="#">산후보약 <i>→</i></a><a href="#">N약침 <i>→</i></a></nav>
+<div class="side-foot"><a class="btn btn-fill" href="#">네이버 예약 ↗</a><a class="btn" href="#">02-355-4517</a><p>월·화·수·금 09:30–20:00<br>목 14:00–20:00 · 토 09:30–13:00<br>은평구 진관4로 47 · 708동 무료 주차</p></div></aside>
+<main><div class="m-top"><b class="serif">구파발경희한의원</b><a class="btn btn-fill" style="padding:8px 14px;font-size:13px" href="#">예약</a></div>
+<section class="cover"><img src="../assets/img/n-hero.jpg" alt=""><div><small>구파발역 인근 · 은평구 진관4로</small><h1>진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.</h1></div></section>
+<section class="row"><a href="#"><em>01</em><b>교통사고 후유증</b><small>침 · 부항 · 추나 · 맞춤 한약</small></a><a href="#"><em>02</em><b>엔오처방</b><small>보폐고 · 안심환 · 부종환 · 공진단</small></a><a href="#"><em>03</em><b>저칼로리 다이어트</b><small>원내 직접 달이는 맞춤 한약</small></a></section>
+<section class="row"><a href="#"><em>04</em><b>바른성장</b><small>초음파 성장 검사</small></a><a href="#"><em>05</em><b>산후보약</b><small>출산 후 회복 상담</small></a><a href="#"><em>06</em><b>N약침</b><small>초음파 가이드 약침</small></a></section></main></div>
+</html>

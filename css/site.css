@@ -644,3 +644,92 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 @media (min-width:921px){
   body.home .hero-main,body.home .rail-in{padding-right:calc(clamp(20px,4vw,64px) + 76px)}
 }
+/* 공지사항 */
+.notice-list{border-top:1px solid var(--ink)}
+.notice-item{border-bottom:1px solid var(--line)}
+.notice-item summary{display:flex;gap:22px;align-items:baseline;padding:22px 4px;cursor:pointer;list-style:none}
+.notice-item summary::-webkit-details-marker{display:none}
+.ni-date{flex:none;font-size:14px;font-weight:800;color:var(--c);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.ni-title{font-size:clamp(18px,2vw,22px);font-weight:700;letter-spacing:-.03em}
+.ni-body{padding:0 4px 26px 112px;color:var(--ink2)}
+.ni-body p{margin:6px 0}
+@media (max-width:600px){.notice-item summary{flex-direction:column;gap:4px}.ni-body{padding-left:4px}}
+
+/* 오늘의 생활 날씨 (스레드) */
+.wx{padding-bottom:24px}
+.wx-today{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 28px}
+.wx-d{font-weight:800;font-size:14px;color:var(--c);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.wx-chips{display:flex;flex-wrap:wrap;gap:6px 8px;margin:8px 0 0}
+.wx-chips span{font-size:13px;font-weight:700;background:var(--tint);color:var(--ink);padding:4px 10px;border-radius:999px}
+.wx-line{font-size:clamp(18px,2vw,22px);font-weight:700;letter-spacing:-.03em;line-height:1.5;margin-top:12px;color:var(--ink)}
+.wx-thread{margin-top:22px;position:relative;padding-left:0}
+.wx-thread li{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+.wx-thread .wx-line{font-size:16px;font-weight:600;margin-top:6px}
+.wx-thread .wx-chips span{font-size:12.5px;padding:3px 9px}
+.wx-src{margin-top:18px}
+@media (max-width:600px){.wx-thread li{grid-template-columns:1fr;gap:4px}.wx-today{padding:20px}}
+
+/* 공지사항: 다가오는 일정 카드, 지난 공지 */
+.notice-next{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin-bottom:22px}
+.notice-next[hidden]{display:none}
+.nn-tag{font-size:12.5px;font-weight:800;letter-spacing:.08em;color:var(--c)}
+.notice-next b{font-size:clamp(18px,2.2vw,24px);letter-spacing:-.03em}
+.notice-next #nnDate{color:var(--ink2);font-size:14.5px;font-weight:600}
+.notice-past{margin-top:26px}
+.notice-past[hidden]{display:none}
+.notice-past>summary{cursor:pointer;font-weight:700;color:var(--ink2);padding:10px 4px;list-style:none}
+.notice-past>summary::-webkit-details-marker{display:none}
+.notice-past>summary::before{content:"+ ";font-weight:800}
+.notice-past[open]>summary::before{content:"− "}
+
+/* 원장 약력: 이어진 선 없이, 글자를 키워 읽기 쉽게 */
+.timeline{border-left:0;padding-left:0;margin:14px 0}
+.timeline li{position:relative;padding:6px 0 6px 24px;font-size:clamp(18px,1.7vw,21px);line-height:1.6;color:var(--ink)}
+.timeline li::before{content:"·";position:absolute;left:6px;top:6px;width:auto;height:auto;border-radius:0;background:none;color:var(--ink);font-weight:800}
+.plain.career li{font-size:clamp(17px,1.5vw,19px);line-height:1.6;padding-left:22px;margin:3px 0}
+.plain.career li::before{content:"·";top:0;width:auto;height:auto;border-radius:0;background:none;color:var(--ink);font-weight:800;left:6px}
+
+/* 로고 문구를 상호 너비에 맞춰 펼침 */
+.brand>span{display:inline-flex;flex-direction:column}
+.brand small .jus{display:flex;justify-content:space-between;width:100%}
+.brand small .jus i{font-style:normal}
+.brand small .jus i.sp{width:.4em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.brand small{font-size:12.5px}
+.brand b{font-size:20px}
+.brand small{font-size:13.5px}
+
+/* ═════════ 건강칼럼 읽기 화면 개선 ═════════ */
+.phero-plain h1{word-break:keep-all;text-wrap:balance}
+.col-lead{background:var(--soft);border:0;border-radius:14px;padding:22px 26px;margin-bottom:34px}
+.col-lead>b{display:block;font-size:13px;letter-spacing:.12em;color:var(--c);margin-bottom:6px}
+.col-lead p{font-size:18px!important;line-height:1.7;color:var(--ink)!important;margin:0!important}
+.col-body{margin-top:8px}
+.col-body p{font-size:18px;line-height:1.95;margin:16px 0}
+.col-body>p:first-child{font-size:19.5px;line-height:1.85}
+.col-body h2{margin:64px 0 12px;font-size:clamp(23px,3vw,30px);line-height:1.35;word-break:keep-all}
+.col-body h2::before{content:"";display:block;width:30px;height:3px;background:var(--c);margin-bottom:16px}
+.col-body ol{list-style:none;counter-reset:st;padding:0;margin:18px 0}
+.col-body ol li{counter-increment:st;position:relative;padding:18px 20px 18px 70px;background:#fff;border:1px solid var(--line);border-radius:14px;margin:12px 0;font-size:17.5px;line-height:1.75}
+.col-body ol li::before{content:counter(st);position:absolute;left:20px;top:17px;width:34px;height:34px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px}
+.col-body ol li b{color:var(--ink)}
+.col-body .notice{background:#fbf4e6;border:1px solid #efdcb4;border-radius:14px;padding:20px 24px;margin:26px 0}
+.col-body .notice p{font-size:17.5px!important;margin:0!important;color:var(--ink)!important}
+.col-body h3{font-size:19px;margin:30px 0 8px}
+@media (max-width:600px){.col-body p{font-size:17px}.col-body>p:first-child{font-size:18px}.col-body ol li{padding:16px 16px 16px 60px}.col-body ol li::before{left:16px;width:30px;height:30px}}
+.col-src>summary{cursor:pointer;font-weight:700;font-size:15px;color:var(--ink2);list-style:none;padding:4px 0}
+.col-src>summary::-webkit-details-marker{display:none}
+.col-src>summary::before{content:"+ ";font-weight:800}
+.col-src[open]>summary::before{content:"− "}
+.col-src ol{margin-top:10px}
+
+/* 칼럼 끝 원장 소개 카드 */
+.col-author{display:grid;grid-template-columns:104px 1fr;gap:20px;align-items:center;margin:56px 0 8px;padding:22px 24px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.col-author img{width:104px;height:104px;border-radius:50%;object-fit:cover;object-position:center top;background:#fff}
+.col-author b{font-size:24px;letter-spacing:-.02em}
+.col-author small{display:block;color:var(--ink2);font-size:13.5px;margin-top:1px}
+.col-author p{margin:8px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink2)}
+.col-author .ca-say{font-size:16px;color:var(--ink);font-weight:700}
+.col-author a{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:14px;font-weight:700;color:var(--c)}
+@media (max-width:600px){.col-author{grid-template-columns:76px 1fr;gap:14px;padding:18px}.col-author img{width:76px;height:76px}}
+.col-author .ca-title{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-left:2px}
