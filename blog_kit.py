@@ -22,9 +22,9 @@ REGIONS = ["구파발", "진관동", "은평뉴타운", "불광동", "연신내"
            "삼송", "지축", "원흥", "원당", "덕양구 효자동", "지축동", "신원동",
            "구파발역", "연신내역", "불광역", "녹번역", "지축역", "삼송역", "원흥역", "원당역"]
 LOCAL = {"구파발", "진관동", "은평뉴타운", "구파발역"}   # 한의원이 있는 동네
-GREETING_LOCAL = "안녕하세요, {region}에서 진료하는 은평뉴타운 평생주치의 최솔 원장입니다."
-GREETING_LOCAL_NT = "안녕하세요, 은평뉴타운 평생주치의 최솔 원장입니다."   # 지역이 은평뉴타운일 때(문구 중복 방지)
-GREETING_OTHER = "안녕하세요, {region} 이웃 구파발경희한의원 최솔 원장입니다."
+GREETING_LOCAL = "안녕하세요, {region}에서 진료하는 최솔 원장입니다."
+GREETING_LOCAL_STATION = "안녕하세요, 구파발역 가까이에서 진료하는 최솔 원장입니다."
+GREETING_OTHER = "안녕하세요, {region}에서 찾아 주셨다면 반가워요. 구파발경희한의원 최솔 원장입니다."
 STATION_AREAS = {"구파발", "연신내", "삼송", "지축", "원흥", "원당"}   # '○○역한의원' 변형을 쓸 수 있는 곳
 
 def region_tags(region):
@@ -61,7 +61,7 @@ if "{{region_tags}}" in tags:
     tags = tags.replace("{{region_tags}}", " ".join(region_tags(region)))
     print("지역 태그:", " ".join(region_tags(region)))
 if "{{greeting}}" in body:
-    body = body.replace("{{greeting}}", (GREETING_LOCAL_NT if region == "은평뉴타운" else GREETING_LOCAL if region in LOCAL else GREETING_OTHER).format(region=region))
+    body = body.replace("{{greeting}}", (GREETING_LOCAL_STATION if region == "구파발역" else GREETING_LOCAL if region in LOCAL else GREETING_OTHER).format(region=region))
     print("첫 줄 인사 지역:", region)
 
 def link(t):

@@ -525,3 +525,13 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .col-src>summary::before{content:"+ ";font-weight:800}
 .col-src[open]>summary::before{content:"− "}
 .col-src ol{margin-top:10px}
+
+/* 칼럼 끝 원장 소개 카드 */
+.col-author{display:grid;grid-template-columns:104px 1fr;gap:20px;align-items:center;margin:56px 0 8px;padding:22px 24px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.col-author img{width:104px;height:104px;border-radius:50%;object-fit:cover;object-position:center top;background:#fff}
+.col-author b{font-size:19px;letter-spacing:-.03em}
+.col-author small{display:block;color:var(--ink2);font-size:13.5px;margin-top:1px}
+.col-author p{margin:8px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink2)}
+.col-author .ca-say{font-size:16px;color:var(--ink);font-weight:700}
+.col-author a{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:14px;font-weight:700;color:var(--c)}
+@media (max-width:600px){.col-author{grid-template-columns:76px 1fr;gap:14px;padding:18px}.col-author img{width:76px;height:76px}}

@@ -1481,6 +1481,11 @@ def build_column_article(a, preview=False):
 <section class="sec" style="padding-top:20px"><div class="container narrow">
   <aside class="notice col-lead"><b>먼저 결론</b><p>{md_inline(a['summary'])}</p></aside>
   <div class="prose col-body">{a['html']}</div>
+  <aside class="col-author"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="160" height="160" loading="lazy">
+    <div><b>최솔 원장</b><small>구파발경희한의원 원장</small>
+    <p>경희대학교 한의과대학 졸업 · 경희대학교 침구경락센터 협력 한의사</p>
+    <p class="ca-say">구파발경희한의원은 정직하게 진료합니다.</p>
+    <a href="about.html">원장이력 보기 {ico('arrow')}</a></div></aside>
   {src_html}
   <p class="col-by">{esc(byline)}</p>
   <p class="disc" style="margin-top:6px">※ 이 글은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다. 증상이 있으시면 진찰을 받아 보세요. 치료 효과와 경과는 개인에 따라 다를 수 있습니다. <a href="editorial-policy.html" style="text-decoration:underline">작성·감수 원칙</a></p>
