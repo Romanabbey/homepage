@@ -260,7 +260,7 @@ def header_html(current):
 <header class="site-header">
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
-      <img class="brand-mark" src="assets/img/logo-mark-estlaurel2.png" alt="" width="44" height="44">
+      <img class="brand-mark" src="assets/img/logo-full-green.png" alt="" width="44" height="44">
       <span><b>{CLINIC['name']}</b>{brand_tag()}</span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
