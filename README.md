@@ -28,7 +28,7 @@
 - [x] 개인정보처리방침 작성 완료 (실제 운영과 맞는지 확인, 위탁·CCTV 등이 생기면 갱신)
 - [ ] AI 생성 이미지를 실제 사진으로 교체
 
-## 칼럼 쓰는 법 (원장 칼럼)
+## 칼럼 쓰는 법 (건강정보)
 글은 **마크다운 파일 하나**가 곧 페이지 하나입니다.
 
 1. **초안 작성**: `columns/drafts/` 폴더에 `주제-영문-이름.md` 파일을 만듭니다. 이 폴더는 GitHub에 올라가지 않아 공개되지 않습니다.
@@ -45,7 +45,7 @@ title: 글 제목
 date: 2026-11-08
 category: growth        # accident, no, diet, growth, postpartum, yakchim, clinic 중 하나
 description: 검색 결과에 보일 한두 문장 설명
-seo_title: (선택) 검색 결과에 보일 제목. 지역 검색 의도가 있는 글에만 "구파발 …" 형태로 씁니다. 비우면 "글 제목 | 구파발경희한의원 건강칼럼"
+seo_title: (선택) 검색 결과에 보일 제목. 지역 검색 의도가 있는 글에만 "구파발 …" 형태로 씁니다. 비우면 "글 제목 | 구파발경희한의원 건강정보"
 summary: 글 맨 위 '핵심 요약' 2~3줄. **굵게** 사용 가능
 related: growth.html    # 글 아래 '진료 안내' 버튼이 연결할 페이지
 status: draft           # 공개할 때 published
@@ -82,8 +82,8 @@ gupabalhani.org (GitHub Pages, CNAME 파일). DNS A 레코드 185.199.108–111.
 - 한 줄 멘트는 `data/weather_phrases.json` 의 확정된 문구에서만 고르며, 14일 안에 쓴 문구는 제외합니다. 문구를 바꿀 때는 이 파일을 고칩니다.
 - 수동 실행: GitHub → Actions → "오늘의 생활 날씨 갱신" → Run workflow. 로컬 시험: `DATA_GO_KR_KEY=... python3 scripts/update_weather.py`
 
-## 원장 칼럼과 네이버 블로그는 따로 운영합니다
-- **원장 칼럼**: 홈페이지에 직접 올리는 글(`columns/*.md`). 대메뉴 '원장 칼럼'과 홈의 원장 칼럼 섹션에만 나옵니다. 분야가 2개 이상이면 목록에 분야 탭이 생깁니다.
+## 건강정보과 네이버 블로그는 따로 운영합니다
+- **건강정보**: 홈페이지에 직접 올리는 글(`columns/*.md`). 대메뉴 '병원소개 › 건강정보'와 홈의 건강정보 섹션에만 나옵니다. 분야가 2개 이상이면 목록에 분야 탭이 생깁니다.
 - **네이버 블로그 글**: 기존 글은 가져오지 않고, 새로 쓴 글 중 원장님이 고른 글만 `data/blog_posts.json`에 추가합니다. 홈에는 최신 3편, 진료 페이지 하단에는 그 페이지로 지정한 글만 나옵니다. 목록이 비면 섹션이 숨겨집니다.
   - 추가: `python3 scripts/add_blog_post.py <블로그 글 주소> --pages accident,diet`
   - 삭제: `python3 scripts/add_blog_post.py --remove <블로그 글 주소>`
