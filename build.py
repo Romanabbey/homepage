@@ -1320,7 +1320,7 @@ def build_notice():
   <p class="muted" style="margin-top:22px">문의는 전화 {CLINIC['phone']}로 해 주세요.</p></div></section>
 {cta_band()}"""
     page("notice.html", "공지사항 | 구파발경희한의원",
-         "구파발경희한의원 공지사항. 휴진 일정과 진료일 변경을 안내합니다.",
+         "구파발경희한의원 공지사항. 휴진 일정, 진료일 변경, 진료시간 안내 등 방문 전에 확인하실 소식을 알려 드립니다.",
          body, current="notice.html", crumbs=[("홈", ""), ("공지사항", "notice.html")])
 
 
@@ -1837,6 +1837,7 @@ def build_meta():
     hide = "Disallow: /columns/\nDisallow: /blog_out/\nDisallow: /preview/\n"
     robots = "User-agent: *\nAllow: /\n" + hide + "\n" + "".join(f"User-agent: {b}\nAllow: /\n{hide}\n" for b in bots) + f"Sitemap: {DOMAIN}/sitemap.xml\n"
     open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8").write(robots)
+    pain_llms = "".join(f"- [{p['name']}]({DOMAIN}/{p['slug']}): {p['desc'].replace('구파발경희한의원 ', '', 1)}\n" for p in PAIN.values())
     col_llms = "".join(f"- [{a['title']}]({DOMAIN}/{col_url(a)}): {a['description']}\n" for a in ARTICLES)
     llms = f"""# {CLINIC['name']}
 
@@ -1844,11 +1845,14 @@ def build_meta():
 > 주소: {CLINIC['address']} / 전화: {CLINIC['phone']}
 
 ## 진료시간
-- 월·화·수·금 09:30–20:00 (점심시간 12:30–14:00)
-- 목 14:00–20:00
-- 토 09:30–13:00 (점심시간 없음)
+- 월·화·수·금 09:30–20:00
+- 목요일 14:00–20:00
+- 토요일 09:30–13:00
 - 일·공휴일 휴진
+- 점심시간 12:30–14:00 (토요일 제외)
 
+## 통증 진료
+{pain_llms}
 ## 진료 프로그램
 - [저칼로리 다이어트]({DOMAIN}/diet.html): 저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약
 - [보폐고 엔오]({DOMAIN}/bopae.html): 호흡기·목 관리 한약 처방. 꿀이 들어가지 않은 제로 버전도 있음
@@ -1870,12 +1874,15 @@ def build_meta():
 - 주차: 708동 지하주차장 무료 주차 가능
 - 지도: {CLINIC['naver']} (네이버), {CLINIC['kakao']} (카카오)
 
-## 건강정보
+## 건강정보 ({DOMAIN}/column/)
 {col_llms}
 ## 기타
 - [원장이력 (원장 최솔)]({DOMAIN}/about.html)
 - [진료시간 · 오시는 길]({DOMAIN}/hours-location.html)
 - [자주 묻는 질문]({DOMAIN}/faq.html)
+- [예약 · 문의]({DOMAIN}/reservation.html)
+- [공지사항]({DOMAIN}/notice.html): 휴진 일정과 진료일 변경 안내
+- [생활안내]({DOMAIN}/lifeguide.html): 은평구 진관동 기준 날씨·미세먼지 등 생활 정보
 
 치료 효과와 경과는 개인에 따라 다를 수 있으며, 본 정보는 진찰을 대신하지 않습니다.
 """
