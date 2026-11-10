@@ -200,7 +200,7 @@ def clinic_schema():
         "name": CLINIC["name"],
         "alternateName": "구파발 한의원",
         "url": DOMAIN + "/",
-        "image": DOMAIN + "/assets/img/n-og.jpg",
+        "image": DOMAIN + "/assets/img/slide-1.jpg",
         "telephone": CLINIC["phone_intl"],
         "address": {
             "@type": "PostalAddress",
@@ -1724,9 +1724,9 @@ def build_column_article(a, preview=False):
 {cta_band()}"""
     url = f"{DOMAIN}/{col_url(a)}"
     doc = {"@id": DOMAIN + "/#doctor"}
-    art_schema = {"@type": ["Article", "MedicalWebPage"], "@id": url + "#article", "headline": a["title"],
+    art_schema = {"@type": ["Article", "MedicalWebPage"], "@id": url + "#article", "name": a["title"], "headline": a["title"],
                   "description": a["description"], "datePublished": a["date"], "dateModified": a["updated"],
-                  "inLanguage": "ko-KR", "mainEntityOfPage": url, "image": DOMAIN + "/assets/img/" + a.get("image", "n-og.jpg"),
+                  "inLanguage": "ko-KR", "mainEntityOfPage": url, "image": DOMAIN + "/assets/img/" + (a.get("image") or COL_CAT_IMG.get(a["category"], "slide-1.jpg")),
                   "author": {"@id": DOMAIN + "/#doctor"}, "publisher": {"@id": DOMAIN + "/#clinic"}}
     if reviewed:
         art_schema["reviewedBy"] = doc
@@ -1735,7 +1735,7 @@ def build_column_article(a, preview=False):
     schema = [art_schema] + ([faq_schema(a["faq"])] if a["faq"] else [])
     page(col_url(a), a.get("seo_title") or f"{a['title']} | 구파발경희한의원 건강정보", a["description"], body, current="column/",
          crumbs=[("홈", ""), ("건강정보", "column/"), (a["title"], col_url(a))], schema=schema,
-         og=a.get("image", "n-og.jpg"), extra_head='<meta name="robots" content="noindex">\n' if preview else "")
+         og=(a.get("image") or COL_CAT_IMG.get(a["category"], "slide-1.jpg")), extra_head='<meta name="robots" content="noindex">\n' if preview else "")
 
 
 def crumb_html_multi(parts):
