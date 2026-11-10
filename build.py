@@ -33,6 +33,9 @@ HOURS = [
     ("일 · 공휴일", "휴진", ""),
 ]
 
+import hashlib as _hl
+ASSET_V = _hl.md5((open("css/site.css", "rb").read() + open("js/main.js", "rb").read())).hexdigest()[:8]  # 캐시 갱신용
+
 MAP_EMBED = ('<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m5!3m3!1m2!1s0x357c970079609b21%3A0xf224f4ed784cac16!2z6rWs7YyM67Cc6rK97Z2s7ZWc7J2Y7JuQ!5e0!3m2!1sko!2skr!4v1794314697913!5m2!1sko!2skr" '
              'title="구파발경희한의원 위치 (구글 지도)" style="border:0" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>')
 
@@ -347,7 +350,7 @@ def header_html(current):
       <a class="tel" href="{TEL}">{ico('phone')}<span>{CLINIC['phone']}</span></a>
       <a class="btn btn-ink" href="{BOOKING}" {EXT}>네이버 예약</a>
     </div>
-    <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mainnav"><span class="bars"><span></span><span></span><span></span></span></button>
+    <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mainnav"><i class="bars"><span></span><span></span><span></span></i></button>
   </div>
 </header>"""
 
@@ -380,7 +383,7 @@ def footer_html():
 </footer>
 {quick_links_html()}
 <button class="to-top" id="toTop" aria-label="맨 위로">{ico('arrow')}</button>
-<script src="js/main.js" defer></script>"""
+<script src="js/main.js?v={ASSET_V}" defer></script>"""
 
 
 GA_ID = "G-8ZTVRW8MTR"
@@ -425,7 +428,7 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="sl
 <meta property="og:image" content="{DOMAIN}/assets/img/{og}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="구파발경희한의원 건강정보" href="{DOMAIN}/feed.xml">
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v={ASSET_V}">
 <script type="application/ld+json">{ld}</script>
 {extra_head}</head>
 <body{(" class='" + " ".join(c for c in (("home" if home else ""), (("theme-" + theme) if theme else "")) if c) + "'") if (home or theme) else ""}>
