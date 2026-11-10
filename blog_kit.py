@@ -17,6 +17,32 @@ def sec(name):
 title, body, refs, end, tags = (sec(n) for n in ("제목", "본문", "참고 문헌", "맺음 안내", "추천 태그"))
 title = title.strip()
 
+# ---- 첫 줄 인사: 지역명을 돌려 가며 자동으로 넣습니다 ({{greeting}} 자리에 들어감) ----
+REGIONS = ["구파발", "진관동", "은평뉴타운", "은뉴", "상림마을", "불광동", "연신내", "응암동", "갈현동", "역촌동", "녹번동",
+           "삼송", "지축", "원흥", "원당", "효자동", "지축동", "신원동",
+           "구파발역", "연신내역", "불광역", "녹번역", "지축역", "삼송역", "원흥역", "원당역"]
+GREETING = "안녕하세요, {region} 인근 분들께 은평뉴타운 평생주치의 최솔 원장이 인사드립니다."
+
+def pick_region():
+    import random
+    logp = os.path.join(os.path.dirname(os.path.abspath(src_path)), "greeting_log.json")
+    log = json.load(open(logp, encoding="utf-8")) if os.path.exists(logp) else {}
+    if base in log:
+        return log[base]
+    used = list(log.values())
+    pool = [r for r in REGIONS if r not in used] or REGIONS   # 한 바퀴 다 돌면 처음부터
+    # 직전에 쓴 지역은 피함
+    if used and len(pool) > 1 and used[-1] in pool: pool = [r for r in pool if r != used[-1]]
+    r = random.Random(base).choice(pool)
+    log[base] = r
+    json.dump(log, open(logp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return r
+
+if "{{greeting}}" in body:
+    region = pick_region()
+    body = body.replace("{{greeting}}", GREETING.format(region=region))
+    print("첫 줄 인사 지역:", region)
+
 def link(t):
     t = html.escape(t)
     return re.sub(r"(https?://[^\s<]+)", r'<a href="\1">\1</a>', t)
