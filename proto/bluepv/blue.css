@@ -1,0 +1,14 @@
+:root{--bg:#f2f6fc;--card:#fff;--ink:#12203a;--ink2:#5a6a85;--line:#d9e4f2;--tint:#e7eff9;--c:#1b2c57;--deep:#16264f;--soft:#e2ecf8;--gold:#7fa6da}
+.hero-a{background:#16264f}
+.hero-a::after{background:linear-gradient(90deg,rgba(18,33,74,.82) 0%,rgba(18,33,74,.55) 45%,rgba(18,33,74,.12) 80%,rgba(18,33,74,.25) 100%)!important}
+.hs-h b,.hero-a h1 b{color:#cfe1fb!important}
+.hero-a .kicker,.hs-eyebrow{color:#e8f0fc}
+.btn-fill{background:#fff;color:#16264f;border-color:#fff}
+.cta-band,.site-footer{background:#16264f}
+.tag{color:#5b86c4}
+.sec-head .tag::after,.proc::before{background:#7fa6da}
+.proc .pn{border-color:#7fa6da}
+.facts .ic{color:#5b86c4}
+.care::after{background:linear-gradient(180deg,rgba(22,38,79,0) 35%,rgba(22,38,79,.82))}
+.care-t em{color:#cfe1fb}
+body.home .site-header.scrolled{background:#f2f6fc}

@@ -371,10 +371,10 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .parking b{color:var(--c)}
 
 /* 지도 버튼: 네이버 그린 / 카카오 옐로 (각 사 공식 브랜드 색) */
-.btn-naver{background:#03C75A;border-color:#03C75A;color:#fff}
-.btn-naver:hover{background:#02B350;border-color:#02B350}
-.btn-kakao{background:#FEE500;border-color:#FEE500;color:rgba(0,0,0,.85)}
-.btn-kakao:hover{background:#F5DC00;border-color:#F5DC00}
+.btn-naver{background:var(--deep);border-color:var(--deep);color:#fff}
+.btn-naver:hover{background:var(--c);border-color:var(--c)}
+.btn-kakao{background:transparent;border-color:var(--deep);color:var(--deep)}
+.btn-kakao:hover{background:var(--deep);color:#fff}
 
 .ref{margin-top:18px;font-size:13px;line-height:1.7;color:var(--ink2);max-width:860px}
 
@@ -410,8 +410,6 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .more-link{margin-top:22px}
 .plain.career li{color:var(--ink)}
 .brand img.brand-mark{width:44px;height:44px;flex:none;display:block}
-.hours tr.lunch td{text-align:right;padding-right:0;color:var(--ink2);font-weight:600}
-.hours .lunch-note{display:block;font-weight:400;font-size:13px}
 
 /* ───────── 건강칼럼 ───────── */
 .col-list{border-top:1px solid var(--ink)}

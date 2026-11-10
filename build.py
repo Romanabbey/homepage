@@ -28,10 +28,12 @@ EXT = 'target="_blank" rel="noopener"'
 # (표시용 요일, 시간, 비고)
 HOURS = [
     ("월 · 화 · 수 · 금", "09:30 – 20:00", ""),
-    ("목", "14:00 – 20:00", "오후 진료"),
+    ("목", "14:00 – 20:00", ""),
     ("토", "09:30 – 13:00", ""),
     ("일 · 공휴일", "휴진", ""),
 ]
+
+TRANSIT = "지하철 3호선 구파발역 1번과 2번 출구 사이에서 704번, 708번, 7211번, 7723번 버스를 타고 상림마을 아이파크 701동 앞 정류장에서 내리시면 건너편에 있습니다."
 
 DISCLAIMER = "치료 효과와 경과는 개인에 따라 다를 수 있습니다. 이 페이지는 일반적인 안내이며, 실제 치료는 진찰 후 개인별로 안내드립니다."
 
@@ -163,7 +165,7 @@ def hours_rows():
     rows = "".join(
         f"<tr><th scope='row'>{d}</th><td>{t}</td><td class='muted'>{n}</td></tr>" for d, t, n in HOURS
     )
-    lunch = "<tr class='lunch'><th scope='row'>점심시간</th><td colspan='2'>12:30 – 14:00 <span class='lunch-note'>(토요일은 점심시간 없음)</span></td></tr>"
+    lunch = "<tr class='lunch'><th scope='row'>점심시간</th><td>12:30 – 14:00</td><td class='muted'>토요일 제외</td></tr>"
     return rows + lunch
 
 
@@ -540,7 +542,8 @@ def build_home():
         <p class="addr">{CLINIC['address']}</p>
         <p class="muted">지하철 3호선 구파발역 인근 · 708동 지하주차장 무료 주차</p>
         <div class="btn-row"><a class="btn btn-naver" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도</a><a class="btn btn-kakao" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵</a></div>
-        <p class="muted">전화 <a href="{TEL}">{CLINIC['phone']}</a></p></div>
+        <h4 class="way">대중교통</h4>
+        <p class="muted">{TRANSIT}</p></div>
     </div>
   </div>
 </section>
@@ -1038,7 +1041,7 @@ def build_visit():
     <p class="muted">은평뉴타운 상림마을 아이파크 708동 상가 1층 · 708동 앞 버스정류장 바로 뒤쪽</p>
     <div class="btn-row"><a class="btn btn-naver" href="{CLINIC['naver']}" target="_blank" rel="noopener">네이버지도</a><a class="btn btn-kakao" href="{CLINIC['kakao']}" target="_blank" rel="noopener">카카오맵</a></div>
     <h4 class="way">대중교통</h4>
-    <p class="muted">지하철 3호선 구파발역 1번·2번 출구 사이에서 704번, 708번, 7211번, 7723번 버스를 타고 아이파크 701동 앞 정류장에서 내려 건너편으로 오시면 됩니다.</p>
+    <p class="muted">{TRANSIT}</p>
     <h4 class="way">주차</h4>
     <p class="parking">708동 지하주차장 <b>무료 주차</b> 가능</p></div>
 </div></section>
