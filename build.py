@@ -577,8 +577,6 @@ def build_home():
                  + "".join(f'<button type="button" class="hs-dot{" on" if i == 0 else ""}" aria-label="{i+1}번째 화면"><i></i></button>' for i in range(len(slides)))
                  + '<button type="button" class="hs-next" aria-label="다음 화면">›</button>'
                  '<button type="button" class="hs-pause" aria-label="자동 넘김 멈춤">일시정지</button></div>')
-    rail_cards = "".join(f"""<a class="rcard t-{k}" href="{pr['slug']}"><img src="assets/img/{pr.get('poster') or pr['img']}" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">{pr['tag']}</span><b>{pr['name']}</b><small>{pr['tagline']}</small></span></a>""" for k, pr in PRODUCTS.items())
-    rail_cards += """<a class="rcard t-gong" href="gongjindan.html"><img src="assets/img/p-gong.jpg" alt="" width="104" height="104" loading="lazy"><span class="rc-t"><span class="rc-tag">공진단</span><b>활력 · 해울 공진단</b><small>기운을 뿌리부터 채우는 활력공진단</small></span></a>"""
     body = f"""
 <section class="hero hero-a">
   {hero_media}
@@ -586,12 +584,13 @@ def build_home():
     <div class="hs-copies">{hero_copy}</div>
     {hero_ctrl}
   </div>
-  <div class="rail"><div class="rail-in">
-    <div class="rail-head"><div><b>엔오처방</b><small>N.O PRESCRIPTIONS</small></div><a href="#products">처방 전체 보기 {ico('arrow')}</a></div>
-    <div class="rail-cards">{rail_cards}</div>
-    <div class="rail-meta"><span>월·화·수·금 09:30–20:00 · 목 14:00–20:00 · 토 09:30–13:00</span><span>은평구 진관4로 47, 상림마을 708동 상가 115호 · 무료 주차</span><a href="{TEL}">{CLINIC['phone']}</a></div>
-  </div></div>
 </section>
+
+<section class="facts"><div class="container facts-grid">
+  <a href="hours-location.html#map">{ico('pin')}<span><b>오시는 길</b><small>은평구 진관4로 47, 상림마을 708동 상가 115호 · 무료 주차</small></span></a>
+  <a href="{TEL}">{ico('phone')}<span><b>전화 상담</b><small>{CLINIC['phone']}</small></span></a>
+  <a href="{BOOKING}" {EXT}>{ico('cal')}<span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></span></a>
+</div></section>
 
 <section class="sec" id="services">
   <div class="container">

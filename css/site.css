@@ -826,3 +826,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .hs-pause{margin-left:8px;font-size:12.5px!important;font-weight:700;border:1px solid rgba(243,238,224,.4)!important;border-radius:999px;padding:5px 12px!important;opacity:.85}
 @media (max-width:920px){.hs-dot{width:38px}.hs-ctrl{margin-top:28px}.hero-a::after{background:linear-gradient(180deg,rgba(8,26,19,.55),rgba(8,26,19,.9))}}
 @media (prefers-reduced-motion:reduce){.hs-bgs .hs-bg.on img{animation:none}.hs-copy{transition:none}}
+/* 첫 화면 아래 빠른 안내(리뉴얼 이전과 같은 줄) */
+.hero.hero-a{grid-template-rows:1fr}
+.hero-a .hs-main{padding-bottom:clamp(40px,8vh,90px)}
+.hero-a .hs-main{align-self:end}
