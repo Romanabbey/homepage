@@ -46,7 +46,8 @@ def pick_region():
     if base in log:
         return log[base]
     used = list(log.values())
-    pool = [r for r in REGIONS if r not in used] or REGIONS   # 한 바퀴 다 돌면 처음부터
+    OTHER = [r for r in REGIONS if r not in LOCAL]          # 다음 글부터는 타지역만 돌림
+    pool = [r for r in OTHER if r not in used] or OTHER   # 한 바퀴 다 돌면 처음부터
     # 직전에 쓴 지역은 피함
     if used and len(pool) > 1 and used[-1] in pool: pool = [r for r in pool if r != used[-1]]
     r = random.Random(base).choice(pool)
