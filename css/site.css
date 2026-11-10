@@ -1,4 +1,3 @@
-@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-serif-kr@5.2.9/index.css");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 :root{
@@ -453,7 +452,7 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 :root{
   --bg:#f5f2ea; --card:#fffdf8; --ink:#13201a; --ink2:#58625b; --line:#dcd6c6; --tint:#ece7da;
   --c:#12372b; --deep:#0e2a20; --soft:#e4ebe3; --gold:#a8864a; --r:6px;
-  --serif:"Noto Serif KR Variable","Noto Serif KR","Nanum Myeongjo","Apple SD Gothic Neo",serif;
+  --serif:"Pretendard Variable","Pretendard",-apple-system,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
 }
 .site-header{background:var(--bg);border-bottom:1px solid var(--line)}
 .gnb>li>a,.gnb .navbtn{font-size:14.5px;letter-spacing:.005em}
