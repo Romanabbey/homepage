@@ -600,26 +600,7 @@ body.home .site-header .container{max-width:1680px;padding:0 clamp(20px,4vw,64px
 .hero-list span{min-width:0}
 .hero-list small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* 엔오처방 섹션: 짙은 녹색 면 위의 세로 4열 (첫 화면의 작은 줄과 구분) */
-#products{background:var(--deep);color:#f3eee0}
-#products .sec-head h2,#products .sec-head p{color:#f3eee0}
-#products .sec-head p{opacity:.75}
-#products .more-link .btn-line{border-color:rgba(243,238,224,.5);color:#f3eee0}
-#products .more-link .btn-line:hover{background:#f3eee0;color:var(--deep)}
-#products .disc{color:rgba(243,238,224,.6)}
-#products .lineups{grid-template-columns:repeat(4,1fr);gap:16px}
-#products .lineup{display:flex;flex-direction:column;min-height:0;padding:14px 14px 22px;background:rgba(243,238,224,.05);color:#f3eee0;border:1px solid rgba(243,238,224,.2);border-radius:4px}
-#products .lineup:hover{border-color:#e6cf98}
-#products .lineup img,#products .lineup img.poster{order:-1;width:100%;height:auto;aspect-ratio:1/1;min-height:0;object-fit:cover;margin:0 0 18px;border-radius:2px}
-#products .lu-emb{display:none}
-#products .lu-tag{margin:0 8px;color:#e6cf98;font-size:12.5px}
-#products .lineup.t-bopae .lu-tag{color:#6fd6cd}#products .lineup.t-anshim .lu-tag{color:#b9a9f0}#products .lineup.t-bujong .lu-tag{color:#8fbdf0}
-#products .lineup h3{color:#f3eee0;margin:6px 8px 6px;font-size:clamp(20px,1.9vw,26px)}
-#products .lineup p{color:#f3eee0;opacity:.72;margin:0 8px;font-size:14.5px}
-#products .lu-go{position:static;margin:16px 8px 0;background:transparent;border:1px solid rgba(243,238,224,.4);color:#f3eee0;box-shadow:none;width:40px;height:40px}
-#products .lineup:hover .lu-go{background:#f3eee0;color:var(--deep)}
-@media (max-width:1100px){#products .lineups{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:600px){#products .lineups{grid-template-columns:1fr}}
+
 h1,h2,h3{word-break:keep-all;text-wrap:balance}
 
 /* ═════════ 움직이는 배경: 동영상(assets/video/hero.mp4) 또는 사진 3장 슬라이드 ═════════ */
@@ -830,3 +811,6 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .hero.hero-a{grid-template-rows:1fr}
 .hero-a .hs-main{padding-bottom:clamp(40px,8vh,90px)}
 .hero-a .hs-main{align-self:end}
+/* 엔오처방 카드: 휴대폰에서 이미지가 카드 폭을 넘지 않게 */
+.lineups>*{min-width:0}
+@media (max-width:920px){.lineup{grid-template-columns:minmax(0,1fr)}.lineup img,.lineup img.poster{max-width:100%}}

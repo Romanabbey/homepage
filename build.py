@@ -592,13 +592,6 @@ def build_home():
   <a href="{BOOKING}" {EXT}>{ico('cal')}<span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></span></a>
 </div></section>
 
-<section class="sec" id="services">
-  <div class="container">
-    <div class="sec-head left"><span class="tag">CARE</span><h2>구파발경희한의원 진료 안내</h2><p>증상과 목적에 맞는 진료를 진찰 후 안내해 드립니다.</p></div>
-    <div class="care-grid">{care}</div>
-  </div>
-</section>
-
 <section class="sec" id="products">
   <div class="container">
     <div class="sec-head left"><span class="tag">N.O PRESCRIPTIONS</span><h2>엔오처방</h2><p>각각의 처방은 구성과 복용 방법이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
@@ -607,6 +600,15 @@ def build_home():
     {disclaimer()}
   </div>
 </section>
+
+<section class="sec" id="services">
+  <div class="container">
+    <div class="sec-head left"><span class="tag">CARE</span><h2>구파발경희한의원 진료 안내</h2><p>증상과 목적에 맞는 진료를 진찰 후 안내해 드립니다.</p></div>
+    <div class="care-grid">{care}</div>
+  </div>
+</section>
+
+
 
 
 
