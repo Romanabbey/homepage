@@ -22,8 +22,22 @@ REGIONS = ["구파발", "진관동", "은평뉴타운", "불광동", "연신내"
            "삼송", "지축", "원흥", "원당", "덕양구 효자동", "지축동", "신원동",
            "구파발역", "연신내역", "불광역", "녹번역", "지축역", "삼송역", "원흥역", "원당역"]
 LOCAL = {"구파발", "진관동", "은평뉴타운", "구파발역"}   # 한의원이 있는 동네
-GREETING_LOCAL = "안녕하세요, {region} 인근 분들께 은평뉴타운 평생주치의 최솔 원장입니다."
-GREETING_OTHER = "안녕하세요, {region} 인근 분들께 구파발경희한의원 최솔 원장입니다."
+GREETING_LOCAL = "안녕하세요, {region} 이웃 은평뉴타운 평생주치의 최솔 원장입니다."
+GREETING_OTHER = "안녕하세요, {region} 이웃 구파발경희한의원 최솔 원장입니다."
+STATION_AREAS = {"구파발", "연신내", "삼송", "지축", "원흥", "원당"}   # '○○역한의원' 변형을 쓸 수 있는 곳
+
+def region_tags(region):
+    """해당 지역명 태그 2개 (붙여쓰기). 예: 연신내 → #연신내한의원 #연신내역한의원"""
+    name = region.replace(" ", "")
+    if name.endswith("역"):
+        return [f"#{name}한의원", f"#{name[:-1]}한의원"]
+    if name.startswith("덕양구"):
+        return [f"#{name}한의원", f"#{name[3:]}한의원"]
+    if name.endswith("동"):
+        return [f"#{name}한의원", f"#{name[:-1]}한의원"]
+    if name in STATION_AREAS:
+        return [f"#{name}한의원", f"#{name}역한의원"]
+    return [f"#{name}한의원", f"#{name}"]
 
 def pick_region():
     import random
@@ -40,8 +54,11 @@ def pick_region():
     json.dump(log, open(logp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     return r
 
+region = pick_region() if ("{{greeting}}" in body or "{{region_tags}}" in tags) else None
+if "{{region_tags}}" in tags:
+    tags = tags.replace("{{region_tags}}", " ".join(region_tags(region)))
+    print("지역 태그:", " ".join(region_tags(region)))
 if "{{greeting}}" in body:
-    region = pick_region()
     body = body.replace("{{greeting}}", (GREETING_LOCAL if region in LOCAL else GREETING_OTHER).format(region=region))
     print("첫 줄 인사 지역:", region)
 
