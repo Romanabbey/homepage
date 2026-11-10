@@ -535,3 +535,4 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .col-author .ca-say{font-size:16px;color:var(--ink);font-weight:700}
 .col-author a{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:14px;font-weight:700;color:var(--c)}
 @media (max-width:600px){.col-author{grid-template-columns:76px 1fr;gap:14px;padding:18px}.col-author img{width:76px;height:76px}}
+.col-author .ca-title{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-left:2px}
