@@ -17,14 +17,12 @@ def sec(name):
 title, body, refs, end, tags = (sec(n) for n in ("제목", "본문", "참고 문헌", "맺음 안내", "추천 태그"))
 title = title.strip()
 
-# ---- 첫 줄 인사: 지역명을 돌려 가며 자동으로 넣습니다 ({{greeting}} 자리에 들어감) ----
+# ---- 지역 태그용 지역 목록 (첫 줄 인사에는 더 이상 지역을 쓰지 않음) ----
+GREETING_FIXED = "안녕하세요, 구파발경희한의원 최솔 원장입니다."
 REGIONS = ["구파발", "진관동", "은평뉴타운", "불광동", "연신내", "응암동", "갈현동", "역촌동", "녹번동",
            "삼송", "지축", "원흥", "원당", "덕양구 효자동", "지축동", "신원동",
            "구파발역", "연신내역", "불광역", "녹번역", "지축역", "삼송역", "원흥역", "원당역"]
-LOCAL = {"구파발", "진관동", "은평뉴타운", "구파발역"}   # 한의원이 있는 동네
-GREETING_LOCAL = "안녕하세요, {region}에서 진료하는 최솔 원장입니다."
-GREETING_LOCAL_STATION = "안녕하세요, 구파발역 가까이에서 진료하는 최솔 원장입니다."
-GREETING_OTHER = "안녕하세요, {region}에서 찾아 주셨다면 반가워요. 구파발경희한의원 최솔 원장입니다."
+LOCAL = {"구파발", "진관동", "은평뉴타운", "구파발역"}   # 한의원이 있는 동네 (지역 태그는 이 동네를 제외하고 돌림)
 STATION_AREAS = {"구파발", "연신내", "삼송", "지축", "원흥", "원당"}   # '○○역한의원' 변형을 쓸 수 있는 곳
 
 def region_tags(region):
@@ -56,13 +54,13 @@ def pick_region():
     json.dump(log, open(logp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     return r
 
-region = pick_region() if ("{{greeting}}" in body or "{{region_tags}}" in tags) else None
+region = pick_region() if "{{region_tags}}" in tags else None
 if "{{region_tags}}" in tags:
     tags = tags.replace("{{region_tags}}", " ".join(region_tags(region)))
     print("지역 태그:", " ".join(region_tags(region)))
 if "{{greeting}}" in body:
-    body = body.replace("{{greeting}}", (GREETING_LOCAL_STATION if region == "구파발역" else GREETING_LOCAL if region in LOCAL else GREETING_OTHER).format(region=region))
-    print("첫 줄 인사 지역:", region)
+    # 2026-11-11부터 첫 줄 인사는 지역 없이 고정 한 줄. 지역은 태그({{region_tags}})로만 씁니다.
+    body = body.replace("{{greeting}}", GREETING_FIXED)
 
 def link(t):
     t = html.escape(t)
@@ -81,9 +79,9 @@ def img(name):
     if name not in [n for n, _ in IMGS]:
         IMGS.append((name, base64.b64encode(open(p, "rb").read()).decode()))
     n = [x for x, _ in IMGS].index(name) + 1
-    return f'<p style="margin:0;font-size:15px;line-height:1.8;text-align:center;color:#000"><b>[이미지 {n} 자리]</b></p>'
+    return f'<p style="margin:0;font-size:19px;line-height:1.8;text-align:center;color:#000"><b>[이미지 {n} 자리]</b></p>'
 
-P = 'margin:0;font-size:15px;line-height:1.8;color:#000'
+P = 'margin:0;font-size:19px;line-height:1.8;color:#000'
 PH = 'margin:0;font-size:24px;line-height:1.6;font-weight:700;color:#000'
 Q = 'background:#f3f6f4;border-left:4px solid #1d6a4a;padding:14px 18px;margin:0;border-radius:6px'
 used = []
