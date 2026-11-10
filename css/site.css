@@ -817,3 +817,18 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 @media (min-width:1101px) and (max-width:1360px){.gnb>li>a,.gnb .navbtn{font-size:16px;font-weight:700;padding:0 10px}.nav-right .tel{font-size:15px}.tel span{display:inline}}
 @media (min-width:921px) and (max-width:1100px){.gnb>li>a,.gnb .navbtn{font-size:15px;font-weight:700;padding:0 8px}}
 .sec-white{background:#fff}
+
+/* 건강정보 앨범형 카드 */
+.col-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+.col-card{display:block;background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.col-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(18,33,74,.12)}
+.cc-img{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--soft)}
+.cc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.col-card:hover .cc-img img{transform:scale(1.05)}
+.cc-img em{position:absolute;left:12px;top:12px;font-style:normal;font-size:12.5px;font-weight:800;color:var(--deep);background:rgba(255,255,255,.92);padding:5px 10px;border-radius:999px}
+.cc-body{display:block;padding:18px 20px 22px}
+.cc-body b{display:block;font-size:clamp(17px,1.5vw,20px);letter-spacing:-.03em;line-height:1.4}
+.cc-body small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--ink2);font-size:14px;margin-top:8px;line-height:1.6}
+.cc-date{display:block;margin-top:12px;font-size:13px;color:var(--ink2);font-weight:600}
+@media (max-width:980px){.col-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.col-grid{grid-template-columns:1fr}}

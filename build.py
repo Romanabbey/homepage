@@ -1631,10 +1631,18 @@ def col_url(a):
     return f"column/{a['slug']}.html"
 
 
+COL_CAT_IMG = {"accident": "care-accident.jpg", "no": "care-no.jpg", "diet": "care-diet.jpg", "growth": "care-growth.jpg",
+               "postpartum": "care-postpartum.jpg", "yakchim": "care-yakchim.jpg", "clinic": "slide-1.jpg"}
+
+
 def col_item(a):
+    """건강정보 앨범형 카드. 사진은 글머리의 image: 값, 없으면 분야별 대표 사진."""
     cat = COL_CATS[a["category"]][0]
-    return (f"<a class='col-item reveal' data-cat='{a['category']}' href='{col_url(a)}'><span class='ci-date'>{a['date'].replace('-', '.')}<small>{esc(cat)}</small></span>"
-            f"<span class='ci-t'><b>{esc(a['title'])}</b><small>{esc(a['summary'].replace('**', ''))}</small></span><span class='ci-go'>{ico('arrow')}</span></a>")
+    img = a.get("image") or COL_CAT_IMG.get(a["category"], "slide-1.jpg")
+    return (f"<a class='col-card reveal' data-cat='{a['category']}' href='{col_url(a)}'>"
+            f"<span class='cc-img'><img src='assets/img/{img}' alt='' loading='lazy' width='800' height='600'><em>{esc(cat)}</em></span>"
+            f"<span class='cc-body'><b>{esc(a['title'])}</b><small>{esc(a['summary'].replace('**', ''))}</small>"
+            f"<span class='cc-date'>{a['date'].replace('-', '.')}</span></span></a>")
 
 
 def col_home_html():
@@ -1644,7 +1652,7 @@ def col_home_html():
     return f"""<section class="sec">
   <div class="container">
     <div class="sec-head left"><span class="tag">COLUMN</span><h2>건강정보</h2><p>진료실에서 자주 받는 질문을 정리했습니다.</p></div>
-    <div class="col-list">{items}</div>
+    <div class="col-grid">{items}</div>
     <p style="margin-top:22px"><a class="btn btn-line" href="column/">칼럼 전체 보기 {ico('arrow')}</a></p>
   </div>
 </section>"""
@@ -1664,7 +1672,7 @@ def build_column_index(arts, preview=False):
     items = "".join(col_item(a) for a in arts) or "<p class='muted'>아직 등록된 칼럼이 없습니다.</p>"
     body = f"""
 <section class="phero phero-plain"><div class="container">{crumb_html("건강정보")}<h1>건강정보</h1><p class="lead">진료실에서 자주 받는 질문을 근거와 함께 정리합니다.</p></div></section>
-<section class="sec" style="padding-top:20px"><div class="container">{col_tabs(arts)}<div class="col-list" id="colList">{items}</div>
+<section class="sec" style="padding-top:20px"><div class="container">{col_tabs(arts)}<div class="col-grid" id="colList">{items}</div>
   <p class="disc">※ 칼럼은 일반적인 건강 정보이며 개인별 진단·치료를 대신하지 않습니다.</p></div></section>
 {cta_band()}"""
     page("column/index.html", "건강정보 | 구파발경희한의원",

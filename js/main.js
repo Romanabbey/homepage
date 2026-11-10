@@ -96,7 +96,7 @@
       t.addEventListener("click", function () {
         var c = t.getAttribute("data-cat");
         tabs.forEach(function (x) { x.classList.toggle("on", x === t); x.setAttribute("aria-selected", x === t ? "true" : "false"); });
-        document.querySelectorAll("#colList .col-item").forEach(function (it) {
+        document.querySelectorAll("#colList .col-card").forEach(function (it) {
           it.style.display = (c === "all" || it.getAttribute("data-cat") === c) ? "" : "none";
         });
       });
