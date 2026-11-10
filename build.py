@@ -50,7 +50,7 @@ NAV = [
     ("통증", "#", [
         ("목·어깨통증", "neck.html"),
         ("허리통증", "back.html"),
-        ("무릎연골", "knee.html"),
+        ("무릎통증 (연골검사)", "knee.html"),
         ("발목통증", "ankle.html"),
         ("팔꿈치통증", "elbow.html"),
     ]),
@@ -352,7 +352,7 @@ def header_html(current):
 def footer_html():
     groups = [
         ("엔오처방", [("보폐고 엔오", "bopae.html"), ("안심환 엔오", "anshim.html"), ("부종환 엔오", "bujong.html"), ("활력·해울 공진단", "gongjindan.html"), ("엔오 리커버리 패치", "patch.html")]),
-        ("통증", [("목·어깨통증", "neck.html"), ("허리통증", "back.html"), ("무릎연골", "knee.html"), ("발목통증", "ankle.html"), ("팔꿈치통증", "elbow.html")]),
+        ("통증", [("목·어깨통증", "neck.html"), ("허리통증", "back.html"), ("무릎통증 (연골검사)", "knee.html"), ("발목통증", "ankle.html"), ("팔꿈치통증", "elbow.html")]),
         ("진료", [("교통사고", "accident.html"), ("다이어트", "diet.html"), ("바른성장", "growth.html"), ("산후보약", "postpartum.html"), ("N약침 · 초음파 가이드 약침", "yakchim.html")]),
         ("병원소개", [("원장이력", "about.html"), ("진료시간 · 오시는 길", "hours-location.html"), ("예약 · 문의", "reservation.html"), ("공지사항", "notice.html"), ("생활안내", "lifeguide.html"), ("건강정보", "column/"), ("작성·감수 원칙", "editorial-policy.html"), ("자주 묻는 질문", "faq.html"), ("개인정보처리방침", "privacy.html")]),
     ]
@@ -532,7 +532,7 @@ def build_home():
     care_cards = [
         ("목·어깨통증", "뒷목·어깨 결림과 팔 저림을 살핍니다", "neck.html", PAIN["neck"]["img"]),
         ("허리통증", "앉고 서고 숙일 때의 허리 불편을 살핍니다", "back.html", PAIN["back"]["img"]),
-        ("무릎연골", "계단과 앉고 일어설 때의 무릎 통증을 살핍니다", "knee.html", PAIN["knee"]["img"]),
+        ("무릎통증 (연골검사)", "계단과 앉고 일어설 때의 무릎 통증을 살핍니다", "knee.html", PAIN["knee"]["img"]),
         ("교통사고", "사고 후 목·허리 통증과 두통을 살핍니다", "accident.html", "care-accident.jpg"),
         ("엔오처방", "보폐고 · 안심환 · 부종환 · 공진단", "index.html#products", "care-no.jpg"),
         ("다이어트", "저칼로리 식단과 원내에서 달이는 맞춤 한약", "diet.html", "care-diet.jpg"),
@@ -1093,7 +1093,7 @@ PAIN = {
                  chuna="허리와 골반의 정렬과 움직임을 살피는 수기 치료입니다.",
                  seo="허리통증 한의원 | 은평구 구파발경희한의원",
                  desc="구파발경희한의원 허리통증 진료. 앉았다 일어날 때 통증, 오래 앉거나 설 때의 불편, 다리 저림을 진찰한 뒤 침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약을 조합합니다."),
-    "knee": dict(slug="knee.html", name="무릎연골", img="care-knee.jpg",
+    "knee": dict(slug="knee.html", name="무릎통증 (연골검사)", img="care-knee.jpg",
                  h1="무릎 통증과 연골,<br>계단과 앉고 일어설 때를 살핍니다",
                  lead="계단을 오르내리거나 앉았다 일어날 때의 무릎 불편을 진찰하고, 필요하면 초음파로 무릎 주변을 확인한 뒤 치료를 조합합니다.",
                  sym=["계단을 오르내릴 때 무릎이 아프다", "앉았다 일어날 때 무릎이 시큰하다", "무릎이 붓거나 뻣뻣하다", "오래 걷고 나면 무릎이 무겁고 아프다"],
