@@ -1,4 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap&text=%EA%B5%AC%ED%8C%8C%EB%B0%9C%EA%B2%BD%ED%9D%AC%ED%95%9C%EC%9D%98%EC%9B%90");
 
 :root{
   --bg:#f6f6f3; --card:#fff; --ink:#101418; --ink2:#59626a; --line:#e2e3df; --tint:#eeeeea;
@@ -842,6 +843,6 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .map-embed iframe{display:block;width:100%;height:100%}
 @media (max-width:700px){.map-embed{aspect-ratio:4/3}}
 
-/* 로고 상호: 원형 마크 안의 글자를 일자로 펴서 이미지(마스크)로 사용. 글자색은 b의 color를 따름 */
-.brand b .nm{display:block;height:19px;aspect-ratio:540/74;background:currentColor;-webkit-mask:url(../assets/img/brand-name.png) left center/contain no-repeat;mask:url(../assets/img/brand-name.png) left center/contain no-repeat}
-@media (max-width:1040px){.brand b .nm{height:17px}}
+/* 로고 상호: 고운바탕 Bold(SIL OFL 무료 글꼴), 상호 글자만 받아 오도록 text 지정 */
+.brand b{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;letter-spacing:-.01em;font-size:21px}
+@media (max-width:1040px){.brand b{font-size:19px}}

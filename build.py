@@ -339,7 +339,7 @@ def header_html(current):
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
       <img class="brand-mark" src="assets/img/logo-full-navy.png" alt="" width="44" height="44">
-      <span><b><i class="nm" role="img" aria-label="{CLINIC['name']}"></i></b>{brand_tag()}</span>
+      <span><b>{CLINIC['name']}</b>{brand_tag()}</span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
       <ul class="gnb">{nav}</ul>
