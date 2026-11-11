@@ -581,7 +581,6 @@ body.home .site-header{position:fixed;top:0;left:0;right:0;background:transparen
 body.home .site-header.scrolled{background:var(--bg);border-bottom-color:var(--line)}
 body.home .site-header:not(.scrolled) .brand b{color:#fff}
 body.home .site-header:not(.scrolled) .brand small{color:rgba(255,255,255,.7)}
-body.home .site-header:not(.scrolled) .brand-mark{background:#fff;border-radius:50%;padding:2px}
 body.home .site-header:not(.scrolled) .burger .bars span{background:#fff}
 body.home .site-header:not(.scrolled) .burger .bt{color:#fff}
 body.home.menu-open .site-header .brand b{color:var(--ink)}
@@ -852,3 +851,9 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .foot-brand{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;letter-spacing:-.01em;font-size:24px}
 /* 상호 글씨 굵기 보강(고운바탕 Bold보다 굵게): 글자 크기에 비례한 테두리 */
 .brand b,.foot-brand{-webkit-text-stroke:.0143em currentColor;paint-order:stroke fill}
+/* 홈 맨 위(색 있는 배경)에서는 원형 마크도 흰색으로, 스크롤하거나 메뉴를 열면 남색 마크 */
+.brand-mark-w{display:none;width:44px;height:44px;flex:none}
+body.home .site-header:not(.scrolled) .brand-mark{display:none}
+body.home .site-header:not(.scrolled) .brand-mark-w{display:block}
+body.home.menu-open .site-header .brand-mark{display:block}
+body.home.menu-open .site-header .brand-mark-w{display:none}
