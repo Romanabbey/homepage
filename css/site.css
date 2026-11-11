@@ -848,3 +848,5 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 @media (max-width:1040px){.brand b{font-size:19px}}
 /* 상호를 4px 아래로(마크 중앙 높이에 맞춤), 부제와 간격은 좁아짐 */
 .brand b{position:relative;top:4px}
+/* 푸터 상호도 헤더와 같은 고운바탕 Bold */
+.foot-brand{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;letter-spacing:-.01em;font-size:24px}
