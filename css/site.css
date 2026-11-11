@@ -846,3 +846,5 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 /* 로고 상호: 고운바탕 Bold(SIL OFL 무료 글꼴), 상호 글자만 받아 오도록 text 지정 */
 .brand b{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;letter-spacing:-.01em;font-size:21px}
 @media (max-width:1040px){.brand b{font-size:19px}}
+/* 상호를 4px 아래로(마크 중앙 높이에 맞춤), 부제와 간격은 좁아짐 */
+.brand b{position:relative;top:4px}
