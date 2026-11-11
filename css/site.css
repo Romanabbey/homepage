@@ -850,3 +850,5 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .brand b{position:relative;top:4px}
 /* 푸터 상호도 헤더와 같은 고운바탕 Bold */
 .foot-brand{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;letter-spacing:-.01em;font-size:24px}
+/* 상호 글씨 굵기 보강(고운바탕 Bold보다 굵게): 글자 크기에 비례한 테두리 */
+.brand b,.foot-brand{-webkit-text-stroke:.0143em currentColor;paint-order:stroke fill}
