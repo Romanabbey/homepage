@@ -560,7 +560,7 @@ def build_home():
     care = "".join(f"""<a class="care reveal" href="{h}"><img src="assets/img/{im}" alt="" loading="lazy" width="800" height="600"><span class="care-t"><em>{i:02d}</em><b>{esc(t)}</b><small>{esc(d)}</small></span></a>""" for i, (t, d, h, im) in enumerate(care_cards, 1))
     # 첫 화면 슬라이드 3장 (자동으로 번갈아 나옴). assets/video/slide1.mp4 처럼 동영상을 넣으면 그 장은 동영상 배경이 됩니다.
     slides = [
-        dict(img="slide-1.jpg", eyebrow="GUPABAL KYUNGHEE KOREAN MEDICINE", sub="은평뉴타운 · 구파발역 인근",
+        dict(img="slide-1.jpg", eyebrow="GUPABAL KYUNGHEE KOREAN MEDICINE CLINIC", sub="은평뉴타운 · 구파발역 인근",
              h1="진찰은 <b>꼼꼼하게</b>.<br>한약은 <b>원내에서 직접</b>.",
              lead="충분히 듣고 원장이 직접 진찰한 뒤, 지금 상태와 치료 방향을 설명해 드립니다.",
              btns=[("네이버 예약", BOOKING, True), (CLINIC["phone"], TEL, False)]),
