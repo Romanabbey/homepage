@@ -202,6 +202,7 @@ def clinic_schema():
         "alternateName": "구파발 한의원",
         "url": DOMAIN + "/",
         "image": DOMAIN + "/assets/img/slide-1.jpg",
+        "logo": DOMAIN + "/assets/img/brand/logo-square-512.png",
         "telephone": [CLINIC["phone_intl"], CLINIC["phone_naver_intl"]],  # 대표번호 + 네이버 플레이스 안심번호
         "address": {
             "@type": "PostalAddress",
@@ -375,7 +376,7 @@ def footer_html():
   <div class="container">
     <div class="foot-grid">
       <div class="foot-id">
-        <p class="foot-brand"><img class="foot-mark" src="assets/img/brand/logo-mark-white.svg" alt="" width="40" height="38"><span>{CLINIC['name']}</span></p>
+        <div class="foot-brand"><img class="foot-mark" src="assets/img/brand/logo-mark-white.svg" alt="" width="46" height="44"><span class="lock"><b>{CLINIC['name']}</b>{brand_en()}</span></div>
         <address>
           원장 {CLINIC['doctor']} · 사업자등록번호 {CLINIC['biz']}<br>
           {CLINIC['address']}<br>
@@ -406,7 +407,7 @@ def ga_snippet():
             f"gtag('js',new Date());gtag('config','{GA_ID}',{{allow_google_signals:false,allow_ad_personalization_signals:false}});</script>\n")
 
 
-def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="slide-1.jpg", home=False, theme=None, extra_head=""):
+def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="brand/og-logo.png", home=False, theme=None, extra_head=""):
     graph = [website_schema(), clinic_schema(), doctor_schema()] if home else [clinic_schema(), doctor_schema()]
     if crumbs:
         graph.append(breadcrumb(crumbs))
@@ -426,7 +427,10 @@ def page(slug, title, desc, body, current=None, schema=None, crumbs=None, og="sl
 <meta name="naver-site-verification" content="aa77e98bd2a46fc62fb05d2a746f7d0d25014f06" />
 <link rel="canonical" href="{url}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#1d4a3a">
+<link rel="icon" href="assets/img/brand/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="icon" href="assets/img/brand/favicon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#16264f">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="{CLINIC['name']}">
