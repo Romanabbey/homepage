@@ -576,21 +576,8 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .rcard.t-bopae .rc-tag{color:#6fd6cd}.rcard.t-anshim .rc-tag{color:#b9a9f0}.rcard.t-bujong .rc-tag{color:#8fbdf0}.rcard.t-gong .rc-tag{color:#cfe1fb}
 .rail-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:12.8px;opacity:.72;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.16)}
 .rail-meta a{opacity:1}
-/* 홈에서는 헤더를 사진 위에 얹고, 스크롤하면 아이보리로 */
-body.home .site-header{position:fixed;top:0;left:0;right:0;background:transparent;border-bottom:1px solid transparent;transition:background .25s,border-color .25s}
-body.home .site-header.scrolled{background:var(--bg);border-bottom-color:var(--line)}
-body.home .site-header:not(.scrolled) .brand b{color:#fff}
-body.home .site-header:not(.scrolled) .brand small{color:rgba(255,255,255,.7)}
-body.home .site-header:not(.scrolled) .burger .bars span{background:#fff}
-body.home .site-header:not(.scrolled) .burger .bt{color:#fff}
-body.home.menu-open .site-header .brand b{color:var(--ink)}
-body.home.menu-open .site-header .brand small{color:var(--ink2)}
-body.home.menu-open .site-header .burger .bars span{background:var(--ink)}
-body.home.menu-open .site-header .burger .bt{color:var(--ink)}
-@media (min-width:921px){
-  body.home .site-header:not(.scrolled) .gnb>li>a,body.home .site-header:not(.scrolled) .gnb .navbtn,body.home .site-header:not(.scrolled) .tel{color:#fff}
-  body.home .site-header:not(.scrolled) .nav-right .btn-ink{background:#fff;color:var(--deep)}
-}
+/* 홈 헤더: 맨 위에 고정, 배경은 항상 아이보리(흰색 계열) — 로고·메뉴도 항상 남색 */
+body.home .site-header{position:fixed;top:0;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line)}
 @media (max-width:1100px){.rail-cards{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:920px){
   .hero-main{grid-template-columns:1fr;padding-top:96px;gap:30px}
@@ -851,15 +838,3 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .foot-brand{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;letter-spacing:-.01em;font-size:24px}
 /* 상호 글씨 굵기 보강(고운바탕 Bold보다 굵게): 글자 크기에 비례한 테두리 */
 .brand b,.foot-brand{-webkit-text-stroke:.0143em currentColor;paint-order:stroke fill}
-/* 홈 맨 위(색 있는 배경)에서는 원형 마크도 흰색으로, 스크롤하거나 메뉴를 열면 남색 마크 */
-.brand-mark-w{display:none;width:44px;height:44px;flex:none}
-body.home .site-header:not(.scrolled) .brand-mark{display:none}
-body.home .site-header:not(.scrolled) .brand-mark-w{display:block}
-body.home.menu-open .site-header .brand-mark{display:block}
-body.home.menu-open .site-header .brand-mark-w{display:none}
-/* 마크와 상호의 일체감: 마크를 줄이고 상호를 키우며 간격을 좁힘(마크 32 · 글씨 26 · 간격 8) */
-.brand{gap:8px}
-.brand img.brand-mark,.brand-mark-w{width:32px;height:32px}
-.brand b{font-size:26px}
-@media (min-width:921px) and (max-width:1040px){.brand b{font-size:22px}.brand img.brand-mark,.brand-mark-w{width:28px;height:28px}}
-@media (max-width:920px){.brand b{font-size:23px}.brand img.brand-mark,.brand-mark-w{width:30px;height:30px}}
