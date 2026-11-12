@@ -94,7 +94,7 @@ EMBLEMS = {
     "anshim": '<path d="M42 8a24 24 0 1014 32 19 19 0 01-14-32z"/><circle cx="50" cy="16" r="1.5"/><circle cx="56" cy="26" r="1"/>',
     "bujong": '<path d="M32 6C23 19 14 28 14 39a18 18 0 0036 0C50 28 41 19 32 6z"/><path d="M24 41a8 8 0 008 8"/>',
     "gong": '<circle cx="32" cy="32" r="19"/><circle cx="32" cy="32" r="8"/><path d="M32 4v6M32 54v6M4 32h6M54 32h6"/>',
-    "patch": '<rect x="10" y="10" width="44" height="44" rx="16"/><path d="M23 32h18M32 23v18"/>',
+    "patch": '<rect x="10" y="10" width="32" height="32" rx="16"/><path d="M23 32h18M32 23v18"/>',
 }
 
 
@@ -338,8 +338,8 @@ def header_html(current):
 <header class="site-header">
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
-      <img class="brand-mark" src="assets/img/logo-full-navy.png" alt="" width="44" height="44">
-      <img class="brand-mark-w" src="assets/img/logo-white.png" alt="" width="44" height="44">
+      <img class="brand-mark" src="assets/img/logo-full-navy.png" alt="" width="32" height="32">
+      <img class="brand-mark-w" src="assets/img/logo-white.png" alt="" width="32" height="32">
       <span><b>{CLINIC['name']}</b></span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">

@@ -857,3 +857,9 @@ body.home .site-header:not(.scrolled) .brand-mark{display:none}
 body.home .site-header:not(.scrolled) .brand-mark-w{display:block}
 body.home.menu-open .site-header .brand-mark{display:block}
 body.home.menu-open .site-header .brand-mark-w{display:none}
+/* 마크와 상호의 일체감: 마크를 줄이고 상호를 키우며 간격을 좁힘(마크 32 · 글씨 26 · 간격 8) */
+.brand{gap:8px}
+.brand img.brand-mark,.brand-mark-w{width:32px;height:32px}
+.brand b{font-size:26px}
+@media (min-width:921px) and (max-width:1040px){.brand b{font-size:22px}.brand img.brand-mark,.brand-mark-w{width:28px;height:28px}}
+@media (max-width:920px){.brand b{font-size:23px}.brand img.brand-mark,.brand-mark-w{width:30px;height:30px}}
