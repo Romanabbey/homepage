@@ -1516,6 +1516,15 @@ def build_404():
 # ------------------------------------------------------------------ 건강칼럼
 # 글은 columns/*.md 파일로 씁니다(공개). 초안은 columns/drafts/ (저장소에 올라가지 않음).
 # 사용법은 README.md 의 '칼럼 쓰는 법'을 보세요.
+# 칼럼 원장 소개 박스의 둘째 약력: 분야별로 바꾼다(홈페이지 원장이력에 있는 항목만 쓴다). 글머리 credential: 로 글마다 지정 가능.
+COL_CRED = {
+    "no": "대한산화질소한의학회 회원",
+    "accident": "대한스포츠한의학회 회원",
+    "yakchim": "N약침 초음파 유도하 약침 정규과정 수료",
+    "diet": "한방비만학회 회원",
+}
+COL_CRED_DEFAULT = "경희대학교 침구경락센터 협력 한의사"
+
 COL_CATS = {
     "accident": ("교통사고", "accident.html"),
     "no": ("엔오처방", "index.html#products"),
@@ -1736,7 +1745,7 @@ def build_column_article(a, preview=False):
   {video_html}{blog_html}
   <aside class="col-author"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="160" height="160" loading="lazy">
     <div><b>최&nbsp;&nbsp;솔 <span class="ca-title">원장</span></b>
-    <p>경희대학교 한의과대학 졸업 · 경희대학교 침구경락센터 협력 한의사</p>
+    <p>경희대학교 한의과대학 졸업 · {esc(a.get("credential") or COL_CRED.get(a["category"], COL_CRED_DEFAULT))}</p>
     <p class="ca-say">구파발경희한의원은 정직하게 진료합니다.</p>
     <a href="about.html">원장이력 보기 {ico('arrow')}</a></div></aside>
   {src_html}
