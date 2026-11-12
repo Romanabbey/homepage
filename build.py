@@ -253,6 +253,12 @@ def faq_schema(faqs):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}
 
 
+def brand_en(text="GUPABAL KYUNGHEE KOREAN MEDICINE CLINIC"):
+    """영문명을 글자 단위로 균등하게 벌려 한글 상호 너비에 좌우 끝을 맞춥니다(CSS flex space-between)."""
+    chars = "".join("<i class='sp'></i>" if c == " " else f"<i>{c}</i>" for c in text)
+    return f"<small class='en' aria-hidden='true'>{chars}</small><span class='sr'>{text}</span>"
+
+
 def brand_tag(text="은평뉴타운 평생주치의"):
     """로고 문구를 상호(구파발경희한의원) 글자 너비에 맞춰 양쪽 끝으로 펼쳐 보이게 합니다."""
     chars = "".join("<i class='sp'></i>" if c == " " else f"<i>{esc(c)}</i>" for c in text)
@@ -339,7 +345,7 @@ def header_html(current):
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
       <img class="brand-mark" src="assets/img/brand/logo-mark.svg" alt="" width="46" height="44">
-      <span><b>{CLINIC['name']}</b></span>
+      <span class="lock"><b>{CLINIC['name']}</b>{brand_en()}</span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
       <ul class="gnb">{nav}</ul>
