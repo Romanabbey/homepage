@@ -2,7 +2,7 @@
 """구파발경희한의원 사이트 생성기.
 사용법: python3 build.py   (이 폴더에 HTML, sitemap.xml, robots.txt, llms.txt 생성)
 정보(전화/시간/주소)는 아래 CLINIC 한 곳에서만 수정하세요."""
-import json, html, datetime, os, re, sys, glob
+import json, html, datetime, os, re, subprocess, sys, glob
 from email.utils import format_datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -608,7 +608,7 @@ def build_home():
 <section class="facts"><div class="container facts-grid">
   <a href="hours-location.html#map">{ico('pin')}<span><b>오시는 길</b><small>은평구 진관4로 47, 상림마을 708동 상가 115호 · 무료 주차</small></span></a>
   <a href="{TEL}">{ico('phone')}<span><b>전화 상담</b><small>{CLINIC['phone']}</small></span></a>
-  <a href="{BOOKING}" {EXT}>{ico('cal')}<span><b>네이버 예약</b><small>초음파 검사·시술은 사전 예약 권장</small></span></a>
+  <a href="{BOOKING}" {EXT}>{ico('cal')}<span><b>네이버 예약</b><small>다이어트 · 성장 상담은 사전 예약 권장</small></span></a>
 </div></section>
 
 <section class="sec" id="products">
@@ -1592,6 +1592,22 @@ def md_to_html(body):
         if mode == "src":
             m = re.match(r"^(?:-|\d+\.)\s+(.*)$", line)
             if m: sources.append(m.group(1))
+            continue
+        mi = re.match(r"^!\[([^\]]*)\]\(([^)\s]+)\)$", line.strip())
+        if mi:   # 이미지 한 줄: ![설명](assets/img/column/파일.jpg) — 설명은 alt와 캡션으로 쓴다
+            flush_para(); flush_list()
+            alt, src = mi.group(1), mi.group(2)
+            wh = ""
+            try:
+                out = subprocess.run(["sips", "-g", "pixelWidth", "-g", "pixelHeight", os.path.join(ROOT, src)], capture_output=True, text=True).stdout
+                w, h = re.findall(r"pixel(?:Width|Height): (\d+)", out)[:2]
+                wh = f" width='{w}' height='{h}'"
+            except Exception:
+                pass
+            big = re.sub(r"\.jpg$", "-lg.jpg", src)
+            big = big if os.path.exists(os.path.join(ROOT, big)) else src   # 확대용 큰 파일(-lg)이 있으면 클릭 때만 불러온다
+            html_out.append(f"<figure class='col-fig'><a class='col-zoom' href='/{big}' data-zoom='/{big}' aria-label='이미지 크게 보기: {esc(alt)}'>"
+                            f"<img src='{src}' alt='{esc(alt)}'{wh} loading='lazy'></a><figcaption>{esc(alt)} <span class='cz-hint'>(눌러서 크게 보기)</span></figcaption></figure>")
             continue
         if line.startswith("### "):
             flush_para(); flush_list()
