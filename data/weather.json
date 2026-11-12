@@ -22,5 +22,17 @@
   "pm25": "보통",
   "category": "clear",
   "phrase": "날씨가 좋아요. 계단을 이용해 보세요."
+ },
+ {
+  "date": "2026-11-12",
+  "sky": "맑음",
+  "precip": false,
+  "tmn": 9,
+  "tmx": 15,
+  "pop": 30,
+  "pm10": "보통",
+  "pm25": "보통",
+  "category": "default",
+  "phrase": "오래 앉아 있다면 어깨를 한 번 돌려 주세요."
  }
 ]
