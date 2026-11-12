@@ -18,7 +18,7 @@ title, body, refs, end, tags = (sec(n) for n in ("제목", "본문", "참고 문
 title = title.strip()
 
 # ---- 지역 태그용 지역 목록 (첫 줄 인사에는 더 이상 지역을 쓰지 않음) ----
-GREETING_FIXED = "안녕하세요, 구파발경희한의원 최솔 원장입니다."
+GREETING_FIXED = "안녕하세요, 은평구 구파발경희한의원 최솔 원장입니다."
 REGIONS = ["구파발", "진관동", "은평뉴타운", "불광동", "연신내", "응암동", "갈현동", "역촌동", "녹번동",
            "삼송", "지축", "원흥", "원당", "덕양구 효자동", "지축동", "신원동",
            "구파발역", "연신내역", "불광역", "녹번역", "지축역", "삼송역", "원흥역", "원당역"]
@@ -54,10 +54,11 @@ def pick_region():
     json.dump(log, open(logp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     return r
 
-region = pick_region() if "{{region_tags}}" in tags else None
+# 2026-11-12 원장 결정: 지역 태그는 돌리지 않고 아래 8개를 모든 글에 고정으로 넣는다(은평한의원 대신 은평구한의원).
+FIXED_REGION_TAGS = ["#구파발한의원", "#구파발역한의원", "#진관동한의원", "#은평뉴타운한의원", "#은평구한의원", "#지축한의원", "#삼송한의원", "#연신내한의원"]
 if "{{region_tags}}" in tags:
-    tags = tags.replace("{{region_tags}}", " ".join(region_tags(region)))
-    print("지역 태그:", " ".join(region_tags(region)))
+    tags = tags.replace("{{region_tags}}", " ".join(FIXED_REGION_TAGS))
+    print("지역 태그(고정):", " ".join(FIXED_REGION_TAGS))
 if "{{greeting}}" in body:
     # 2026-11-11부터 첫 줄 인사는 지역 없이 고정 한 줄. 지역은 태그({{region_tags}})로만 씁니다.
     body = body.replace("{{greeting}}", GREETING_FIXED)
@@ -70,6 +71,7 @@ def para(blk):
     return "<p>" + "<br>".join(link(l) for l in blk.split("\n")) + "</p>"
 
 IMGS = []   # (파일명, base64) 순서대로
+VIDEOS = []  # {{video:파일명}} 표시, 영상은 네이버 에디터 '동영상'으로 직접 올린다
 
 def img(name):
     """본문에는 '[이미지 n 자리]' 표시만 넣고, 실제 이미지는 위쪽 '이미지 복사' 버튼으로 붙여넣습니다."""
@@ -82,8 +84,10 @@ def img(name):
     return f'<p style="margin:0;font-size:19px;line-height:1.8;text-align:center;color:#000"><b>[이미지 {n} 자리]</b></p>'
 
 P = 'margin:0;font-size:19px;line-height:1.8;color:#000'
-PH = 'margin:0;font-size:24px;line-height:1.6;font-weight:700;color:#000'
-Q = 'background:#f3f6f4;border-left:4px solid #1d6a4a;padding:14px 18px;margin:0;border-radius:6px'
+PH = 'margin:0;font-size:24px;line-height:1.6;font-weight:700;color:#004b91'
+Q = 'background:#e8f3fb;padding:26px 30px 16px;margin:0;border-radius:18px'
+QT = 'margin:0 0 10px;font-size:19px;line-height:1.8;font-weight:700;color:#004b91'
+QP = 'margin:0 0 6px;font-size:19px;line-height:1.8;color:#000'
 used = []
 
 def inline(t):
@@ -109,6 +113,11 @@ def render(text):
         m = re.fullmatch(r"\{\{img:(.+?)\}\}", t.strip())
         if m:
             used.append(m.group(1)); out.append(img(m.group(1))); prev_heading = False; i += 1; continue
+        mv = re.fullmatch(r"\{\{video:(.+?)\}\}", t.strip())
+        if mv:                                                       # 영상 자리: 파일은 에디터에서 직접 올린다
+            VIDEOS.append(mv.group(1))
+            out.append('<p style="margin:0;font-size:19px;line-height:1.8;text-align:center;color:#000"><b>[영상 자리]</b></p>')
+            prev_heading = False; i += 1; continue
         if t.startswith("## "):                                      # 소제목(번호 없이)
             while out and out[-1] == line(""): out.pop()
             out += [line(""), line("")]
@@ -118,7 +127,14 @@ def render(text):
             box = []; first = True
             while i < len(lines) and lines[i].startswith("> "):
                 txt = lines[i][2:]
-                box.append(f'<p style="{P}"><b>{html.escape(txt)}</b></p>' if first else f'<p style="{P}">{inline(txt)}</p>')
+                if first:
+                    box.append(f'<p style="{QT}">{html.escape(txt)}</p>')
+                else:
+                    mm = re.fullmatch(r"(\d+)\. (.*)", txt)
+                    if mm:
+                        box.append(f'<p style="{QP}"><b style="color:#004b91">{mm.group(1)}</b>&nbsp;&nbsp;{inline(mm.group(2))}</p>')
+                    else:
+                        box.append(f'<p style="{QP}">{inline(txt)}</p>')
                 first = False; i += 1
             out.append(f'<div style="{Q}">' + "".join(box) + "</div>")
             prev_heading = False; continue
@@ -169,7 +185,10 @@ open(res, "w", encoding="utf-8").write("\n".join(page))
 # ---- 자동 입력용 데이터: ~/naver-blog 에서 node post.mjs --kit=<이 파일> ----
 # 본문을 [이미지 n 자리] 줄에서 잘라 조각(segments)으로 두고, 그 자리에 올릴 사진(images)을 순서대로 적습니다.
 segments, images, cur = [""], [], []
+video_after = None
 for part in body_parts:
+    if "[영상 자리]" in part:
+        video_after = len(images); continue
     m = re.search(r"\[이미지 (\d+) 자리\]", part)
     if m:
         segments[-1] = "".join(cur); cur = []; segments.append("")
@@ -179,7 +198,8 @@ for part in body_parts:
 segments[-1] = "".join(cur)
 kit = os.path.join(os.path.dirname(src_path) or ".", base + "-naver.json")
 json.dump({"title": title, "tags": [t.lstrip("#") for t in tags.split() if t.strip("#")],
-           "segments": segments, "images": images},
+           "segments": segments, "images": images,
+           "video": ({"file": os.path.abspath(next((c for c in [VIDEOS[0], os.path.join(os.path.dirname(os.path.abspath(src_path)), VIDEOS[0])] + __import__("glob").glob(os.path.join(os.path.dirname(os.path.abspath(src_path)), "video-*", VIDEOS[0])) if os.path.exists(c)), VIDEOS[0])), "after_image": video_after} if VIDEOS and video_after is not None else None)},
           open(kit, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("자동 입력용:", os.path.abspath(kit))
 
