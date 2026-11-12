@@ -104,7 +104,7 @@ def emblem(key, cls="emb"):
 # ------------------------------------------------------------------ 약력 (홈·원장소개 공통)
 CAREER = ["경희대학교 한의과대학 졸업", "횡성군보건소 한방진료과장", "경희대학교 침구경락센터 협력 한의사",
               "한국한의학연구원 임상연구협력 한의사", "국민건강보험공단 장기요양등급판정위원",
-              "N약침 초음파 유도하 약침 정규과정 수료", "제중학회 학술부회장", "한방비만학회 회원", "대한스포츠한의학회 회원",
+              "N약침 초음파 유도하 약침 정규과정 수료", "제중학회 학술부회장", "한방비만학회 회원", "대한스포츠한의학회 회원", "대한산화질소한의학회 회원",
               "前) 으뜸경희한의원 진료원장", "前) 365경희솔한의원 대표원장"]
 
 
@@ -1716,12 +1716,24 @@ def build_column_article(a, preview=False):
             related.append(r)
     rel_html = "".join(f"<a class='btn btn-line' href='{r}'>{esc(cat_name)} 진료 안내 {ico('arrow')}</a> " for r in related[:1])
     faq_html = faq_block(a["faq"], "자주 묻는 질문") if a["faq"] else ""
+    video_html = ""
+    if a.get("video"):   # 머리말 video: 유튜브 영상 주소 끝의 11자리 번호
+        vid = a["video"]
+        vt = esc(a.get("video_title") or a["title"])
+        video_html = (f"<figure class='col-video'><div class='cv-frame'><iframe src='https://www.youtube-nocookie.com/embed/{vid}' title='{vt}' "
+                      f"loading='lazy' allow='accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>"
+                      f"<figcaption>1분 요약 영상 · <a href='https://www.youtube.com/watch?v={vid}' target='_blank' rel='noopener'>유튜브에서 보기</a></figcaption></figure>")
+    blog_html = ""
+    if a.get("blog"):    # 머리말 blog: 네이버 블로그 글 주소 → 글 끝 이어 읽기 한 줄
+        blog_html = (f"<p class='col-more'><a href='{a['blog']}' target='_blank' rel='noopener'>"
+                     f"{esc(a.get('blog_label') or '네이버 블로그에서 연재 이어 읽기')} {ico('arrow')}</a></p>")
     body = f"""
 <section class="phero phero-plain"><div class="container narrow">{crumb_html_multi([("건강정보", "column/"), (a['title'], None)])}
   <span class="tag">{esc(cat_name)}</span><h1>{esc(a['title'])}</h1><p class="col-meta">{esc(meta_line)}</p></div></section>
 <section class="sec" style="padding-top:20px"><div class="container narrow">
   <aside class="notice col-lead"><b>먼저 결론</b><p>{md_inline(a['summary'])}</p></aside>
   <div class="prose col-body">{a['html']}</div>
+  {video_html}{blog_html}
   <aside class="col-author"><img src="assets/img/doctor.jpg" alt="구파발경희한의원 원장 최솔" width="160" height="160" loading="lazy">
     <div><b>최&nbsp;&nbsp;솔 <span class="ca-title">원장</span></b>
     <p>경희대학교 한의과대학 졸업 · 경희대학교 침구경락센터 협력 한의사</p>
@@ -1745,6 +1757,11 @@ def build_column_article(a, preview=False):
     if a["sources"]:
         art_schema["citation"] = [re.sub(r"\*\*|\[([^\]]+)\]\([^)]*\)", lambda m: m.group(1) or "", s) for s in a["sources"]]
     schema = [art_schema] + ([faq_schema(a["faq"])] if a["faq"] else [])
+    if a.get("video"):
+        schema.append({"@type": "VideoObject", "name": a.get("video_title") or a["title"], "description": a.get("video_desc") or a["description"],
+                       "thumbnailUrl": f"https://i.ytimg.com/vi/{a['video']}/maxresdefault.jpg", "uploadDate": a.get("video_date") or a["date"],
+                       "embedUrl": f"https://www.youtube.com/embed/{a['video']}", "inLanguage": "ko-KR",
+                       "publisher": {"@id": DOMAIN + "/#clinic"}})
     page(col_url(a), a.get("seo_title") or f"{a['title']} | 구파발경희한의원 건강정보", a["description"], body, current="column/",
          crumbs=[("홈", ""), ("건강정보", "column/"), (a["title"], col_url(a))], schema=schema,
          og=(a.get("image") or COL_CAT_IMG.get(a["category"], "slide-1.jpg")), extra_head='<meta name="robots" content="noindex">\n' if preview else "")
