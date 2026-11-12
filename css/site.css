@@ -838,3 +838,12 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .foot-brand{font-family:"Gowun Batang","Noto Serif KR",serif;font-weight:700;letter-spacing:-.01em;font-size:24px}
 /* 상호 글씨 굵기 보강(고운바탕 Bold보다 굵게): 글자 크기에 비례한 테두리 */
 .brand b,.foot-brand{-webkit-text-stroke:.0143em currentColor;paint-order:stroke fill}
+
+/* 새 로고(약탕관 마크 SVG): 마크 높이 40px, 상호 23px, 간격 9px */
+.brand{gap:9px;flex:none}
+.brand img.brand-mark{width:auto;height:40px;flex:none;display:block}
+.brand b{font-size:23px;white-space:nowrap}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-brand .foot-mark{width:auto;height:38px;flex:none}
+@media (min-width:921px) and (max-width:1100px){.brand b{font-size:20px}.brand img.brand-mark{height:34px}}
+@media (max-width:920px){.brand b{font-size:22px}.brand img.brand-mark{height:38px}}

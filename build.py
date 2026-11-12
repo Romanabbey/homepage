@@ -338,7 +338,7 @@ def header_html(current):
 <header class="site-header">
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="{CLINIC['name']} 홈">
-      <img class="brand-mark" src="assets/img/logo-full-navy.png" alt="" width="32" height="32">
+      <img class="brand-mark" src="assets/img/brand/logo-mark.svg" alt="" width="46" height="44">
       <span><b>{CLINIC['name']}</b></span>
     </a>
     <nav aria-label="주 메뉴" id="mainnav">
@@ -369,7 +369,7 @@ def footer_html():
   <div class="container">
     <div class="foot-grid">
       <div class="foot-id">
-        <p class="foot-brand">{CLINIC['name']}</p>
+        <p class="foot-brand"><img class="foot-mark" src="assets/img/brand/logo-mark-white.svg" alt="" width="40" height="38"><span>{CLINIC['name']}</span></p>
         <address>
           원장 {CLINIC['doctor']} · 사업자등록번호 {CLINIC['biz']}<br>
           {CLINIC['address']}<br>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 150 1540 1470" width="1540" height="1470"><defs>
+<linearGradient id="rgx" gradientUnits="userSpaceOnUse" x1="0" y1="1000" x2="0" y2="1480"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+<linearGradient id="mgx" gradientUnits="userSpaceOnUse" x1="0" y1="540" x2="0" y2="1300"><stop offset="0" stop-color="#8fa4c6"/><stop offset=".55" stop-color="#8fa4c6" stop-opacity=".75"/><stop offset="1" stop-color="#8fa4c6" stop-opacity="0"/></linearGradient>
+<clipPath id="clx"><circle cx="966" cy="902" r="694"/></clipPath></defs>
+<g clip-path="url(#clx)"><path d="M300 860 C380 800 480 700 580 610 C620 578 652 566 690 590 C770 640 860 720 960 792 L1010 742 C1080 662 1160 582 1215 545 C1245 528 1275 545 1310 575 C1420 660 1540 760 1640 840 L1640 1300 L300 1300Z" fill="url(#mgx)"/>
+<g fill="#16264f" opacity=".9"><path d="M770 905 C735 860 745 800 770 740 C800 790 812 850 770 905Z"/><path d="M890 915 C862 880 872 835 892 795 C915 835 922 880 890 915Z"/><path d="M1085 900 C1065 860 1075 800 1112 740 C1132 790 1128 860 1085 900Z"/></g></g>
+<circle cx="966" cy="902" r="714" fill="none" stroke="url(#rgx)" stroke-width="44"/>
+<ellipse cx="966" cy="1548" rx="410" ry="48" fill="#6f84a8" opacity=".6"/>
+<path d="M985 322 C1015 380 1000 420 962 468 C930 508 915 560 935 612 C945 640 960 655 962 672 C890 652 865 590 880 538 C895 490 945 455 962 410 C975 378 976 345 985 322Z" fill="#ffffff"/>
+<path d="M1030 478 C1062 520 1078 566 1052 616 C1034 652 1014 700 1004 745 C988 705 978 662 988 622 C998 582 1034 560 1030 478Z" fill="#ffffff"/>
+<path d="M776 1440 L846 1440 L836 1552 Q832 1580 808 1576 Q782 1572 778 1550Z" fill="#ffffff"/>
+<path d="M1086 1440 L1156 1440 L1168 1550 Q1164 1574 1140 1578 Q1116 1580 1112 1558Z" fill="#ffffff"/>
+<path d="M752 1000 C632 1034 578 1130 582 1245 C588 1380 700 1478 842 1480 L1090 1480 C1232 1478 1344 1380 1350 1245 C1354 1130 1300 1034 1180 1000Z" fill="#ffffff"/>
+<path d="M726 928 H1206 Q1230 928 1224 952 L1208 998 Q1202 1012 1188 1012 H744 Q730 1012 724 998 L708 952 Q702 928 726 928Z" fill="#ffffff"/>
+<g fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round"><path d="M606 1096 C514 1074 462 1138 472 1222 C482 1304 554 1344 622 1322"/><path d="M1326 1096 C1418 1074 1470 1138 1460 1222 C1450 1304 1378 1344 1310 1322"/></g></svg>
