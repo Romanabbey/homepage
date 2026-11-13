@@ -703,7 +703,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .col-author .ca-say{font-size:16px;color:var(--ink);font-weight:700}
 .col-author a{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:14px;font-weight:700;color:var(--c)}
 @media (max-width:600px){.col-author{grid-template-columns:76px 1fr;gap:14px;padding:18px}.col-author img{width:76px;height:76px}}
-.col-author .ca-title{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-left:2px}
+.col-author .ca-title{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-right:4px}
 
 /* ═════════ olbareun 참고 개선: 진료 과정 · 블로그 카드 · 칼럼 분야 탭 · 하단 바 ═════════ */
 /* 진료 과정: 가로 단계선 */
@@ -865,3 +865,14 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .col-video figcaption a{text-decoration:underline}
 .col-more{margin:12px 0 4px}
 .col-more a{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--deep,#0f3a66);border-bottom:2px solid currentColor;padding-bottom:2px}
+
+/* 칼럼 본문 이미지 */
+.col-fig{margin:24px 0}
+.col-fig img{display:block;width:100%;max-width:600px;height:auto;margin:0 auto;border-radius:14px;border:1px solid var(--line,#d9e4f2)}
+.col-fig figcaption{max-width:600px;margin:8px auto 0;font-size:14px;color:var(--muted,#5b6f94);text-align:center}
+.col-zoom{display:block;cursor:zoom-in}
+.cz-hint{font-size:12px;color:#8a9bb8}
+.lb{position:fixed;inset:0;z-index:9999;background:rgba(10,18,36,.88);display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-width:min(96vw,1400px);max-height:92vh;width:auto;height:auto;border-radius:10px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.lb button{position:absolute;top:14px;right:18px;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:30px;line-height:1;width:44px;height:44px;border-radius:50%;cursor:pointer}

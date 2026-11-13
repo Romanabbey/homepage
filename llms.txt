@@ -39,6 +39,7 @@
 - 지도: https://map.naver.com/p/entry/place/13116400 (네이버), https://place.map.kakao.com/1052835355 (카카오)
 
 ## 건강정보 (https://gupabalhani.org/column/)
+- [보폐고 엔오는 어떤 한약인가요? 콧물·후비루·기침·목 칼칼함이 오래갈 때](https://gupabalhani.org/column/bopae-respiratory-guide.html): 감기 뒤에도 콧물이 목 뒤로 넘어가고 기침과 목 칼칼함이 몇 주씩 이어질 때, 먼저 살펴볼 기간 기준과 호흡기 한약 보폐고 엔오의 구성·복용법·상담 대상을 정리했습니다.
 - [교통사고 후 한의원은 언제 가면 되나요? 보험 접수부터 첫 진료까지](https://gupabalhani.org/column/car-insurance-hospital-guide.html): 교통사고 후 한의원에 가는 시기, 증상, 한의 치료 종류, 자동차보험 접수 순서와 급수별 한도, 진료시간과 준비물을 일반 안내 기준으로 정리했습니다.
 - [교통사고 후 한의원 진료, 자동차보험 처리는 어떻게 하나요](https://gupabalhani.org/column/car-insurance-process.html): 교통사고 후 한의원에서 자동차보험으로 진료받는 순서와 준비물, 2026년 9월부터 시행된 경상환자 8주 초과 치료 검토 절차를 일반 안내 기준으로 정리했습니다.
 

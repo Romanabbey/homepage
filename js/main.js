@@ -148,3 +148,19 @@
     items.forEach(function (el) { io.observe(el); });
   } else { items.forEach(function (el) { el.classList.add("in"); }); }
 })();
+
+/* 칼럼 이미지 크게 보기: 누르면 큰 파일을 불러와 화면 가득 보여 준다. 배경·X·Esc로 닫는다. JS가 없으면 링크로 큰 이미지가 열린다. */
+(function () {
+  var links = document.querySelectorAll(".col-zoom");
+  if (!links.length) return;
+  var lb = document.createElement("div");
+  lb.className = "lb"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true");
+  lb.innerHTML = '<button type="button" aria-label="닫기">×</button><img alt="">';
+  document.body.appendChild(lb);
+  var img = lb.querySelector("img"), prev = null;
+  function open(a) { prev = document.activeElement; img.src = a.getAttribute("data-zoom"); img.alt = a.querySelector("img").alt; lb.classList.add("on"); document.documentElement.style.overflow = "hidden"; lb.querySelector("button").focus(); }
+  function close() { lb.classList.remove("on"); img.removeAttribute("src"); document.documentElement.style.overflow = ""; if (prev) prev.focus(); }
+  links.forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); open(a); }); });
+  lb.addEventListener("click", close);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && lb.classList.contains("on")) close(); });
+})();
