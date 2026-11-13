@@ -46,5 +46,17 @@
   "pm25": "보통",
   "category": "default",
   "phrase": "걷기 좋은 시간이 있다면 조금만 걸어 보세요."
+ },
+ {
+  "date": "2026-11-14",
+  "sky": "비",
+  "precip": true,
+  "tmn": 10,
+  "tmx": 14,
+  "pop": 60,
+  "pm10": "보통",
+  "pm25": "나쁨",
+  "category": "rain",
+  "phrase": "따뜻한 차 한 잔으로 몸을 데워 보세요."
  }
 ]
