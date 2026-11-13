@@ -1714,6 +1714,7 @@ def col_row_item(a):
     h = col_item(a)
     h = re.sub(r"<small>.*?</small>", "", h)
     h = re.sub(r"<span class='cc-date'>.*?</span>", "", h)
+    h = h.replace("</b></span></a>", "</b><span class='cc-go'>자세히 보기 <i aria-hidden='true'>→</i></span></span></a>", 1)
     if a.get("thumb"):
         h = h.replace("assets/img/" + (a.get("image") or ""), "assets/img/" + a["thumb"], 1)
     return h

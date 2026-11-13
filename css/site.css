@@ -832,6 +832,10 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .col-row .cc-body b{font-size:18px;line-height:1.45}
 .col-row .cc-body small{display:none}
 .col-row .cc-date{display:none}
+.col-row .cc-go{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:14px;font-weight:800;color:var(--blue,#1d5bbf);letter-spacing:-.02em}
+.col-row .cc-go i{font-style:normal;transition:transform .2s}
+.col-row .col-card:hover .cc-go i{transform:translateX(4px)}
+
 @media (max-width:620px){.col-row .cc-img{flex-basis:88px;margin:12px 0 12px 12px}.col-row .cc-body{padding:12px 14px}.col-row .cc-body b{font-size:16px}}
 @media (max-width:980px){.col-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:620px){.col-grid{grid-template-columns:1fr}}
