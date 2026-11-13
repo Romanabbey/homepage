@@ -720,7 +720,8 @@ PRODUCTS = {
         slug="bopae.html", name="보폐고 엔오", theme="bopae", img="poster-bopae.jpg", tag="호흡기 · 목",
         tagline="숨 쉬는 일상을 위한 처방",
         lead="호흡기와 목의 불편감을 관리하기 위한 한약 처방입니다. 영양제처럼 꾸준히 복용하는 방식으로 상담합니다.",
-        extra="엔오(NO)는 처방의 작용을 보조하는 역할로 구성했습니다.",
+        extra="엔오(NO, 산화질소)는 말초 혈관을 넓히고 한약 성분의 작용을 보조합니다.",
+        feature="bopae-respiratory-guide",
         facts=["1박스 45포", "하루 3회 기준 15일분", "꿀 없는 제로 버전도 있음"],
         herbs=["길경", "대청엽", "우방자", "금은화", "연교", "죽엽", "포공영", "박하", "오미자", "사삼", "맥문동", "유근피", "산약", "감초", "건강"],
         herbnote="길경 등은 가래와 염증 관리, 오미자·사삼·맥문동은 기침 관리, 유근피·산약은 소화 부담을 줄이는 데, 감초·건강은 처방의 조화를 위해 구성했습니다.",
@@ -775,6 +776,23 @@ def build_product(key):
 </div>
   </div>
 </section>"""
+    feature_html = ""
+    fa = next((a for a in ARTICLES if a["slug"] == pr.get("feature")), None)
+    if fa:   # 진료 페이지 상단: 칼럼의 1분 영상 + 칼럼 카드
+        fv = ""
+        if fa.get("video"):
+            fvt = esc(fa.get("video_title") or fa["title"])
+            fv = (f"<figure class='col-video' style='margin-top:0'><div class='cv-frame'><iframe src='https://www.youtube-nocookie.com/embed/{fa['video']}' title='{fvt}' "
+                  f"loading='lazy' allow='accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>"
+                  f"<figcaption>1분 요약 영상 · <a href='https://www.youtube.com/watch?v={fa['video']}' target='_blank' rel='noopener'>유튜브에서 보기</a></figcaption></figure>")
+        feature_html = f"""<section class="sec sec-tint">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">VIDEO · COLUMN</span><h2>먼저 보고 읽어 보세요</h2></div>
+    {fv}
+    <div class="col-row">{col_item(fa).replace(fa.get("image") or "", fa.get("thumb") or fa.get("image") or "", 1) if fa.get("thumb") else col_item(fa)}</div>
+  </div>
+</section>
+"""
     body = f"""
 <section class="pphero">
   <div class="container pphero-grid">
@@ -794,6 +812,7 @@ def build_product(key):
   </div>
 </section>
 
+{feature_html}
 <section class="sec">
   <div class="container narrow">
     <div class="sec-head left"><span class="tag">COMPOSITION</span><h2>구성</h2>{('<p>' + pr['extra'] + '</p>') if pr['extra'] else ''}</div>
