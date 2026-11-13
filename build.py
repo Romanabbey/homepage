@@ -789,7 +789,7 @@ def build_product(key):
   <div class="container narrow">
     <div class="sec-head left"><span class="tag">VIDEO · COLUMN</span><h2>먼저 보고 읽어 보세요</h2></div>
     {fv}
-    <div class="col-row">{col_item(fa).replace(fa.get("image") or "", fa.get("thumb") or fa.get("image") or "", 1) if fa.get("thumb") else col_item(fa)}</div>
+    <div class="col-row">{col_row_item(fa)}</div>
   </div>
 </section>
 """
@@ -1707,6 +1707,16 @@ def col_item(a):
             f"<span class='cc-img'><img src='assets/img/{img}' alt='' loading='lazy' width='800' height='600'><em>{esc(cat)}</em></span>"
             f"<span class='cc-body'><b>{esc(a['title'])}</b><small>{esc(a['summary'].replace('**', ''))}</small>"
             f"<span class='cc-date'>{a['date'].replace('-', '.')}</span></span></a>")
+
+
+def col_row_item(a):
+    """진료 페이지용 가로형 칼럼 카드: 정방형 썸네일(thumb) + 제목만. 요약·날짜는 넣지 않는다."""
+    h = col_item(a)
+    h = re.sub(r"<small>.*?</small>", "", h)
+    h = re.sub(r"<span class='cc-date'>.*?</span>", "", h)
+    if a.get("thumb"):
+        h = h.replace("assets/img/" + (a.get("image") or ""), "assets/img/" + a["thumb"], 1)
+    return h
 
 
 def col_home_html():
