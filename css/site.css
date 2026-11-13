@@ -826,13 +826,13 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 /* 진료 페이지용 가로형 칼럼 카드: 왼쪽 작은 사진 + 오른쪽 제목·본문 일부 */
 .col-row{margin-top:22px}
 .col-row .col-card{display:flex;align-items:stretch}
-.col-row .cc-img{flex:0 0 179px;aspect-ratio:16/10;align-self:center;margin:14px 0 14px 14px;border-radius:6px}
+.col-row .cc-img{flex:0 0 112px;aspect-ratio:1;align-self:center;margin:14px 0 14px 14px;border-radius:6px}
 .col-row .cc-img em{display:none}
 .col-row .cc-body{flex:1;min-width:0;padding:14px 18px 14px;display:flex;flex-direction:column;justify-content:center}
 .col-row .cc-body b{font-size:16.5px;line-height:1.4}
 .col-row .cc-body small{-webkit-line-clamp:3;font-size:13.5px;margin-top:6px;line-height:1.55}
 .col-row .cc-date{display:none}
-@media (max-width:620px){.col-row .cc-img{flex-basis:140px;margin:12px 0 12px 12px}.col-row .cc-body{padding:12px 14px}.col-row .cc-body b{font-size:15px}.col-row .cc-body small{font-size:12.5px;-webkit-line-clamp:3}}
+@media (max-width:620px){.col-row .cc-img{flex-basis:88px;margin:12px 0 12px 12px}.col-row .cc-body{padding:12px 14px}.col-row .cc-body b{font-size:15px}.col-row .cc-body small{font-size:12.5px;-webkit-line-clamp:3}}
 @media (max-width:980px){.col-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:620px){.col-grid{grid-template-columns:1fr}}
 
