@@ -539,7 +539,7 @@ def build_home():
   <span class="lu-tag">공진단</span>
   <h3>활력 · 해울 공진단</h3>
   <p>기운을 뿌리부터 채우는 활력공진단.<br>예민한 분께는 해울공진단.</p>
-  <img src="assets/img/p-gong.jpg" alt="" loading="lazy" width="1400" height="1090">
+  <img src="assets/img/gong-card.jpg" alt="활력 · 해울 공진단 안내 이미지" loading="lazy" width="1080" height="1080">
   <span class="lu-go">{ico('arrow')}</span>
 </a>"""
     patch = f"""<a class="lineup t-patch patch-bar reveal" href="patch.html">
