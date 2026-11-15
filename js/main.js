@@ -33,11 +33,13 @@
     var open = spans.some(function (s) { return m >= s[0] && m < s[1]; });
     var el = document.getElementById("openNow");
     if (el) {
+      var st = "off";
       if (!spans.length) el.textContent = "오늘 휴진";
-      else if (open) el.textContent = "지금 진료 중";
-      else if (m < spans[0][0]) el.textContent = "오늘 진료 예정";
+      else if (open) { el.textContent = "지금 진료 중"; st = "on"; }
+      else if (m < spans[0][0]) { el.textContent = "오늘 진료 예정"; st = "wait"; }
       else if (m >= spans[spans.length - 1][1]) el.textContent = "오늘 진료 종료";
-      else el.textContent = "점심시간";
+      else { el.textContent = "점심시간"; st = "wait"; }
+      el.setAttribute("data-state", st);
     }
     document.querySelectorAll("table.hours tbody").forEach(function (tb) {
       var tr = tb.children[LABEL[d]];

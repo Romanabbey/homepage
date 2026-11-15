@@ -82,7 +82,9 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .kicker{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:var(--ink2);margin-bottom:26px;flex-wrap:wrap}
 .kicker .sep{width:1px;height:14px;background:var(--line)}
 .status{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)}
-.status::before{content:"";width:8px;height:8px;border-radius:50%;background:#3aa76d}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:#8b929c}
+.status[data-state="on"]::before{background:#3aa76d}
+.status[data-state="wait"]::before{background:#e0b030}
 .hero h1{font-size:clamp(38px,5.6vw,74px);line-height:1.12;font-weight:400;letter-spacing:-.045em;margin-bottom:22px}
 .hero h1 b{font-weight:800}
 .lead{font-size:clamp(16px,1.5vw,18px);color:var(--ink2);max-width:540px}
