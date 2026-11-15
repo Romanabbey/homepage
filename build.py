@@ -890,7 +890,7 @@ def build_gongjindan():
         <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
       </div>
     </div>
-    <figure class="pp-visual"><img src="assets/img/p-gong.jpg" alt="" width="1400" height="1090" fetchpriority="high"><span class="pp-emb">{emblem('gong')}</span></figure>
+    <figure class="pp-visual"><img src="assets/img/p-gong.jpg" alt="활력 · 해울 공진단" width="1800" height="1200" fetchpriority="high"><span class="pp-emb">{emblem('gong')}</span></figure>
   </div>
 </section>
 
