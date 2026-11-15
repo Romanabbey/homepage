@@ -29,16 +29,44 @@
   try {
     var now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
     var d = now.getDay(), m = now.getHours() * 60 + now.getMinutes();
-    var spans = SCHEDULE[d] || [];
-    var open = spans.some(function (s) { return m >= s[0] && m < s[1]; });
     var el = document.getElementById("openNow");
+    var OV = {};
+    try { OV = JSON.parse((el && el.getAttribute("data-overrides")) || "{}"); } catch (e) { OV = {}; }
+    var DOW = ["일", "월", "화", "수", "목", "금", "토"];
+    var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+    var hm = function (x) { return pad(Math.floor(x / 60)) + ":" + pad(x % 60); };
+    var spansOf = function (dt) {
+      var k = dt.getFullYear() + "-" + pad(dt.getMonth() + 1) + "-" + pad(dt.getDate());
+      return OV[k] !== undefined ? OV[k] : (SCHEDULE[dt.getDay()] || []);
+    };
+    var spans = spansOf(now);
+    var open = spans.some(function (s) { return m >= s[0] && m < s[1]; });
+    var nextOpen = function () { // 지금 이후 가장 가까운 진료 시작 (오늘 남은 시간 포함, 최대 14일)
+      for (var i = 0; i < 15; i++) {
+        var dt = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+        var sp = spansOf(dt);
+        for (var j = 0; j < sp.length; j++) {
+          if (i > 0 || sp[j][0] > m) {
+            var when = i === 0 ? "" : i === 1 ? "내일(" + DOW[dt.getDay()] + ") " : (dt.getMonth() + 1) + "." + dt.getDate() + "(" + DOW[dt.getDay()] + ") ";
+            return when + hm(sp[j][0]);
+          }
+        }
+      }
+      return "";
+    };
     if (el) {
-      var st = "off";
-      if (!spans.length) el.textContent = "오늘 휴진";
-      else if (open) { el.textContent = "지금 진료 중"; st = "on"; }
-      else if (m < spans[0][0]) { el.textContent = "오늘 진료 예정"; st = "wait"; }
-      else if (m >= spans[spans.length - 1][1]) el.textContent = "오늘 진료 종료";
-      else { el.textContent = "점심시간"; st = "wait"; }
+      var st = "off", nx = nextOpen(), txt;
+      if (!spans.length) txt = "오늘 휴진";
+      else if (open) {
+        st = "on";
+        var cur = spans.filter(function (s) { return m >= s[0] && m < s[1]; })[0];
+        txt = "지금 진료 중 · " + hm(cur[1]) + "까지";
+      }
+      else if (m < spans[0][0]) { st = "wait"; txt = "오늘 진료 예정 · " + hm(spans[0][0]) + " 시작"; nx = ""; }
+      else if (m >= spans[spans.length - 1][1]) txt = "오늘 진료 종료";
+      else { st = "wait"; txt = "점심시간 · " + nx + " 재개"; nx = ""; }
+      if (nx && st === "off") txt += " · " + nx + " 진료 시작";
+      el.textContent = txt;
       el.setAttribute("data-state", st);
     }
     document.querySelectorAll("table.hours tbody").forEach(function (tb) {

@@ -585,7 +585,8 @@ def build_home():
         bgs.append(f'<div class="hs-bg{" on" if i == 0 else ""}">{bg}</div>')
         btn = "".join(f'<a class="btn {"btn-fill" if j == 0 else "btn-ghost"} btn-lg" href="{h}"{" " + EXT if ext else ""}>{esc(t)}{" " + ico("ext") if ext else ""}</a>'
                       for j, (t, h, ext) in enumerate(sl["btns"]))
-        status = '<span class="status" id="openNow">진료시간 확인</span><span class="sep"></span>' if i == 0 else ""
+        _ov = html.escape(json.dumps({d: v for n in NOTICES for d, v in n.get("days", {}).items()}), quote=True)
+        status = f'<span class="status" id="openNow" data-overrides="{_ov}">진료시간 확인</span><span class="sep"></span>' if i == 0 else ""
         copies.append(f'<div class="hs-copy{" on" if i == 0 else ""}" aria-hidden="{"false" if i == 0 else "true"}">'
                       f'<p class="hs-eyebrow">{sl["eyebrow"]}</p><p class="kicker">{status}{sl["sub"]}</p>'
                       f'<h{"1" if i == 0 else "2"} class="hs-h">{sl["h1"]}</h{"1" if i == 0 else "2"}><p class="hs-lead">{sl["lead"]}</p>'
@@ -1320,12 +1321,15 @@ def build_reservation():
 # 공지사항(휴진 일정): 새 공지는 이 목록에 추가합니다.
 #  - "last": 휴진 또는 변경일 중 마지막 날짜 (이 날이 지나면 '지난 공지'로 자동 이동)
 #  - "label": 목록에 보일 날짜 표시, "title": 제목, "body": 문단 목록
+#  - "days": 그날만 다른 진료시간 {"YYYY-MM-DD": [[시작분, 종료분], ...]} (빈 목록 [] = 휴진). 첫 화면의 '다음 진료' 안내에 쓰입니다. 570=09:30, 780=13:00, 840=14:00, 1200=20:00
 NOTICES = [
     {"last": "2026-12-26", "label": "12.25 (금) · 12.26 (토)", "title": "12월 25일 진료 · 26일 휴진 안내",
+     "days": {"2026-12-25": [[570, 780]], "2026-12-26": []},
      "body": ["12월 25일(금)은 토요일 진료시간(09:30–13:00)으로 진료합니다.",
               "12월 26일(토)은 휴진합니다.",
               "원래 25일 휴진, 26일 진료였으나 두 날을 서로 바꾸었습니다."]},
     {"last": "2027-01-02", "label": "1.1 (금) · 1.2 (토)", "title": "1월 1일 진료 · 2일 휴진 안내",
+     "days": {"2027-01-01": [[570, 780]], "2027-01-02": []},
      "body": ["1월 1일(금)은 토요일 진료시간(09:30–13:00)으로 진료합니다.",
               "1월 2일(토)은 휴진합니다.",
               "원래 1일 휴진, 2일 진료였으나 두 날을 서로 바꾸었습니다."]},
