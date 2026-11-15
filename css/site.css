@@ -895,3 +895,14 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 @media (max-width:560px){.hero-a .hs-copy .kicker .sep{display:none}}
 
 .poster-fig.tall img.poster{aspect-ratio:auto;object-fit:contain;max-height:78vh;width:auto;max-width:100%;margin:0 auto;display:block}
+
+/* 엔오 리커버리 패치 카드: 글씨 왼쪽 · 사진 오른쪽 · 화살표 왼쪽 아래 (엔오처방 카드보다 낮게) */
+.t-patch{--c:#9a6a45;--deep:#4a3426;--soft:#f5e9e1;--tint:#faf3ee}
+.lineups>.lineup.patch-bar{display:grid;grid-template-columns:minmax(0,1fr) 46%;grid-template-rows:1fr auto;column-gap:20px;align-items:start;padding:20px;min-height:0}
+.lineups>.lineup.patch-bar .pb-txt{grid-column:1;grid-row:1;display:block;padding:6px 0 0 6px}
+.lineups>.lineup.patch-bar .pb-txt p{margin-top:10px;font-size:14.5px;line-height:1.55}
+.lineups>.lineup.patch-bar b{display:block;font-family:var(--serif);font-size:clamp(20px,2vw,26px);line-height:1.3;color:var(--deep);word-break:keep-all;text-wrap:balance}
+.lineups>.lineup.patch-bar img{grid-column:2;grid-row:1/3;width:100%;max-width:100%;height:auto;min-height:0;aspect-ratio:1200/848;object-fit:cover;border-radius:3px}
+.lineups>.lineup.patch-bar .lu-go{position:static;grid-column:1;grid-row:2;align-self:end;justify-self:start;width:44px;height:44px;margin:0 0 0 6px}
+.lineup.t-patch:hover .lu-go{background:var(--c);color:#fff}
+@media (max-width:600px){.lineups>.lineup.patch-bar{column-gap:14px;padding:16px}.lineups>.lineup.patch-bar .pb-txt{padding:2px 0 0 2px}.lineups>.lineup.patch-bar b{font-size:18px}.lineups>.lineup.patch-bar .pb-txt p{font-size:13px;margin-top:6px}.lineups>.lineup.patch-bar .lu-go{width:38px;height:38px;margin-left:2px}}

@@ -91,6 +91,7 @@ def ico(name, cls="ic"):
 
 
 EMBLEMS = {
+    "patch": '<rect x="8" y="18" width="48" height="28" rx="9"/><path d="M32 26v12M26 32h12"/><circle cx="17" cy="28" r="1"/><circle cx="47" cy="36" r="1"/>',
     "bopae": '<path d="M8 22h30a8 8 0 10-8-8"/><path d="M8 33h40a8 8 0 11-8 8"/><path d="M8 44h20"/>',
     "anshim": '<path d="M42 8a24 24 0 1014 32 19 19 0 01-14-32z"/><circle cx="50" cy="16" r="1.5"/><circle cx="56" cy="26" r="1"/>',
     "bujong": '<path d="M32 6C23 19 14 28 14 39a18 18 0 0036 0C50 28 41 19 32 6z"/><path d="M24 41a8 8 0 008 8"/>',
@@ -541,6 +542,11 @@ def build_home():
   <img src="assets/img/p-gong.jpg" alt="" loading="lazy" width="1400" height="1090">
   <span class="lu-go">{ico('arrow')}</span>
 </a>"""
+    patch = f"""<a class="lineup t-patch patch-bar reveal" href="patch.html">
+  <img src="assets/img/n-patch-card.jpg" alt="엔오 리커버리 패치 제품" loading="lazy" width="1200" height="848">
+  <span class="pb-txt"><b>엔오 리커버리 패치</b><p>내원하지 않는 날에도 간편하게<br>사용할 수 있도록 만든 패치입니다.</p></span>
+  <span class="lu-go">{ico('arrow')}</span>
+</a>"""
     services = [
         ("01", "교통사고 후유증", "침 · 부항 · 물리치료 · 추나 · 약침 · 맞춤 한약", "accident.html", "care-accident.jpg"),
         ("02", "저칼로리 다이어트", "저칼로리 식단과 원내에서 직접 달이는 개별 맞춤 한약", "diet.html", "care-diet.jpg"),
@@ -617,8 +623,7 @@ def build_home():
 <section class="sec" id="products">
   <div class="container">
     <div class="sec-head left"><span class="tag">N.O PRESCRIPTIONS</span><h2>엔오처방</h2><p>각각의 처방은 구성과 복용 방법이 다릅니다. 진찰 후 상태에 맞는 것을 안내해 드립니다.</p></div>
-    <div class="lineups">{prods}{gong}</div>
-    <p class="more-link"><a class="btn btn-line" href="patch.html">엔오 리커버리 패치 보기 {ico('arrow')}</a></p>
+    <div class="lineups">{prods}{gong}{patch}</div>
     {disclaimer()}
   </div>
 </section>
