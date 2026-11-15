@@ -59,8 +59,7 @@
       if (!spans.length) txt = "오늘 휴진";
       else if (open) {
         st = "on";
-        var cur = spans.filter(function (s) { return m >= s[0] && m < s[1]; })[0];
-        txt = "지금 진료 중 · " + hm(cur[1]) + "까지";
+        txt = "지금 진료 중";
       }
       else if (m < spans[0][0]) { st = "wait"; txt = "오늘 진료 예정 · " + hm(spans[0][0]) + " 시작"; nx = ""; }
       else if (m >= spans[spans.length - 1][1]) txt = "오늘 진료 종료";
