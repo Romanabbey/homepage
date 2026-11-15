@@ -893,3 +893,5 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .lb img{max-width:min(96vw,1400px);max-height:92vh;width:auto;height:auto;border-radius:10px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .lb button{position:absolute;top:14px;right:18px;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:30px;line-height:1;width:44px;height:44px;border-radius:50%;cursor:pointer}
 @media (max-width:560px){.hero-a .hs-copy .kicker .sep{display:none}}
+
+.poster-fig.tall img.poster{aspect-ratio:auto;object-fit:contain;max-height:78vh;width:auto;max-width:100%;margin:0 auto;display:block}

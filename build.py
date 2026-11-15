@@ -468,7 +468,7 @@ def crumb_html(name):
     return f"<nav class='crumb' aria-label='현재 위치'><a href='index.html'>홈</a> <span>›</span> {esc(name)}</nav>"
 
 
-def hero_sub(name, h1, lead, img, extra="", poster=None):
+def hero_sub(name, h1, lead, img, extra="", poster=None, poster_alt="초음파 성장 검사 안내 이미지", poster_wh=(1080, 1080)):
     return f"""<section class="phero">
   <div class="container phero-grid">
     <div>
@@ -481,7 +481,7 @@ def hero_sub(name, h1, lead, img, extra="", poster=None):
       </div>
       {extra}
     </div>
-    {('<figure class="phero-img poster-fig"><a href="assets/img/' + poster + '" target="_blank" rel="noopener" aria-label="안내 이미지 크게 보기"><img class="poster" src="assets/img/' + poster + '" alt="초음파 성장 검사 안내 이미지" width="1080" height="1080"></a><figcaption class="pp-cap">이미지를 누르면 크게 볼 수 있습니다.</figcaption></figure>') if poster else ('<figure class="phero-img"><img src="assets/img/' + img + '" alt="" width="1600" height="1244"></figure>')}
+    {('<figure class="phero-img poster-fig' + (' tall' if poster_wh[0] != poster_wh[1] else '') + '"><a href="assets/img/' + poster + '" target="_blank" rel="noopener" aria-label="안내 이미지 크게 보기"><img class="poster" src="assets/img/' + poster + '" alt="' + poster_alt + '" width="' + str(poster_wh[0]) + '" height="' + str(poster_wh[1]) + '"></a><figcaption class="pp-cap">이미지를 누르면 크게 볼 수 있습니다.</figcaption></figure>') if poster else ('<figure class="phero-img"><img src="assets/img/' + img + '" alt="" width="1600" height="1244"></figure>')}
   </div>
 </section>"""
 
@@ -964,7 +964,8 @@ def build_gongjindan():
 
 def build_patch():
     body = hero_sub("엔오 리커버리 패치", "엔오 리커버리 패치",
-                    "내원하지 않는 날에도 간편하게 사용할 수 있도록 만든 패치입니다.", "n-patch.jpg") + f"""
+                    "내원하지 않는 날에도 간편하게 사용할 수 있도록 만든 패치입니다.", "n-patch.jpg",
+                    poster="n-patch.jpg", poster_alt="엔오 리커버리 패치 안내 이미지", poster_wh=(1406, 1600)) + f"""
 <section class="sec"><div class="container narrow prose">
   <h2>제품 소개</h2>
   <p>엔오 리커버리 패치(엔오패치)는 <b>하이드로콜로이드 소재</b>의 패치로, <b>멘톨이 함유</b>되어 있습니다. 진료를 보조하고, 내원하지 않는 날에도 집에서 간편하게 사용할 수 있도록 개발되었습니다.</p>
@@ -978,7 +979,7 @@ def build_patch():
     page("patch.html", "엔오 리커버리 패치 | 구파발경희한의원",
          "구파발경희한의원의 엔오 리커버리 패치(엔오패치). 하이드로콜로이드 소재, 멘톨 함유 패치 1팩 16장. 사용 전 주의사항을 확인해 주세요.",
          body, current="patch.html", crumbs=[("홈", ""), ("엔오 리커버리 패치", "patch.html")],
-         og="n-patch.jpg")
+         og="n-patch-og.jpg")
 
 
 def build_yakchim():
