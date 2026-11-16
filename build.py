@@ -694,6 +694,20 @@ def build_home():
          body, current="index.html", home=True, schema=[faq_schema(HOME_FAQ)])
 
 
+def diet_column_html():
+    """다이어트 페이지: FAQ 바로 위에 다이어트 분류 칼럼의 썸네일 카드(제목만 + 자세히 보기). 게시된 칼럼이 없으면 표시하지 않는다."""
+    arts = [a for a in ARTICLES if a["category"] == "diet"][:3]
+    if not arts:
+        return ""
+    rows = "".join(f"<div class='col-row'>{col_row_item(a)}</div>" for a in arts)
+    return f"""<section class="sec sec-tint">
+  <div class="container narrow">
+    <div class="sec-head left"><span class="tag">COLUMN</span><h2>칼럼으로 더 읽어 보세요</h2></div>
+    {rows}
+  </div>
+</section>"""
+
+
 def build_diet():
     body = hero_sub("저칼로리 다이어트", "저칼로리 다이어트,<br>개별 맞춤 한약으로 진행합니다",
                     "저칼로리 식단과 함께, 진찰 후 개인별로 구성한 한약을 구파발경희한의원에서 직접 달여 드립니다.", "care-diet.jpg") + f"""
@@ -713,6 +727,7 @@ def build_diet():
   {notice("저칼로리 식단은 모든 분께 적합하지 않을 수 있어 사전 진찰이 필요합니다. 임신·수유 중이거나 지병이 있으면 진찰 시 알려 주세요. 감량 폭과 기간은 개인별로 다르며 특정 결과를 약속드리지 않습니다.")}
   {disclaimer()}
 </div></section>
+{diet_column_html()}
 {faq_block([F["diet"], F["inhouse"]], "다이어트 관련 질문")}
 {blog_related_html('diet')}
 {cta_band()}"""
