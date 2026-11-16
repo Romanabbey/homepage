@@ -1729,7 +1729,7 @@ COL_CAT_IMG = {"accident": "care-accident.jpg", "no": "care-no.jpg", "diet": "ca
 def col_item(a):
     """건강정보 앨범형 카드. 사진은 글머리의 image: 값, 없으면 분야별 대표 사진."""
     cat = COL_CATS[a["category"]][0]
-    img = a.get("image") or COL_CAT_IMG.get(a["category"], "slide-1.jpg")
+    img = a.get("card") or a.get("image") or COL_CAT_IMG.get(a["category"], "slide-1.jpg")
     return (f"<a class='col-card reveal' data-cat='{a['category']}' href='{col_url(a)}'>"
             f"<span class='cc-img'><img src='assets/img/{img}' alt='' loading='lazy' width='800' height='600'><em>{esc(cat)}</em></span>"
             f"<span class='cc-body'><b>{esc(a['title'])}</b><small>{esc(a['summary'].replace('**', ''))}</small>"
@@ -1743,7 +1743,7 @@ def col_row_item(a):
     h = re.sub(r"<span class='cc-date'>.*?</span>", "", h)
     h = h.replace("</b></span></a>", "</b><span class='cc-go'>자세히 보기 <i aria-hidden='true'>→</i></span></span></a>", 1)
     if a.get("thumb"):
-        h = h.replace("assets/img/" + (a.get("image") or ""), "assets/img/" + a["thumb"], 1)
+        h = h.replace("assets/img/" + (a.get("card") or a.get("image") or ""), "assets/img/" + a["thumb"], 1)
     return h
 
 

@@ -8,6 +8,7 @@ summary: 비만은 몸에 지방이 과도하게 쌓인 상태이고, 한국에�
 related: diet.html
 image: column/obesity-og.jpg
 thumb: column/obesity-thumb.jpg
+card: column/obesity-card.jpg
 video: t3CqPvn4Ooc
 video_title: 비만은 질병일까요, 체형일까요? 비만 이해 이야기 1편
 video_desc: 비만이 무엇인지, 한국의 BMI와 허리둘레 기준, 임상 전 비만과 임상적 비만의 구분, 집에서 확인하는 방법과 한의원 진찰에서 살피는 내용을 1분으로 정리했습니다.
