@@ -324,7 +324,7 @@ def quick_links_html():
     def a(icon, label, href, ext):
         t = " target='_blank' rel='noopener'" if ext else ""
         return f"<a href='{href}'{t}>{ico(icon)}<span>{label}</span></a>"
-    fab = "".join(a(i, l, h, e) for i, l, h, e in QUICK_LINKS)
+    fab = "".join(a(i, RAIL_LABEL.get(l, l), h, e) for i, l, h, e in QUICK_LINKS)
     rail = "".join(a(i, RAIL_LABEL.get(l, l), h, e) for i, l, h, e in QUICK_LINKS)
     return f"""<div class="fab" aria-label="빠른 메뉴">{fab}</div>
 <nav class="side-rail" aria-label="빠른 연결">{rail}</nav>"""
