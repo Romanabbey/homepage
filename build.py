@@ -312,8 +312,8 @@ def blog_related_html(page_key):
 #   예) ("youtube", "유튜브", "https://www.youtube.com/@...", True),  (아이콘은 ICON_PATHS에 추가 필요)
 QUICK_LINKS = [
     ("phone", "전화", TEL, False),
-    ("cal", "네이버 예약", BOOKING, True),
     ("pin", "길찾기", CLINIC["naver"], True),
+    ("cal", "네이버 예약", BOOKING, True),
     ("youtube", "유튜브", "https://www.youtube.com/@gupabalhani", True),
     ("instagram", "인스타그램", "https://www.instagram.com/gupabalhani/", True),
 ]

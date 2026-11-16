@@ -739,7 +739,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 /* 휴대폰 하단 바: 3칸 */
 .fab a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 4px;font-size:13px;font-weight:700;background:var(--bg);color:var(--ink);border-right:1px solid var(--line)}
 .fab a:last-child{border-right:0}
-.fab a:nth-child(2){background:var(--deep);color:#fff}
+.fab a:nth-child(3){background:var(--deep);color:#fff}
 .fab .ic{width:20px;height:20px}
 /* 대메뉴 8개: 줄바꿈 방지 */
 .gnb>li>a,.gnb .navbtn{white-space:nowrap}
