@@ -22,6 +22,7 @@ CLINIC = dict(
     naver="https://map.naver.com/p/entry/place/13116400",   # 네이버지도: 구파발경희한의원 장소
     kakao="https://place.map.kakao.com/1052835355",          # 카카오맵: 구파발경희한의원 장소
 )
+FORM_BOPAE = "https://forms.gle/RTAiH2DJURJeiMsp9"  # 보폐고 엔오 처방 문의 접수(구글 설문지)
 TEL = "tel:" + CLINIC["phone"].replace("-", "")
 BOOKING = "https://booking.naver.com/booking/13/bizes/1548936"  # 네이버 예약
 EXT = 'target="_blank" rel="noopener"'
@@ -842,6 +843,11 @@ def build_product(key):
   </div>
 </section>
 """
+    form_btn = form_note = ""
+    if key == "bopae":
+        form_btn = f'<a class="btn btn-white" href="{FORM_BOPAE}" {EXT}>비대면 처방 {ico("ext")}</a>'
+        form_note = '<p class="pp-formnote">처방 문의는 접수 후 원장이 확인하고 연락드립니다.</p>'
+
     body = f"""
 <section class="pphero">
   <div class="container pphero-grid">
@@ -855,7 +861,9 @@ def build_product(key):
       <div class="btn-row">
         <a class="btn btn-white" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
         <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
+        {form_btn}
       </div>
+      {form_note}
     </div>
     {hero_visual}
   </div>
