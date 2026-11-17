@@ -543,7 +543,7 @@ def popup_html():
         f'<a class="pu-hot" href="{h}" aria-label="{esc(l)}" style="left:{x0/W*100:.3f}%;top:{y0/H*100:.3f}%;width:{(x1-x0)/W*100:.3f}%;height:{(y1-y0)/H*100:.3f}%"></a>'
         for l, h, x0, y0, x1, y1 in POPUP_BOXES)
     return f"""<div class="popup" id="homePopup" role="dialog" aria-modal="true" aria-label="치료 안내" hidden>
-  <div class="pu-panel">
+  <div class="pu-panel" tabindex="-1">
     <div class="pu-img"><img src="assets/img/popup-guide.jpg" alt="내 몸의 불편함, 어떤 치료가 좋을지 알아볼까요? 보폐고 엔오, 부종환 엔오, 활력·해울공진단, 안심환 엔오, 엔오 리커버리 패치 안내" width="1200" height="2016" decoding="async">{spots}</div>
     <div class="pu-bar"><button type="button" class="pu-today">오늘 하루 보지 않기</button><button type="button" class="pu-close">닫기</button></div>
   </div>

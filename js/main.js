@@ -207,7 +207,7 @@
     prev = document.activeElement;
     pop.hidden = false;
     document.documentElement.style.overflow = "hidden";
-    var b = pop.querySelector(".pu-close"); if (b) b.focus();
+    var p = pop.querySelector(".pu-panel"); if (p) p.focus({ preventScroll: true }); // 버튼이 아니라 팝업 자체에 포커스(굵은 테두리 안 보임)
   }
   function close() {
     pop.hidden = true;
@@ -224,8 +224,8 @@
     if (e.key === "Escape" && !pop.hidden) close();
     if (e.key === "Tab" && !pop.hidden) { // 팝업 안에서만 포커스 이동
       var f = pop.querySelectorAll("a,button"); if (!f.length) return;
-      var first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      var first = f[0], last = f[f.length - 1], pn = pop.querySelector(".pu-panel");
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === pn)) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
