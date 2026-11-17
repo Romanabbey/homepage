@@ -230,6 +230,6 @@
     }
   });
   var img = pop.querySelector("img");
-  var go = function () { setTimeout(open, 350); };
+  var go = open; // 이미지가 준비되면 바로 표시
   if (img && !img.complete) { img.addEventListener("load", go); img.addEventListener("error", go); } else { go(); }
 })();
