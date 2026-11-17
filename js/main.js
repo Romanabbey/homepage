@@ -193,3 +193,43 @@
   lb.addEventListener("click", close);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && lb.classList.contains("on")) close(); });
 })();
+
+/* 홈 첫 화면 팝업: 오늘 하루 보지 않기(한국 날짜 기준, 브라우저에 저장). 저장이 막혀 있으면 그냥 매번 보여 준다. */
+(function () {
+  var pop = document.getElementById("homePopup");
+  if (!pop) return;
+  var KEY = "gpb_popup_hide";
+  var today;
+  try { today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })); today = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate(); } catch (e) { today = ""; }
+  try { if (today && localStorage.getItem(KEY) === today) return; } catch (e) {}
+  var prev = null;
+  function open() {
+    prev = document.activeElement;
+    pop.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    var b = pop.querySelector(".pu-close"); if (b) b.focus();
+  }
+  function close() {
+    pop.hidden = true;
+    document.documentElement.style.overflow = "";
+    if (prev && prev.focus) { try { prev.focus(); } catch (e) {} }
+  }
+  pop.querySelector(".pu-close").addEventListener("click", close);
+  pop.querySelector(".pu-today").addEventListener("click", function () {
+    try { if (today) localStorage.setItem(KEY, today); } catch (e) {}
+    close();
+  });
+  pop.addEventListener("click", function (e) { if (e.target === pop) close(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !pop.hidden) close();
+    if (e.key === "Tab" && !pop.hidden) { // 팝업 안에서만 포커스 이동
+      var f = pop.querySelectorAll("a,button"); if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  var img = pop.querySelector("img");
+  var go = function () { setTimeout(open, 350); };
+  if (img && !img.complete) { img.addEventListener("load", go); img.addEventListener("error", go); } else { go(); }
+})();

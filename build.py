@@ -527,6 +527,29 @@ def disclaimer():
 HOME_FAQ = [F["hours"], F["where"], F["booking"], F["change"], F["first_visit"], F["insurance"]]
 
 
+# 홈 첫 화면 팝업: 안내 이미지(1190×2000 기준 좌표)에 박스별 클릭 영역을 겹쳐 각 페이지로 이동
+POPUP_BOXES = [
+    ("보폐고 엔오 보기", "bopae.html", 60, 418, 582, 888),
+    ("부종환 엔오 보기", "bujong.html", 608, 418, 1130, 888),
+    ("활력·해울공진단 보기", "gongjindan.html", 60, 913, 1130, 1157),
+    ("안심환 엔오 보기", "anshim.html", 60, 1183, 582, 1652),
+    ("엔오 리커버리 패치 보기", "patch.html", 608, 1183, 1130, 1652),
+]
+
+
+def popup_html():
+    W, H = 1190, 2000
+    spots = "".join(
+        f'<a class="pu-hot" href="{h}" aria-label="{esc(l)}" style="left:{x0/W*100:.3f}%;top:{y0/H*100:.3f}%;width:{(x1-x0)/W*100:.3f}%;height:{(y1-y0)/H*100:.3f}%"></a>'
+        for l, h, x0, y0, x1, y1 in POPUP_BOXES)
+    return f"""<div class="popup" id="homePopup" role="dialog" aria-modal="true" aria-label="치료 안내" hidden>
+  <div class="pu-panel">
+    <div class="pu-img"><img src="assets/img/popup-guide.jpg" alt="내 몸의 불편함, 어떤 치료가 좋을지 알아볼까요? 보폐고 엔오, 부종환 엔오, 활력·해울공진단, 안심환 엔오, 엔오 리커버리 패치 안내" width="1200" height="2016" decoding="async">{spots}</div>
+    <div class="pu-bar"><button type="button" class="pu-today">오늘 하루 보지 않기</button><button type="button" class="pu-close">닫기</button></div>
+  </div>
+</div>"""
+
+
 def build_home():
     prods = "".join(f"""<a class="lineup t-{k} reveal{' has-poster' if pr.get('poster') else ''}" href="{pr['slug']}">
   <span class="lu-emb">{emblem(k)}</span>
@@ -689,6 +712,7 @@ def build_home():
   </div>
 </section>
 {cta_band()}
+{popup_html()}
 """
     page("index.html",
          "구파발 한의원 | 구파발경희한의원 – 보폐고·안심환·부종환 엔오, 공진단, 초음파 가이드 약침",

@@ -906,3 +906,18 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .lineups>.lineup.patch-bar .lu-go{position:static;grid-column:1;grid-row:2;align-self:end;justify-self:start;width:44px;height:44px;margin:0 0 0 6px}
 .lineup.t-patch:hover .lu-go{background:var(--c);color:#fff}
 @media (max-width:600px){.lineups>.lineup.patch-bar{column-gap:14px;padding:16px}.lineups>.lineup.patch-bar .pb-txt{padding:2px 0 0 2px}.lineups>.lineup.patch-bar b{font-size:18px}.lineups>.lineup.patch-bar .pb-txt p{font-size:13px;margin-top:6px}.lineups>.lineup.patch-bar .lu-go{width:38px;height:38px;margin-left:2px}}
+
+/* 홈 첫 화면 팝업 */
+.popup[hidden]{display:none}
+.popup{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:12px;background:rgba(10,18,40,.62)}
+.pu-panel{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.4);width:min(94vw,500px,calc((100dvh - 86px) * 1190 / 2000));display:flex;flex-direction:column}
+.pu-img{position:relative;line-height:0}
+.pu-img img{display:block;width:100%;height:auto}
+.pu-hot{position:absolute;border-radius:12px;outline-offset:-2px}
+.pu-hot:hover{background:rgba(22,38,79,.06);box-shadow:inset 0 0 0 2px rgba(22,38,79,.35)}
+.pu-hot:focus-visible{outline:3px solid #16264f}
+.pu-bar{display:flex;justify-content:space-between;align-items:center;background:#16264f;color:#fff}
+.pu-bar button{flex:1;padding:14px 10px;font-size:15px;font-weight:700;color:#fff;background:transparent;border:0;cursor:pointer;font-family:inherit}
+.pu-bar button+button{border-left:1px solid rgba(255,255,255,.22);flex:0 0 34%}
+.pu-bar button:hover{background:rgba(255,255,255,.08)}
+.pu-bar button:focus-visible{outline:3px solid #fff;outline-offset:-3px}
