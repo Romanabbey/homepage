@@ -1295,6 +1295,7 @@ def build_accident():
   {checks(["신분증", "사고 일시와 가입 보험사, 담당자 연락처", "다른 병원의 진단서나 X-ray·MRI 자료(있다면)"])}
   {disclaimer()}
 </div></section>
+{category_column_html("accident")}
 {faq_block(faqs, "교통사고 관련 질문")}
 {blog_related_html('accident')}
 {cta_band()}"""
