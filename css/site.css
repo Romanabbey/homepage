@@ -739,7 +739,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 /* 휴대폰 하단 바: 3칸 */
 .fab a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 4px;font-size:13px;font-weight:700;background:var(--bg);color:var(--ink);border-right:1px solid var(--line)}
 .fab a:last-child{border-right:0}
-.fab a:nth-child(2){background:var(--deep);color:#fff}
+.fab a:nth-child(3){background:var(--deep);color:#fff}
 .fab .ic{width:20px;height:20px}
 /* 대메뉴 8개: 줄바꿈 방지 */
 .gnb>li>a,.gnb .navbtn{white-space:nowrap}
@@ -906,3 +906,20 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .lineups>.lineup.patch-bar .lu-go{position:static;grid-column:1;grid-row:2;align-self:end;justify-self:start;width:44px;height:44px;margin:0 0 0 6px}
 .lineup.t-patch:hover .lu-go{background:var(--c);color:#fff}
 @media (max-width:600px){.lineups>.lineup.patch-bar{column-gap:14px;padding:16px}.lineups>.lineup.patch-bar .pb-txt{padding:2px 0 0 2px}.lineups>.lineup.patch-bar b{font-size:18px}.lineups>.lineup.patch-bar .pb-txt p{font-size:13px;margin-top:6px}.lineups>.lineup.patch-bar .lu-go{width:38px;height:38px;margin-left:2px}}
+
+/* 홈 첫 화면 팝업 */
+.popup[hidden]{display:none}
+.popup{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:12px;background:rgba(10,18,40,.62)}
+.pu-panel{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.4);width:min(94vw,500px,calc((100dvh - 86px) * 1190 / 2000));display:flex;flex-direction:column}
+.pu-img{position:relative;line-height:0}
+.pu-img img{display:block;width:100%;height:auto}
+.pu-hot{position:absolute;border-radius:12px;outline-offset:-2px}
+.pu-hot:hover{background:rgba(22,38,79,.06);box-shadow:inset 0 0 0 2px rgba(22,38,79,.35)}
+.pu-hot:focus-visible{outline:3px solid #16264f}
+.pu-bar{display:flex;background:#fff;border-top:1px solid rgba(0,0,0,.08)}
+.pu-bar button{flex:1;padding:15px 8px;font-size:14px;font-weight:400;color:#6e6e73;background:#fff;border:0;cursor:pointer;font-family:inherit;letter-spacing:-.01em}
+.pu-bar button+button{border-left:1px solid rgba(0,0,0,.08);flex:0 0 34%;color:#1d1d1f;font-weight:700}
+.pu-bar button:hover{background:#f5f5f7}
+.pu-bar button:focus-visible{outline:3px solid #16264f;outline-offset:-3px}
+.pu-panel:focus{outline:none}
+.pp-formnote{margin-top:12px;font-size:13px;opacity:.82}

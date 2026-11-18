@@ -22,6 +22,7 @@ CLINIC = dict(
     naver="https://map.naver.com/p/entry/place/13116400",   # 네이버지도: 구파발경희한의원 장소
     kakao="https://place.map.kakao.com/1052835355",          # 카카오맵: 구파발경희한의원 장소
 )
+FORM_BOPAE = "https://forms.gle/RTAiH2DJURJeiMsp9"  # 보폐고 엔오 처방 문의 접수(구글 설문지)
 TEL = "tel:" + CLINIC["phone"].replace("-", "")
 BOOKING = "https://booking.naver.com/booking/13/bizes/1548936"  # 네이버 예약
 EXT = 'target="_blank" rel="noopener"'
@@ -79,6 +80,7 @@ ICON_PATHS = {
     "phone": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/>',
     "cal": '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
     "clock": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    "instagram": '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9"/>',
     "youtube": '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z"/>',
     "pin": '<path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
     "arrow": '<path d="M5 12h14M13 6l6 6-6 6"/>',
@@ -106,7 +108,7 @@ def emblem(key, cls="emb"):
 # ------------------------------------------------------------------ 약력 (홈·원장소개 공통)
 CAREER = ["경희대학교 한의과대학 졸업", "경희대학교 침구경락센터 협력 한의사",
               "한국한의학연구원 임상연구협력 한의사", "국민건강보험공단 장기요양등급판정위원",
-              "N약침 초음파 유도하 약침 정규과정 수료", "제중학회 학술부회장", "한방비만학회 회원", "대한스포츠한의학회 회원", "대한산화질소한의학회 회원",
+              "N약침 초음파 유도하 약침 정규과정 수료", "한의학적 비만 치료 최고급자 과정 수료", "제중학회 학술부회장", "한방비만학회 회원", "대한스포츠한의학회 회원", "대한산화질소한의학회 회원",
               "횡성군보건소 한방진료과장", "前) 으뜸경희한의원 진료원장", "前) 365경희솔한의원 대표원장"]
 
 
@@ -311,18 +313,19 @@ def blog_related_html(page_key):
 #   예) ("youtube", "유튜브", "https://www.youtube.com/@...", True),  (아이콘은 ICON_PATHS에 추가 필요)
 QUICK_LINKS = [
     ("phone", "전화", TEL, False),
-    ("cal", "네이버 예약", BOOKING, True),
     ("pin", "길찾기", CLINIC["naver"], True),
+    ("cal", "네이버 예약", BOOKING, True),
     ("youtube", "유튜브", "https://www.youtube.com/@gupabalhani", True),
+    ("instagram", "인스타그램", "https://www.instagram.com/gupabalhani/", True),
 ]
-RAIL_LABEL = {"네이버 예약": "예약", "길찾기": "지도"}
+RAIL_LABEL = {"네이버 예약": "예약", "길찾기": "지도", "인스타그램": "인스타"}
 
 
 def quick_links_html():
     def a(icon, label, href, ext):
         t = " target='_blank' rel='noopener'" if ext else ""
         return f"<a href='{href}'{t}>{ico(icon)}<span>{label}</span></a>"
-    fab = "".join(a(i, l, h, e) for i, l, h, e in QUICK_LINKS)
+    fab = "".join(a(i, RAIL_LABEL.get(l, l), h, e) for i, l, h, e in QUICK_LINKS)
     rail = "".join(a(i, RAIL_LABEL.get(l, l), h, e) for i, l, h, e in QUICK_LINKS)
     return f"""<div class="fab" aria-label="빠른 메뉴">{fab}</div>
 <nav class="side-rail" aria-label="빠른 연결">{rail}</nav>"""
@@ -525,6 +528,29 @@ def disclaimer():
 HOME_FAQ = [F["hours"], F["where"], F["booking"], F["change"], F["first_visit"], F["insurance"]]
 
 
+# 홈 첫 화면 팝업: 안내 이미지(1190×2000 기준 좌표)에 박스별 클릭 영역을 겹쳐 각 페이지로 이동
+POPUP_BOXES = [
+    ("보폐고 엔오 보기", "bopae.html", 60, 418, 582, 888),
+    ("부종환 엔오 보기", "bujong.html", 608, 418, 1130, 888),
+    ("활력·해울공진단 보기", "gongjindan.html", 60, 913, 1130, 1157),
+    ("안심환 엔오 보기", "anshim.html", 60, 1183, 582, 1652),
+    ("엔오 리커버리 패치 보기", "patch.html", 608, 1183, 1130, 1652),
+]
+
+
+def popup_html():
+    W, H = 1190, 2000
+    spots = "".join(
+        f'<a class="pu-hot" href="{h}" aria-label="{esc(l)}" style="left:{x0/W*100:.3f}%;top:{y0/H*100:.3f}%;width:{(x1-x0)/W*100:.3f}%;height:{(y1-y0)/H*100:.3f}%"></a>'
+        for l, h, x0, y0, x1, y1 in POPUP_BOXES)
+    return f"""<div class="popup" id="homePopup" role="dialog" aria-modal="true" aria-label="치료 안내" hidden>
+  <div class="pu-panel" tabindex="-1">
+    <div class="pu-img"><img src="assets/img/popup-guide.jpg" alt="내 몸의 불편함, 어떤 치료가 좋을지 알아볼까요? 보폐고 엔오, 부종환 엔오, 활력·해울공진단, 안심환 엔오, 엔오 리커버리 패치 안내" width="1200" height="2016" decoding="async">{spots}</div>
+    <div class="pu-bar"><button type="button" class="pu-today">오늘 하루 보지 않기</button><button type="button" class="pu-close">닫기</button></div>
+  </div>
+</div>"""
+
+
 def build_home():
     prods = "".join(f"""<a class="lineup t-{k} reveal{' has-poster' if pr.get('poster') else ''}" href="{pr['slug']}">
   <span class="lu-emb">{emblem(k)}</span>
@@ -576,7 +602,7 @@ def build_home():
              h1="아픈 곳을 직접 살피고,<br><b>치료를 조합</b>합니다.",
              lead="침·부항·물리치료, 추나요법, 초음파 가이드 약침, 맞춤 한약 중 필요한 치료를 진찰 후 안내합니다.",
              btns=[("통증 진료 보기", "neck.html", False), ("교통사고 진료", "accident.html", False)]),
-        dict(img="slide-3.jpg", eyebrow="GROWTH CHECK", sub="유치원생부터 고등학생까지",
+        dict(img="slide-3.jpg", eyebrow="GROWTH CHECK", sub="유치원생부터 중·고등학생까지",
              h1="방사선 없는 초음파로<br><b>아이의 뼈나이</b>를 확인합니다.",
              lead="성장판 측정은 약 3분이면 끝납니다. 성장은 시기가 중요하니 걱정되면 일찍 확인해 보세요.",
              btns=[("바른성장 보기", "growth.html", False), ("네이버 예약", BOOKING, True)]),
@@ -687,6 +713,7 @@ def build_home():
   </div>
 </section>
 {cta_band()}
+{popup_html()}
 """
     page("index.html",
          "구파발 한의원 | 구파발경희한의원 – 보폐고·안심환·부종환 엔오, 공진단, 초음파 가이드 약침",
@@ -820,6 +847,11 @@ def build_product(key):
   </div>
 </section>
 """
+    form_btn = form_note = ""
+    if key == "bopae":
+        form_btn = f'<a class="btn btn-white" href="{FORM_BOPAE}" {EXT}>비대면 전화 처방 {ico("ext")}</a>'
+        form_note = '<p class="pp-formnote">처방 문의는 접수 후 원장이 확인하고 연락드립니다.</p>'
+
     body = f"""
 <section class="pphero">
   <div class="container pphero-grid">
@@ -833,7 +865,9 @@ def build_product(key):
       <div class="btn-row">
         <a class="btn btn-white" href="{BOOKING}" {EXT}>네이버 예약 {ico('ext')}</a>
         <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
+        {form_btn}
       </div>
+      {form_note}
     </div>
     {hero_visual}
   </div>
@@ -1431,7 +1465,7 @@ def build_lifeguide():
          body, current="lifeguide.html", crumbs=[("홈", ""), ("생활안내", "lifeguide.html")])
 
 
-PRIVACY_DATE = "2026년 11월 9일"
+PRIVACY_DATE = "2026년 11월 17일"
 
 
 def build_privacy():
@@ -1448,6 +1482,7 @@ def build_privacy():
     <tbody>
       <tr><td>진료·상담 (내원·전화)</td><td>진료, 처방, 상담, 진료비 수납</td><td>성명, 생년월일, 성별, 연락처, 증상·병력 등 건강에 관한 정보</td><td>「의료법 시행규칙」에 따른 기간 (진료기록부 10년, 처방전 2년 등)</td></tr>
       <tr><td>예약 확인</td><td>예약 확인 및 안내, 진료 준비</td><td>성명, 연락처, 희망 일시, 문의 내용</td><td>목적 달성 후 지체 없이 파기 (진료로 이어진 경우 위 진료기록 기준)</td></tr>
+      <tr><td>처방 문의 접수 (온라인, 구글 설문지)</td><td>보폐고 엔오 처방 상담, 결제 확인, 상품 발송</td><td>성명, 연락처, 생년월일, 성별, 배송지 주소, 증상·복용 중인 약·알레르기·임신·수유 여부 등 건강에 관한 정보</td><td>상담·발송이 끝나면 지체 없이 파기 (진료로 이어진 경우 「의료법 시행규칙」에 따른 진료기록 기준)</td></tr>
       <tr><td>보험 청구</td><td>건강보험·자동차보험 진료비 청구</td><td>성명, 주민등록번호(법령에서 허용하는 경우), 보험 관련 정보</td><td>관련 법령에 따른 기간</td></tr>
     </tbody>
   </table></div>
@@ -1456,7 +1491,7 @@ def build_privacy():
 
   <h2>2. 홈페이지 이용과 개인정보</h2>
   <ul>
-    <li>이 홈페이지는 회원가입, 로그인, 문의 양식을 운영하지 않으며 이용자의 개인정보를 직접 수집하지 않습니다.</li>
+    <li>이 홈페이지는 회원가입과 로그인을 운영하지 않습니다. 다만 <b>보폐고 엔오 처방 문의</b>는 구글 설문지로 접수할 수 있으며, 이 경우에만 이용자가 입력한 개인정보를 한의원이 수집합니다(아래 '처방 문의 접수' 참고). 그 밖에 홈페이지 이용으로는 이용자의 개인정보를 직접 수집하지 않습니다.</li>
     <li>홈페이지를 제공하는 호스팅 서비스(GitHub Pages)와 글꼴 제공 서비스(jsDelivr)에서 서비스 운영을 위해 접속 정보(IP 주소, 브라우저 정보 등)가 처리될 수 있습니다.</li>
     <li>한의원은 홈페이지 이용 현황을 파악하기 위해 <b>방문자 통계 분석 도구(Google Analytics 4)</b>를 사용합니다. 자세한 내용은 아래 '방문자 통계 분석 및 쿠키'를 확인해 주세요. 광고 목적으로 이용자를 추적하거나 맞춤형 광고를 하지 않습니다.</li>
     <li>네이버 예약, 지도 등 외부 서비스로 이동하면 해당 서비스가 쿠키를 사용할 수 있으며, 이는 각 서비스의 개인정보처리방침이 적용됩니다.</li>
@@ -1479,6 +1514,19 @@ def build_privacy():
     <li>쿠키 설정 방법(Chrome): 설정 → 개인정보 및 보안 → 서드 파티 쿠키 / 쿠키 및 기타 사이트 데이터. 다른 브라우저는 해당 브라우저의 도움말을 확인해 주세요.</li>
   </ul>
 
+  <h3>처방 문의 접수 (Google 설문지)</h3>
+  <div class="ptable-wrap"><table class="ptable">
+    <tbody>
+      <tr><th>수집·이용 목적</th><td>보폐고 엔오 처방 상담, 결제 확인, 상품 발송</td></tr>
+      <tr><th>수집 항목</th><td>성명, 연락처, 생년월일, 성별, 배송지 주소, 증상·복용 중인 약·알레르기·임신·수유 여부 등 건강에 관한 정보(민감정보). <b>주민등록번호는 수집하지 않습니다.</b></td></tr>
+      <tr><th>보유·이용기간</th><td>상담·발송이 끝나면 지체 없이 파기합니다. 다만 진료로 이어진 경우에는 「의료법 시행규칙」에 따른 기간(진료기록부 10년 등) 동안 보관합니다.</td></tr>
+      <tr><th>제공·처리자</th><td>Google LLC (미국 소재). 설문지 응답은 구글의 서버가 있는 미국 등 해외에서 처리·보관될 수 있습니다. 한의원은 응답 내용을 확인하기 위해 구글 설문지·스프레드시트·이메일 알림 기능을 사용합니다.</td></tr>
+      <tr><th>이전 시기·방법</th><td>설문지를 제출할 때 정보통신망을 통해 수시로 전송</td></tr>
+      <tr><th>동의 거부 권리 및 불이익</th><td>개인정보 수집·이용에 동의하지 않을 수 있으며, 동의하지 않으면 온라인 접수가 어렵습니다. 이 경우 전화({c['phone']}) 또는 내원으로 상담하실 수 있습니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">설문지에 입력한 건강에 관한 정보는 「개인정보 보호법」상 민감정보로, 별도의 동의를 받아 처리합니다. 접수 내용은 한의원 직원 중 처방 상담·발송을 맡은 사람만 확인하도록 접근을 제한합니다.</p>
+
   <h2>3. 네이버 예약 이용 시</h2>
   <p>네이버 예약은 네이버(주)가 제공하는 서비스로, 이용자가 입력한 개인정보는 네이버의 개인정보처리방침에 따라 처리됩니다. 한의원은 예약 확인과 진료 준비를 위해 예약자 정보를 열람합니다.</p>
 
@@ -1494,7 +1542,7 @@ def build_privacy():
   <p>한의원은 원활한 업무 처리를 위해 아래와 같이 개인정보 처리업무를 위탁하며, 수탁자가 개인정보를 안전하게 처리하도록 관리·감독합니다.</p>
   <div class="ptable-wrap"><table class="ptable">
     <thead><tr><th>수탁자</th><th>위탁 업무</th></tr></thead>
-    <tbody><tr><td>(주)한메디 (OK차트)</td><td>전자차트(전자의무기록, EMR) 시스템의 운영·유지보수 (진료 정보의 저장·관리 시스템)</td></tr></tbody>
+    <tbody><tr><td>(주)한메디 (OK차트)</td><td>전자차트(전자의무기록, EMR) 시스템의 운영·유지보수 (진료 정보의 저장·관리 시스템)</td></tr><tr><td>Google LLC (미국)</td><td>처방 문의 접수용 구글 설문지·스프레드시트·이메일 알림 서비스 제공 (응답 정보의 저장·관리)</td></tr></tbody>
   </table></div>
   <p class="muted">위탁 업무의 내용이나 수탁자가 바뀌면 이 방침을 통해 알려 드립니다.</p>
 
@@ -1552,7 +1600,7 @@ def build_privacy():
 
   <h2>12. 개인정보 처리방침의 변경</h2>
   <p>이 방침은 {PRIVACY_DATE}부터 적용됩니다. 내용이 바뀌는 경우 변경 사항을 이 페이지를 통해 알려 드립니다.</p>
-  <p class="muted"><b>변경 이력</b><br>2026년 11월 9일: 방문자 통계 분석 도구(Google Analytics 4) 사용에 관한 내용 추가<br>2026년 11월 10일: 오시는 길 구글 지도 표시에 관한 내용 추가</p>
+  <p class="muted"><b>변경 이력</b><br>2026년 11월 9일: 방문자 통계 분석 도구(Google Analytics 4) 사용에 관한 내용 추가<br>2026년 11월 10일: 오시는 길 구글 지도 표시에 관한 내용 추가<br>2026년 11월 17일: 보폐고 엔오 처방 문의 접수(구글 설문지) 이용에 관한 내용 추가</p>
 </div></section>"""
     page("privacy.html", "개인정보처리방침 | 구파발경희한의원", f"{c['name']} 개인정보처리방침. 개인정보의 처리 목적·항목·보유기간, 정보주체의 권리, 개인정보 보호책임자 등을 안내합니다.",
          body, crumbs=[("홈", ""), ("개인정보처리방침", "privacy.html")])
