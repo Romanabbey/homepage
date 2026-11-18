@@ -694,9 +694,9 @@ def build_home():
          body, current="index.html", home=True, schema=[faq_schema(HOME_FAQ)])
 
 
-def diet_column_html():
-    """다이어트 페이지: FAQ 바로 위에 다이어트 분류 칼럼의 썸네일 카드(제목만 + 자세히 보기). 게시된 칼럼이 없으면 표시하지 않는다."""
-    arts = [a for a in ARTICLES if a["category"] == "diet"][:3]
+def category_column_html(category):
+    """진료 페이지(다이어트·바른성장 등): FAQ 바로 위에 해당 분류 칼럼의 썸네일 카드(제목만 + 자세히 보기). 게시된 칼럼이 없으면 표시하지 않는다."""
+    arts = [a for a in ARTICLES if a["category"] == category][:3]
     if not arts:
         return ""
     rows = "".join(f"<div class='col-row'>{col_row_item(a)}</div>" for a in arts)
@@ -706,6 +706,10 @@ def diet_column_html():
     {rows}
   </div>
 </section>"""
+
+
+def diet_column_html():
+    return category_column_html("diet")
 
 
 def build_diet():
@@ -1075,6 +1079,7 @@ def build_growth():
   {notice("성장에는 유전, 영양, 수면, 운동, 질환 등 여러 요인이 작용합니다. 치료로 키가 얼마나 자랄지 약속드릴 수 없습니다. 검사는 보호자와 함께 내원해 주세요. 검사·시술은 시간이 걸려 사전 예약을 권해 드립니다.")}
   {disclaimer()}
 </div></section>
+{category_column_html("growth")}
 {faq_block([F["growth_us"], F["puberty"]], "성장 관련 질문")}
 {blog_related_html('growth')}
 {cta_band()}"""
