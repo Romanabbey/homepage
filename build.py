@@ -716,8 +716,8 @@ def build_home():
 {popup_html()}
 """
     page("index.html",
-         "구파발 한의원 | 구파발경희한의원 – 보폐고·안심환·부종환 엔오, 공진단, 초음파 가이드 약침",
-         "서울 은평구 구파발역 인근 구파발경희한의원. 보폐고 엔오·안심환 엔오·부종환 엔오·활력해울공진단 처방, 저칼로리 다이어트, 초음파 가이드 약침, 성장클리닉, 교통사고 후유증 진료. 원장 최솔.",
+         "구파발경희한의원 | 구파발 은평뉴타운 - 보폐고 안심환 부종환",
+         "구파발역 한의원. 보폐고·안심환·부종환 엔오, 활력·해울공진단, 저칼로리 다이어트, 성장판검사, 성장추나, 교통사고 후유증.",
          body, current="index.html", home=True, schema=[faq_schema(HOME_FAQ)])
 
 
@@ -1295,6 +1295,7 @@ def build_accident():
   {checks(["신분증", "사고 일시와 가입 보험사, 담당자 연락처", "다른 병원의 진단서나 X-ray·MRI 자료(있다면)"])}
   {disclaimer()}
 </div></section>
+{category_column_html("accident")}
 {faq_block(faqs, "교통사고 관련 질문")}
 {blog_related_html('accident')}
 {cta_band()}"""
