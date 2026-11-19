@@ -775,7 +775,7 @@ PRODUCTS = {
         tagline="숨 쉬는 일상을 위한 처방",
         lead="호흡기와 목의 불편감을 관리하기 위한 한약 처방입니다. 영양제처럼 꾸준히 복용하는 방식으로 상담합니다.",
         extra="엔오(NO, 산화질소)는 말초 혈관을 넓히고 한약 성분의 작용을 보조합니다.",
-        feature="bopae-respiratory-guide",
+        feature=["bopae-respiratory-guide", "runny-nose-cold-or-rhinitis"],
         facts=["1박스 45포", "하루 3회 기준 15일분", "꿀 없는 제로 버전도 있음"],
         herbs=["길경", "대청엽", "우방자", "금은화", "연교", "죽엽", "포공영", "박하", "오미자", "사삼", "맥문동", "유근피", "산약", "감초", "건강"],
         herbnote="길경 등은 가래와 염증 관리, 오미자·사삼·맥문동은 기침 관리, 유근피·산약은 소화 부담을 줄이는 데, 감초·건강은 처방의 조화를 위해 구성했습니다.",
@@ -831,7 +831,11 @@ def build_product(key):
   </div>
 </section>"""
     feature_html = ""
-    fa = next((a for a in ARTICLES if a["slug"] == pr.get("feature")), None)
+    _feat = pr.get("feature") or []
+    _feat = [_feat] if isinstance(_feat, str) else _feat   # 여러 칼럼이면 첫 칼럼의 영상 + 칼럼 카드를 위에서 아래로
+    _fas = [next((a for a in ARTICLES if a["slug"] == sl), None) for sl in _feat]
+    _fas = [a for a in _fas if a]
+    fa = _fas[0] if _fas else None
     if fa:   # 진료 페이지 상단: 칼럼의 1분 영상 + 칼럼 카드
         fv = ""
         if fa.get("video"):
@@ -843,7 +847,7 @@ def build_product(key):
   <div class="container narrow">
     <div class="sec-head left"><span class="tag">VIDEO · COLUMN</span><h2>먼저 보고 읽어 보세요</h2></div>
     {fv}
-    <div class="col-row">{col_row_item(fa)}</div>
+    <div class="col-row">{"".join(col_row_item(a) for a in _fas)}</div>
   </div>
 </section>
 """
