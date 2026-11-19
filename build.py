@@ -853,7 +853,7 @@ def build_product(key):
 """
     form_btn = form_note = ""
     if key == "bopae":
-        form_btn = f'<a class="btn btn-white" href="{FORM_BOPAE}" {EXT}>비대면 전화 처방 {ico("ext")}</a>'
+        form_btn = f'<a class="btn btn-honey" href="{FORM_BOPAE}" {EXT}>비대면 전화 처방 {ico("ext")}</a>'
         form_note = '<p class="pp-formnote">처방 문의는 접수 후 원장이 확인하고 연락드립니다.</p>'
 
     body = f"""

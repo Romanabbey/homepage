@@ -70,6 +70,8 @@ h1,h2,h3,h4{letter-spacing:-.03em;line-height:1.28;font-weight:800}
 .btn-line:hover{background:var(--ink);color:#fff}
 .btn-white{background:#fff;color:var(--deep)}
 .btn-white:hover{background:var(--soft)}
+.btn-honey{background:#fff0c2;color:#0d4642;font-weight:800}
+.btn-honey:hover{background:#ffe39a}
 .btn-light{background:#fff;color:var(--ink)}
 .btn-light:hover{background:var(--soft)}
 .btn-ghost{border-color:rgba(255,255,255,.55);color:#fff}
