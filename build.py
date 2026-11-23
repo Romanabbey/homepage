@@ -1994,6 +1994,37 @@ PAGES = ["index.html", "diet.html", "bopae.html", "anshim.html", "bujong.html", 
          "about.html", "hours-location.html", "faq.html", "reservation.html", "notice.html", "lifeguide.html", "privacy.html"]
 
 
+# 외부에 올리는 짧은 주소: gupabalhani.org/blog 처럼 열면 UTM이 붙은 홈페이지로 이동한다.
+# 페이지를 고를 때는 /blog?to=accident 처럼 쓴다(허용 목록에 있는 페이지만 이동).
+SHORT_LINKS = {"blog": ("naver_blog", "post"), "map": ("naver_place", "map"), "insta": ("instagram", "profile"),
+               "yt": ("youtube", "video"), "google": ("google_business", "profile"), "kakao": ("kakao", "message"),
+               "qr": ("offline", "qr")}
+SHORT_TO = {"accident": "accident.html", "growth": "growth.html", "diet": "diet.html", "bopae": "bopae.html",
+            "anshim": "anshim.html", "bujong": "bujong.html", "gongjindan": "gongjindan.html", "patch": "patch.html",
+            "yakchim": "yakchim.html", "column": "column/", "reservation": "reservation.html"}
+
+
+def build_short_links():
+    to_js = json.dumps(SHORT_TO, ensure_ascii=False)
+    for key, (src, med) in SHORT_LINKS.items():
+        d = os.path.join(ROOT, key)
+        os.makedirs(d, exist_ok=True)
+        home = f"/?utm_source={src}&utm_medium={med}&utm_campaign=home"
+        html = f"""<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>구파발경희한의원으로 이동합니다</title>
+<link rel="canonical" href="{DOMAIN}/">
+<noscript><meta http-equiv="refresh" content="0;url={home}"></noscript>
+<script>
+(function(){{var T={to_js},p=new URLSearchParams(location.search).get("to"),k=T.hasOwnProperty(p)?p:"home",
+path=k==="home"?"":T[k];location.replace("/"+path+"?utm_source={src}&utm_medium={med}&utm_campaign="+k);}})();
+</script></head>
+<body style="font-family:sans-serif;padding:2rem"><p>구파발경희한의원 홈페이지로 이동합니다. 이동하지 않으면 <a href="{home}">여기</a>를 눌러 주세요.</p></body></html>
+"""
+        open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(html)
+
+
+
 def build_meta():
     urls = "".join(f"  <url><loc>{DOMAIN}/{'' if p == 'index.html' else p}</loc><lastmod>{TODAY}</lastmod></url>\n" for p in PAGES)
     if ARTICLES:
@@ -2003,7 +2034,7 @@ def build_meta():
     open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
     bots = ["GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "Claude-User", "Claude-SearchBot", "PerplexityBot", "Google-Extended", "Applebot-Extended"]
-    hide = "Disallow: /columns/\nDisallow: /blog_out/\nDisallow: /preview/\n"
+    hide = "Disallow: /columns/\nDisallow: /blog_out/\nDisallow: /preview/\n" + "".join(f"Disallow: /{k}/\n" for k in SHORT_LINKS)
     robots = "User-agent: *\nAllow: /\n" + hide + "\n" + "".join(f"User-agent: {b}\nAllow: /\n{hide}\n" for b in bots) + f"Sitemap: {DOMAIN}/sitemap.xml\n"
     open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8").write(robots)
     pain_llms = "".join(f"- [{p['name']}]({DOMAIN}/{p['slug']}): {p['desc'].replace('구파발경희한의원 ', '', 1)}\n" for p in PAIN.values())
@@ -2060,7 +2091,7 @@ def build_meta():
 
 if __name__ == "__main__":
     for fn in (build_home, build_diet, lambda: build_product("bopae"), lambda: build_product("anshim"), lambda: build_product("bujong"), build_herbal_redirect, build_gongjindan, build_patch, build_yakchim, build_growth, build_postpartum, build_accident,
-               *[ (lambda k=k: build_pain(k)) for k in PAIN ], build_about, build_visit, build_faq, build_reservation, build_notice, build_lifeguide, build_privacy, build_404, build_columns, build_meta):
+               *[ (lambda k=k: build_pain(k)) for k in PAIN ], build_about, build_visit, build_faq, build_reservation, build_notice, build_lifeguide, build_privacy, build_404, build_columns, build_short_links, build_meta):
         fn()
     print("built", len(PAGES) + 1, "pages +", len(ARTICLES), "columns")
     if "--preview" in sys.argv:
