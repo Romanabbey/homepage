@@ -1899,7 +1899,7 @@ def build_column_article(a, preview=False):
     schema = [art_schema] + ([faq_schema(a["faq"])] if a["faq"] else [])
     if a.get("video"):
         schema.append({"@type": "VideoObject", "name": a.get("video_title") or a["title"], "description": a.get("video_desc") or a["description"],
-                       "thumbnailUrl": f"https://i.ytimg.com/vi/{a['video']}/maxresdefault.jpg", "uploadDate": a.get("video_date") or a["date"],
+                       "thumbnailUrl": f"https://i.ytimg.com/vi/{a['video']}/maxresdefault.jpg", "uploadDate": f'{a.get("video_date") or a["date"]}T09:00:00+09:00',
                        "embedUrl": f"https://www.youtube.com/embed/{a['video']}", "inLanguage": "ko-KR",
                        "publisher": {"@id": DOMAIN + "/#clinic"}})
     page(col_url(a), a.get("seo_title") or f"{a['title']} | 구파발경희한의원 건강정보", a["description"], body, current="column/",
