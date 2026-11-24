@@ -1027,7 +1027,7 @@ def build_gongjindan():
 def build_patch():
     body = hero_sub("엔오 리커버리 패치", "엔오 리커버리 패치",
                     "내원하지 않는 날에도 간편하게 사용할 수 있도록 만든 패치입니다.", "n-patch.jpg",
-                    poster="n-patch.jpg", poster_alt="엔오 리커버리 패치 안내 이미지", poster_wh=(1406, 1600)) + f"""
+                    poster="n-patch.jpg", poster_alt="엔오 리커버리 패치 안내 이미지", poster_wh=(1600, 1600)) + f"""
 <section class="sec"><div class="container narrow prose">
   <h2>제품 소개</h2>
   <p>엔오 리커버리 패치(엔오패치)는 <b>하이드로콜로이드 소재</b>의 패치로, <b>멘톨이 함유</b>되어 있습니다. 진료를 보조하고, 내원하지 않는 날에도 집에서 간편하게 사용할 수 있도록 개발되었습니다.</p>
