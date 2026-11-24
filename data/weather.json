@@ -178,5 +178,17 @@
   "pm25": "좋음",
   "category": "cold",
   "phrase": "추운 날 아침엔 천천히 일어나세요."
+ },
+ {
+  "date": "2026-11-25",
+  "sky": "구름많음",
+  "precip": false,
+  "tmn": -6,
+  "tmx": 7,
+  "pop": 20,
+  "pm10": "좋음",
+  "pm25": "좋음",
+  "category": "diurnal",
+  "phrase": "아침 외출 전 가볍게 몸을 풀고 나가세요."
  }
 ]
