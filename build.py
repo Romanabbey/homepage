@@ -531,9 +531,9 @@ HOME_FAQ = [F["hours"], F["where"], F["booking"], F["change"], F["first_visit"],
 # 홈 첫 화면 팝업: 안내 이미지(1190×2000 기준 좌표)에 박스별 클릭 영역을 겹쳐 각 페이지로 이동
 POPUP_BOXES = [
     ("보폐고 엔오 보기", "bopae.html", 60, 418, 582, 888),
-    ("부종환 엔오 보기", "bujong.html", 608, 418, 1130, 888),
+    ("안심환 엔오 보기", "anshim.html", 608, 418, 1130, 888),
     ("활력·해울공진단 보기", "gongjindan.html", 60, 913, 1130, 1157),
-    ("안심환 엔오 보기", "anshim.html", 60, 1183, 582, 1652),
+    ("부종환 엔오 보기", "bujong.html", 60, 1183, 582, 1652),
     ("엔오 리커버리 패치 보기", "patch.html", 608, 1183, 1130, 1652),
 ]
 
@@ -947,7 +947,7 @@ def build_gongjindan():
         <a class="btn btn-ghost" href="{TEL}">{ico('phone')} {CLINIC['phone']}</a>
       </div>
     </div>
-    <figure class="pp-visual"><img src="assets/img/p-gong.jpg" alt="활력 · 해울 공진단" width="1800" height="1200" fetchpriority="high"><span class="pp-emb">{emblem('gong')}</span></figure>
+    <figure class="pp-visual poster-fig"><a href="assets/img/gong-card.jpg" target="_blank" rel="noopener" aria-label="활력 · 해울 공진단 안내 이미지 크게 보기"><img class="poster" src="assets/img/gong-card.jpg" alt="활력 · 해울 공진단 안내 이미지" width="1080" height="1080" fetchpriority="high"></a><figcaption class="pp-cap">이미지를 누르면 크게 볼 수 있습니다.</figcaption></figure>
   </div>
 </section>
 
@@ -1027,7 +1027,7 @@ def build_gongjindan():
 def build_patch():
     body = hero_sub("엔오 리커버리 패치", "엔오 리커버리 패치",
                     "내원하지 않는 날에도 간편하게 사용할 수 있도록 만든 패치입니다.", "n-patch.jpg",
-                    poster="n-patch.jpg", poster_alt="엔오 리커버리 패치 안내 이미지", poster_wh=(1406, 1600)) + f"""
+                    poster="n-patch.jpg", poster_alt="엔오 리커버리 패치 안내 이미지", poster_wh=(1600, 1600)) + f"""
 <section class="sec"><div class="container narrow prose">
   <h2>제품 소개</h2>
   <p>엔오 리커버리 패치(엔오패치)는 <b>하이드로콜로이드 소재</b>의 패치로, <b>멘톨이 함유</b>되어 있습니다. 진료를 보조하고, 내원하지 않는 날에도 집에서 간편하게 사용할 수 있도록 개발되었습니다.</p>
