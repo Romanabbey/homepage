@@ -716,7 +716,7 @@ def build_home():
 {popup_html()}
 """
     page("index.html",
-         "구파발경희한의원 | 구파발 은평뉴타운 - 보폐고 안심환 부종환",
+         "구파발경희한의원 | 구파발 은평뉴타운 한의원 - 보폐고 안심환 부종환 활력공진단",
          "구파발역 한의원. 보폐고·안심환·부종환 엔오, 활력·해울공진단, 저칼로리 다이어트, 성장판검사, 성장추나, 교통사고 후유증.",
          body, current="index.html", home=True, schema=[faq_schema(HOME_FAQ)])
 
