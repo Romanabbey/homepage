@@ -768,6 +768,19 @@ def build_diet():
          schema=[faq_schema([F["diet"], F["inhouse"]])], og="care-diet.jpg")
 
 
+# 처방 페이지 검색용 제목·소개 (제품명 + 불편 + 한의원). 효과·치료 표현 없이 '불편감' 수준으로만 쓴다.
+SEO_TITLES = {
+    "bopae": dict(
+        title="보폐고 엔오 | 콧물·후비루·기침이 오래갈 때 호흡기 한약 | 구파발경희한의원",
+        desc="보폐고 엔오는 오래가는 콧물·후비루·기침·목 칼칼함이 있을 때 처방하는 호흡기 한약입니다. 구파발경희한의원에서 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다."),
+    "anshim": dict(
+        title="안심환 엔오 | 예민함·긴장·스트레스가 잦을 때 한약 | 구파발경희한의원",
+        desc="안심환 엔오는 예민함과 긴장, 스트레스로 불편한 날이 잦을 때 처방하는 한약 환제입니다. 구파발경희한의원에서 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다."),
+    "bujong": dict(
+        title="부종환 엔오 | 붓기·다리 당김이 잦을 때 한약 | 구파발경희한의원",
+        desc="부종환 엔오는 붓기와 다리의 당김·뭉침이 잦을 때 처방하는 한약입니다. 구파발경희한의원에서 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다."),
+}
+
 PRODUCTS = {
     "bopae": dict(
         poster="poster-bopae.jpg",
@@ -910,8 +923,8 @@ def build_product(key):
 </section>
 {blog_related_html(key)}
 {cta_band()}"""
-    page(pr["slug"], f"{pr['name']} 복용법 | 구파발경희한의원",
-         f"구파발경희한의원의 {pr['name']}. {pr['desc']}. 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다.",
+    page(pr["slug"], SEO_TITLES.get(key, {}).get("title") or f"{pr['name']} 복용법 | 구파발경희한의원",
+         SEO_TITLES.get(key, {}).get("desc") or f"구파발경희한의원의 {pr['name']}. {pr['desc']}. 약재 구성과 복용 안내를 확인하세요. 비용은 진찰 후 안내해 드립니다.",
          body, current=pr["slug"], crumbs=[("홈", ""), (pr["name"], pr["slug"])],
          og=pr.get("poster") or pr["img"], theme=pr["theme"])
 
@@ -1018,7 +1031,7 @@ def build_gongjindan():
 </section>
 {blog_related_html('gongjindan')}
 {cta_band()}"""
-    page("gongjindan.html", "활력공진단 · 해울공진단 | 구파발경희한의원",
+    page("gongjindan.html", "활력공진단·해울공진단 | 피곤하고 기운 없을 때 한약 | 구파발경희한의원",
          "구파발경희한의원의 활력공진단. 녹용 등 12가지 약재와 엔오를 더해 5일 숙성하는 공진단과, 스트레스가 많고 예민한 분을 위한 해울공진단, 사향 프리미엄 라인의 구성을 안내합니다. 비용은 진찰 후 안내해 드립니다.",
          body, current="gongjindan.html", crumbs=[("홈", ""), ("활력 · 해울 공진단", "gongjindan.html")],
          og="p-gong.jpg", theme="gong")
