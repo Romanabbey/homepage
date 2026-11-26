@@ -198,6 +198,7 @@
 (function () {
   var pop = document.getElementById("homePopup");
   if (!pop) return;
+  if (location.hash && location.hash.length > 1) return; // 메뉴 등으로 홈의 특정 구간(#products 등)에 바로 들어온 경우에는 띄우지 않는다
   var KEY = "gpb_popup_hide";
   var today;
   try { today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })); today = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate(); } catch (e) { today = ""; }
