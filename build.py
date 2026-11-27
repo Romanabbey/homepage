@@ -1339,6 +1339,7 @@ def build_about():
 <section class="sec"><div class="container narrow prose">
   <h2>약력</h2>
   <ul class="timeline">{"".join(f"<li>{esc(c)}</li>" for c in career)}</ul>
+  <div class="xa"><div><small>추나 경력</small><b>10<em>년 이상</em></b></div><i></i><div><small>추나 시술</small><b>1만<em>건 이상</em></b></div></div>
   <h2>진료 철학</h2>
   <div class="trio t-flat">
     <div><span class="num">01</span><h3>듣는 진료</h3><p>증상뿐 아니라 생활 습관과 고민까지 충분히 듣겠습니다.</p></div>

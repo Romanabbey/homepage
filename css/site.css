@@ -932,3 +932,10 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .feat img{display:block;width:100%;height:auto}
 .fsub{grid-template-columns:1fr 1fr!important;margin-top:24px}
 @media(max-width:700px){.feat,.fsub{grid-template-columns:1fr!important}}
+
+.xa{margin:44px -40px 40px;background:#16264f;color:#fff;border-radius:6px;padding:40px 44px;display:grid;grid-template-columns:1fr 1px 1fr;gap:0 40px;align-items:center}
+.xa i{background:rgba(127,166,218,.5);height:96px;display:block}
+.xa small{display:block;font-size:24px;letter-spacing:-.01em;color:#9ec0ee;font-weight:600;margin-bottom:12px}
+.xa b{font-family:var(--serif);font-size:64px;line-height:1;font-weight:700;letter-spacing:-.02em}
+.xa b em{font-style:normal;font-size:36px;margin-left:10px;font-weight:600;color:#e2ecf8}
+@media(max-width:700px){.xa{grid-template-columns:1fr;margin:32px -8px;padding:30px 28px;gap:24px}.xa i{height:1px;width:100%}.xa b{font-size:52px}.xa b em{font-size:30px}}
