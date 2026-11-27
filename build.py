@@ -1100,7 +1100,12 @@ def build_growth():
             ("맞춤 한약", "나이, 성별, 체질, 소화·수면 상태를 고려해 개인별로 한약을 구성합니다."),
             ("성장침", "아이가 받아들일 수 있는 방식으로 성장과 관련된 혈위를 자극하는 침 치료입니다."),
             ("성장 추나", "자세와 척추·골반 균형을 살피는 수기 치료로, 바른 자세 관리를 돕습니다.")]
+    four = [x for x in four if x[0] in ("성조숙증 지연", "성장침")]
     fc = "".join(f"<div class='fcard reveal'><h3>{esc(t)}</h3><p>{esc(d)}</p></div>" for t, d in four)
+    feat = ("<div class='feat'>"
+            "<a href='assets/img/growth-herb.jpg' target='_blank' rel='noopener'><img src='assets/img/growth-herb.jpg' width='1080' height='1080' loading='lazy' alt='성장 한약. 성장 단계에 맞춰 구성하는 한약. 아이의 나이와 성별, 성장 단계를 고려해 개인별로 한약을 구성합니다.'></a>"
+            "<a href='assets/img/growth-chuna.jpg' target='_blank' rel='noopener'><img src='assets/img/growth-chuna.jpg' width='1080' height='1080' loading='lazy' alt='성장 추나요법. 척추 분절 사이를 늘려주는 추나. 구부정한 자세로 눌려 있던 척추와 관절의 정렬을 바로잡아 숨은 키를 찾아주고, 성장 환경을 개선하는 한방 수기 치료입니다.'></a>"
+            "</div>")
     body = hero_sub("바른성장", "초음파 성장 검사와<br>맞춤 성장 상담",
                     "방사선을 사용하지 않는 초음파 성장 검사로 아이의 현재 성장 상태와 예상키를 확인하고, 나이와 성별에 맞춰 성장 치료를 상담합니다.", "n-growth2.jpg", poster="poster-growth.jpg") + f"""
 <section class="sec"><div class="container narrow prose">
@@ -1117,7 +1122,8 @@ def build_growth():
 </div></section>
 <section class="sec sec-sand"><div class="container">
   <div class="sec-head"><span class="tag">TREATMENT</span><h2>나이별 · 성별 성장 치료</h2><p>아이의 나이와 성별, 성장 단계에 따라 아래 치료를 조합합니다.</p></div>
-  <div class="fgrid">{fc}</div>
+  {feat}
+  <div class="fgrid fsub">{fc}</div>
   <div class="age-grid">
     <div class="panel"><h3>여아 · 만 8세 미만</h3><p>만 8세가 되기 전(8번째 생일 이전)에 <b>유방이 발달하기 시작</b>하면 성조숙증을 의심합니다. 이후 성장 속도, 뼈 나이, 초경 시기를 함께 살펴 상담합니다.</p></div>
     <div class="panel"><h3>남아 · 만 9세 미만</h3><p>만 9세가 되기 전(9번째 생일 이전)에 <b>고환이 커지기 시작</b>하면(고환 용적 4mL 이상) 성조숙증을 의심합니다. 겉으로 잘 드러나지 않아 놓치기 쉬워 성장 속도 변화를 함께 살펴봅니다.</p></div>

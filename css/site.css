@@ -925,3 +925,10 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .pu-bar button:focus-visible{outline:3px solid #16264f;outline-offset:-3px}
 .pu-panel:focus{outline:none}
 .pp-formnote{margin-top:12px;font-size:13px;opacity:.82}
+
+/* 바른성장: 성장 한약·성장 추나 안내 이미지 */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px}
+.feat a{display:block;border-radius:6px;overflow:hidden;box-shadow:0 14px 40px rgba(20,36,67,.18)}
+.feat img{display:block;width:100%;height:auto}
+.fsub{grid-template-columns:1fr 1fr!important;margin-top:24px}
+@media(max-width:700px){.feat,.fsub{grid-template-columns:1fr!important}}
