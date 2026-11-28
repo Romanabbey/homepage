@@ -1104,7 +1104,11 @@ def build_growth():
     fc = "".join(f"<div class='fcard reveal'><h3>{esc(t)}</h3><p>{esc(d)}</p></div>" for t, d in four)
     feat = ("<div class='feat'>"
             "<a href='assets/img/growth-herb.jpg' target='_blank' rel='noopener'><img src='assets/img/growth-herb.jpg' width='1080' height='1080' loading='lazy' alt='성장 한약. 성장 단계에 맞춰 처방하는 한약. 아이의 나이와 성별, 성장 단계를 고려해 개인별로 한약을 처방합니다.'></a>"
-            "<a href='assets/img/growth-chuna.jpg' target='_blank' rel='noopener'><img src='assets/img/growth-chuna.jpg' width='1080' height='1080' loading='lazy' alt='성장 추나요법. 척추 분절 사이를 늘려주는 추나. 구부정한 자세로 눌려 있던 척추와 관절의 정렬을 바로잡아 숨은 키를 찾아주고, 성장 환경을 개선하는 한방 수기 치료입니다.'></a>"
+            "<a href='assets/img/growth-chuna.jpg' target='_blank' rel='noopener'><img src='assets/img/growth-chuna.jpg' width='1080' height='1080' loading='lazy' alt='성장 추나요법. 척추 분절 사이를 늘려주는 추나. 구부정한 자세로 눌려 있던 척추와 관절의 정렬을 바로잡아 숨은 키를 찾아주고, 성장 환경을 개선하는 한방 수기 치료입니다. 추나 경력 10년 이상, 추나 시술 1만건 이상.'></a>"
+            "</div>"
+            "<div class='feat feat-txt'>"
+            "<div><h3>성장 단계에 맞춰 처방하는 한약</h3><p>아이마다 나이와 성별, 성장 단계가 다릅니다. 그래서 같은 한약을 일률적으로 쓰지 않고, 진찰로 현재 상태를 확인한 뒤 아이에게 맞춰 개인별로 처방합니다. 한약은 한의원 안에서 직접 조제하고 달입니다.</p></div>"
+            "<div><h3>척추 정렬을 살피는 성장 추나</h3><p>추나요법은 손으로 척추와 관절의 정렬을 살피고 바로잡는 한방 수기 치료입니다. 오래 앉아 있거나 자세가 구부정해지기 쉬운 아이라면, 먼저 진찰로 척추와 자세의 상태를 살핍니다.</p></div>"
             "</div>")
     body = hero_sub("바른성장", "초음파 성장 검사와<br>맞춤 성장 상담",
                     "방사선을 사용하지 않는 초음파 성장 검사로 아이의 현재 성장 상태와 예상키를 확인하고, 나이와 성별에 맞춰 성장 치료를 상담합니다.", "n-growth2.jpg", poster="poster-growth.jpg") + f"""

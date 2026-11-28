@@ -939,3 +939,6 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance}
 .xa b{font-family:var(--serif);font-size:64px;line-height:1;font-weight:700;letter-spacing:-.02em}
 .xa b em{font-style:normal;font-size:36px;margin-left:10px;font-weight:600;color:#e2ecf8}
 @media(max-width:700px){.xa{grid-template-columns:1fr;margin:32px -8px;padding:30px 28px;gap:24px}.xa i{height:1px;width:100%}.xa b{font-size:52px}.xa b em{font-size:30px}}
+.feat-txt{margin-top:20px;margin-bottom:8px}
+.feat-txt h3{font-size:20px;margin:0 0 8px;color:var(--ink)}
+.feat-txt p{font-size:15.5px;line-height:1.75;color:var(--ink2);margin:0}
